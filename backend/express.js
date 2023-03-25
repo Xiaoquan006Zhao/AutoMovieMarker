@@ -12,6 +12,7 @@ const {
   allClipsInMovieWithEmotions,
   addEmotionToClip,
   removeEmotionFromClip,
+  allEmotionsInClip,
 } = require("./clips");
 const {
   insertEmotion,
@@ -87,6 +88,16 @@ app.put("/emotions/:id", (req, res) => {
 app.delete("/emotions/:id", (req, res) => {
   const { id } = req.params;
   deleteEmotion(connection, id, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    res.json(result);
+  });
+});
+
+app.get("/emotions-clip/:clip_id", (req, res) => {
+  const { clip_id } = req.params;
+  allEmotionsInClip(connection, clip_id, (err, result) => {
     if (err) {
       return res.status(500).json({ error: "Internal Server Error" });
     }

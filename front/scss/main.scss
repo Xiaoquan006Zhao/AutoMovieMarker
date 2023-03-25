@@ -85,6 +85,7 @@ th {
 td {
   position: relative;
   max-width: 200px;
+  min-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
