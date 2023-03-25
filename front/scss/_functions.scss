@@ -1,0 +1,16 @@
+@function set-color($color) {
+  @if (lightness($color) > 50) {
+    @return #000;
+  } @else {
+    @return #ddd;
+  }
+}
+
+@mixin set-color-and-bg($bg-color) {
+  background-color: $bg-color;
+  @if (lightness($bg-color) > 50) {
+    color: #000;
+  } @else {
+    color: #ddd;
+  }
+}

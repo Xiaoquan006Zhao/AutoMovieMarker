@@ -1,0 +1,114 @@
+.overlay-container {
+  position: fixed;
+  inset: 0px;
+  z-index: 999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.overlay-window {
+  // visual
+  border-radius: 4px;
+  background: white;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+    rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+
+  max-width: calc(100vw - 24px);
+  width: 80vw;
+  margin: auto;
+  min-height: 80vh;
+  max-height: 90vh;
+  padding: 1rem;
+
+  //   non-visual
+  display: flex;
+  white-space: nowrap;
+  flex-direction: column;
+  overflow: visible;
+
+  h1 {
+    padding: 0.5rem;
+    border-bottom: 2px solid $secondary-color;
+  }
+}
+
+.overlay-box {
+  // visual
+  border-radius: 4px;
+  background: white;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+    rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+
+  max-width: calc(100vw - 24px);
+  width: 30vw;
+  min-height: 34px;
+  max-height: 697px;
+  padding: 0.3rem;
+
+  //   non-visual
+  display: flex;
+  white-space: nowrap;
+  flex-direction: column;
+  overflow: visible;
+
+  .filter {
+    width: 100%;
+    border-bottom: 2px solid lighten(#000, 50%);
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+
+    input {
+      border: none;
+      padding: 0, 2px;
+      width: 70%;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  label {
+    padding: 10px 0;
+    color: #999;
+    font-size: 0.8rem;
+  }
+}
+
+.no-wrap {
+  // visual
+  background: rgba(242, 241, 238, 0.6);
+  padding: 10px;
+  width: 100%;
+  min-height: 34px;
+  font-size: 14px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+
+  // non visual
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  z-index: 1;
+
+  &:hover {
+    background: darken(rgba(242, 241, 238, 0.6), 8%);
+  }
+
+  #dot {
+    margin-right: 5px;
+    border-radius: 99px;
+    height: 8px;
+    width: 8px;
+    background-color: rgb(145, 145, 142);
+  }
+
+  .text {
+    display: block;
+    border-bottom: 2px solid gainsboro;
+  }
+}

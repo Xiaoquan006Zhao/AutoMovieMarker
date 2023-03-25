@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./table.js" type="module" defer></script>
+    <link rel="stylesheet" href="main.css" />
+    <title>Movie Marker</title>
+  </head>
+
+  <body>
+    <header>
+      <nav id="navbar" class="container py-1 bg-primary">
+        <h2>Catelog movie clips based on emtions</h2>
+        <div>
+          <a class="nav-link selected" href="index.html"> Movie Markers </a>
+          <a class="nav-link" href="emotion.html"> Emotions </a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- table, column is emotions, row is movies -->
+    <section class="container" style="overflow-x: scroll">
+      <table>
+        <thead class="bg-light">
+          <tr id="table-header-row"></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- overlay -->
+    <div class="overlay-container"></div>
+  </body>
+</html>
