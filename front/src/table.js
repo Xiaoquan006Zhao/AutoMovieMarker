@@ -112,8 +112,8 @@ async function createClipRow(movieId) {
   movieTd.appendChild(document.createTextNode(movieName[0].movie_name));
 }
 
-async function handleMovieOverlay(movieId) {
-  createOverlayMovie(movieId);
+async function handleMovieOverlay(movieId, clicked) {
+  createOverlayMovie(movieId, clicked);
 }
 
 async function handleEmotionOverlay() {
@@ -126,28 +126,14 @@ async function hanleOverlayHead(e) {
   }
 }
 
-async function handleOverlayBody(e) {
-  if (e.target.classList.contains("movie-title")) {
-    const movieId = e.target.parentElement.id;
-    handleMovieOverlay(movieId);
-  } else {
-    handleOverlay(
-      e,
-      getMovieIdAndEmotionId,
-      getClipsMatchFromDB,
-      createOverlayClip
-    );
-  }
-}
-
 function getMovieIdAndEmotionId(clicked) {
   // becasue the clicked item is a td
   // the tr.id is movieId
-  return { movieId: clicked.parentElement.id, emotionId: clicked.id };
+  return { movieId: clicked.parentElement.id, emotionId: clicked.id, clicked };
 }
 
 async function getClipsMatchFromDB(input) {
-  const { movieId, emotionId } = input;
+  const { movieId, emotionId, clicked } = input;
   // get all clips with matching movie_id and emotion_id
   const response = await fetch(`${baseurl}/clips/${movieId}/${emotionId}`, {
     method: "GET",
@@ -158,7 +144,37 @@ async function getClipsMatchFromDB(input) {
     return clip.description;
   });
 
-  return descriptions;
+  return { descriptions, clicked };
+}
+
+function createOverlayClip(x, y, data) {
+  const { descriptions, clicked } = data;
+
+  const divEventEnable = createOverlaySection(clicked, x, y);
+
+  const divBox = document.createElement("div");
+  divBox.classList.add("overlay-box");
+
+  descriptions.forEach((d) => {
+    const newdivWrap = createOverlayEmbed(d);
+    divBox.appendChild(newdivWrap);
+  });
+
+  divEventEnable.appendChild(divBox);
+}
+
+async function handleOverlayBody(e) {
+  if (e.target.classList.contains("movie-title")) {
+    const movieId = e.target.parentElement.id;
+    handleMovieOverlay(movieId, e.target.parentElement);
+  } else {
+    handleOverlay(
+      e,
+      getMovieIdAndEmotionId,
+      getClipsMatchFromDB,
+      createOverlayClip
+    );
+  }
 }
 
 async function handleOverlay(
@@ -187,7 +203,7 @@ async function handleOverlay(
   callback_createOverlay(rect.x, rect.y, data);
 }
 
-function createOverlaySection(x = 100, y = 100, updateReferenceId) {
+function createOverlaySection(updateReference, x = 100, y = 100) {
   const divTop = document.createElement("div");
   divTop.setAttribute(
     "style",
@@ -199,7 +215,6 @@ function createOverlaySection(x = 100, y = 100, updateReferenceId) {
     "style",
     "position: fixed; top: 0px; left: 0px; width: 100vw; height: 100vh; "
   );
-  divBlock.id = updateReferenceId;
 
   const divPos = document.createElement("div");
   divPos.setAttribute(
@@ -221,17 +236,17 @@ function createOverlaySection(x = 100, y = 100, updateReferenceId) {
   overlayContainer.appendChild(divTop);
 
   divBlock.addEventListener("click", (e) => {
-    console.log(e.currentTarget.id);
+    console.log(updateReference);
     overlayContainer.removeChild(overlayContainer.lastChild);
   });
 
-  return { divEventEnable };
+  return divEventEnable;
 }
 
-async function createOverlayMovie(movieId) {
+async function createOverlayMovie(movieId, clicked) {
   const movieName = await getMovieNameFromDB(movieId);
 
-  const { divEventEnable } = createOverlaySection();
+  const divEventEnable = createOverlaySection(clicked);
 
   const divWindow = document.createElement("div");
   divWindow.classList.add("overlay-window");
@@ -343,11 +358,11 @@ function getClipEmotions(clicked) {
     emotionIds.push(divs[i].id);
   }
 
-  return { emotions, emotionIds, clipId };
+  return { emotions, emotionIds, clipId, clicked };
 }
 
 async function getAllEmotions(input) {
-  const { emotions, emotionIds, clipId } = input;
+  const { emotions, emotionIds, clipId, clicked } = input;
 
   const response = await fetch(`${baseurl}/emotions`, {
     method: "GET",
@@ -366,7 +381,14 @@ async function getAllEmotions(input) {
     })
     .map((emotion) => emotion.emotion_id);
 
-  return { emotions, emotionIds, unlinkedEmotions, unlinkedEmotionIds, clipId };
+  return {
+    emotions,
+    emotionIds,
+    unlinkedEmotions,
+    unlinkedEmotionIds,
+    clipId,
+    clicked,
+  };
 }
 
 async function LinkEmotion(e, method) {
@@ -404,10 +426,16 @@ async function LinkEmotion(e, method) {
 }
 
 function createOverlayEmotion(x, y, data) {
-  const { emotions, emotionIds, unlinkedEmotions, unlinkedEmotionIds, clipId } =
-    data;
+  const {
+    emotions,
+    emotionIds,
+    unlinkedEmotions,
+    unlinkedEmotionIds,
+    clipId,
+    clicked,
+  } = data;
 
-  const divEventEnable = createOverlaySection(x, y);
+  const divEventEnable = createOverlaySection(clicked, x, y);
 
   const divBox = document.createElement("div");
   divBox.classList.add("overlay-box");
@@ -458,20 +486,6 @@ function createOverlayEmotion(x, y, data) {
 
 function updateFieldOverlay(e) {
   handleOverlay(e, getClipEmotions, getAllEmotions, createOverlayEmotion);
-}
-
-function createOverlayClip(x, y, data) {
-  const divEventEnable = createOverlaySection(x, y);
-
-  const divBox = document.createElement("div");
-  divBox.classList.add("overlay-box");
-
-  data.forEach((d) => {
-    const newdivWrap = createOverlayEmbed(d);
-    divBox.appendChild(newdivWrap);
-  });
-
-  divEventEnable.appendChild(divBox);
 }
 
 function createOverlayEmbed(text, callback_click, method) {

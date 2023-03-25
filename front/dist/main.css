@@ -176,19 +176,55 @@ a {
   pointer-events: none;
   overflow: hidden; }
 
-#box {
+.overlay-window {
   border-radius: 4px;
   background: white;
   box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   max-width: calc(100vw - 24px);
-  width: 240px;
-  min-height: 34px;
-  max-height: 697px;
+  width: 80vw;
+  margin: auto;
+  min-height: 80vh;
+  max-height: 90vh;
+  padding: 1rem;
   display: flex;
+  white-space: nowrap;
   flex-direction: column;
   overflow: visible; }
+  .overlay-window h1 {
+    padding: 0.5rem;
+    border-bottom: 2px solid #ee8753; }
 
-#no-wrap {
+.overlay-box {
+  border-radius: 4px;
+  background: white;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  max-width: calc(100vw - 24px);
+  width: 30vw;
+  min-height: 34px;
+  max-height: 697px;
+  padding: 0.3rem;
+  display: flex;
+  white-space: nowrap;
+  flex-direction: column;
+  overflow: visible; }
+  .overlay-box .filter {
+    width: 100%;
+    border-bottom: 2px solid gray;
+    padding-bottom: 5px;
+    margin-bottom: 5px; }
+    .overlay-box .filter input {
+      border: none;
+      padding: 0, 2px;
+      width: 70%;
+      font-size: 1rem; }
+      .overlay-box .filter input:focus {
+        outline: none; }
+  .overlay-box label {
+    padding: 10px 0;
+    color: #999;
+    font-size: 0.8rem; }
+
+.no-wrap {
   background: rgba(242, 241, 238, 0.6);
   padding: 10px;
   width: 100%;
@@ -203,13 +239,17 @@ a {
   text-overflow: ellipsis;
   cursor: pointer;
   z-index: 1; }
-
-#dot {
-  margin-right: 5px;
-  border-radius: 99px;
-  height: 8px;
-  width: 8px;
-  background-color: #91918e; }
+  .no-wrap:hover {
+    background: rgba(224, 222, 215, 0.6); }
+  .no-wrap #dot {
+    margin-right: 5px;
+    border-radius: 99px;
+    height: 8px;
+    width: 8px;
+    background-color: #91918e; }
+  .no-wrap .text {
+    display: block;
+    border-bottom: 2px solid gainsboro; }
 
 #navbar {
   display: flex;
@@ -218,7 +258,7 @@ a {
   #navbar .nav-link {
     display: inline-block;
     padding: 0.8rem 2rem;
-    transition: all 3s;
+    transition: all 0.5s;
     border-bottom: 2px solid transparent;
     cursor: pointer;
     border-radius: 1.5rem;
@@ -264,7 +304,8 @@ a {
 
 table {
   margin: 20px 0;
-  font-size: 1rem; }
+  font-size: 1rem;
+  cursor: pointer; }
 
 th {
   padding: 12px 15px;
@@ -280,8 +321,7 @@ td {
   text-overflow: ellipsis;
   padding: 10px 10px;
   vertical-align: middle;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer; }
+  border-bottom: 1px solid #ddd; }
   td .count {
     border-radius: 5px;
     padding: 0.5rem;
