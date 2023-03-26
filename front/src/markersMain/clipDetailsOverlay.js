@@ -59,6 +59,11 @@ function createOverlayClipDetails(x, y, data) {
     divWindow.appendChild(newDiv);
   }
 
+  const imageElement = document.createElement("img");
+  imageElement.setAttribute("src", image_url);
+  imageElement.setAttribute("alt", description);
+  divWindow.appendChild(imageElement);
+
   divWindow.addEventListener("click", updateFieldOverlay);
 
   divEventEnable.appendChild(divWindow);

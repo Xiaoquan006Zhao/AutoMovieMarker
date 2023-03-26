@@ -116,8 +116,6 @@ async function removeItemFromStorage(itemId) {
   });
 
   const data = await response.json();
-
-  console.log(data);
 }
 
 function clearItems() {

@@ -1,53 +1,42 @@
 import { baseurl } from "./config.js";
 import * as utils from "./utils.js";
 
-// Retrive all emotions
-export async function getEmotionsFromDB() {
-  const response = await fetch(`${baseurl}/emotions`, {
-    method: "GET",
+async function templateFetch(query, method) {
+  const response = await fetch(`${baseurl}${query}`, {
+    method: method,
   });
 
   const data = await response.json();
 
   return data;
+}
+
+// Retrive all emotions
+export async function getEmotionsFromDB() {
+  return await templateFetch("/emotions", "GET");
 }
 
 // Given a movie_id, retrive all clips in the movie that has emotions.
 // used to populate the emotion/movie table
 export async function getClipsEmotionInMovieFromDB(movieId) {
-  const response = await fetch(`${baseurl}/movies/${movieId}/clips/emotions`, {
-    method: "GET",
-  });
-  const data = await response.json();
-  return data;
+  return await templateFetch(`/movies/${movieId}/clips/emotions`, "GET");
 }
 
 // Given a movie_id, retrive movie_name
 export async function getMovieNameFromDB(movieId) {
-  const response = await fetch(`${baseurl}/movies/${movieId}`, {
-    method: "GET",
-  });
-  const data = await response.json();
-
-  return data;
+  return await templateFetch(`/movies/${movieId}`, "GET");
 }
 
 // Given a movie_id and emotion_id, retrive all clips that match
 export async function getClipsMatchFromDB(input) {
   const { movieId, emotionId, clicked } = input;
+
   // get all clips with matching movie_id and emotion_id
-  const response = await fetch(`${baseurl}/clips/${movieId}/${emotionId}`, {
-    method: "GET",
-  });
-  const data = await response.json();
+  const data = await templateFetch(`/clips/${movieId}/${emotionId}`, "GET");
 
-  const descriptions = data.map((clip) => {
-    return clip.description;
-  });
+  const descriptions = data.map((clip) => clip.description);
 
-  const clipIds = data.map((clip) => {
-    return clip.clip_id;
-  });
+  const clipIds = data.map((clip) => clip.clip_id);
 
   return { descriptions, clipIds, clicked };
 }
@@ -56,11 +45,7 @@ export async function getClipsMatchFromDB(input) {
 export async function getClipDetailFromDB(input) {
   const { clipId, clicked } = input;
 
-  const response = await fetch(`${baseurl}/clip/${clipId}`, {
-    method: "GET",
-  });
-
-  const data = await response.json();
+  const data = await templateFetch(`/clip/${clipId}`, "GET");
 
   const clipsWithEmotion = utils.combineClipEmotion(data);
 
@@ -70,32 +55,17 @@ export async function getClipDetailFromDB(input) {
 // Given a movieId, retrive all clips in the movie (has or has no emotions)
 // used to populate the movie page
 export async function getClipsInMovieFromDB(movieId) {
-  const response = await fetch(`${baseurl}/movies/${movieId}/clips`, {
-    method: "GET",
-  });
-
-  const data = await response.json();
-
-  return data;
+  return await templateFetch(`/movies/${movieId}/clips`, "GET");
 }
 
 export async function getEmotionInClipFromDB(clipId) {
-  const response = await fetch(`${baseurl}/emotions-clip/${clipId}`, {
-    method: "GET",
-  });
-
-  const data = await response.json();
-
-  return data;
+  return await templateFetch(`/emotions-clip/${clipId}`, "GET");
 }
 
 export async function getEmotionsLinkedAndUnlinedFromDB(input) {
   const { emotions, emotionIds, clipId, clicked } = input;
 
-  const response = await fetch(`${baseurl}/emotions`, {
-    method: "GET",
-  });
-  const data = await response.json();
+  const data = await templateFetch(`/emotions`, "GET");
 
   const unlinkedEmotions = data
     .filter((emotion) => {
@@ -120,9 +90,7 @@ export async function getEmotionsLinkedAndUnlinedFromDB(input) {
 }
 
 export async function updateClipEmotionLink(clipId, emotionId, method) {
-  await fetch(`${baseurl}/clips/${clipId}/emotions/${emotionId}`, {
-    method: method,
-  });
+  return await templateFetch(`/clips/${clipId}/emotions/${emotionId}`, method);
 }
 
 export async function updateClipField(clipId, field, value) {
@@ -143,11 +111,5 @@ export async function updateClipField(clipId, field, value) {
 }
 
 export async function getClipField(clipId, field) {
-  const response = await fetch(`${baseurl}/clips/${clipId}/field/${field}`, {
-    method: "GET",
-  });
-
-  const data = await response.json();
-
-  return data;
+  return await templateFetch(`/clips/${clipId}/field/${field}`, "GET");
 }

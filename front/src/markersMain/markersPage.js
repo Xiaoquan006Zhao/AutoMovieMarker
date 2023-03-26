@@ -28,6 +28,7 @@ function createHeaderColumns(headers) {
 
 async function createEmotionHeader() {
   const records = await DB.getEmotionsFromDB();
+
   emotions = records.map((record) => {
     return record.emotion_name;
   });

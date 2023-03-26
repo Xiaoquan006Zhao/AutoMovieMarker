@@ -8,4 +8,11 @@ function formatResults(results, properties) {
   });
 }
 
-module.exports = { formatResults };
+function templateQuery(connection, query, variable, callback) {
+  connection.query(query, variable, (error, results, fields) => {
+    if (error) return callback(error);
+    callback(null, results);
+  });
+}
+
+module.exports = { formatResults, templateQuery };

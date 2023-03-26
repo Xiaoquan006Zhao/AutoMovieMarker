@@ -17,8 +17,9 @@
   width: 80vw;
   margin: auto;
   min-height: 80vh;
-  max-height: 90vh;
+  max-height: calc(100vh - 100px - 30px);
   padding: 1rem;
+  overflow-y: scroll;
 
   //   non-visual
   display: flex;
