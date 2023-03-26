@@ -32,7 +32,6 @@ export function createOverlaySection(
   );
 
   divPos.appendChild(divEventEnable);
-
   divTop.appendChild(divBlock);
   divTop.appendChild(divPos);
 
@@ -57,7 +56,8 @@ export async function handleOverlay(
   if (!clicked) return;
 
   const input = callback_getParam(clicked, e);
-  const data = await callback_getData(input);
+
+  const data = callback_getData ? await callback_getData(input) : input;
 
   const rect = clicked.getBoundingClientRect();
   // callback_createOverlay(rect.x, rect.y + clicked.clientHeight, data);
@@ -72,6 +72,7 @@ export function createEmotionEmbed(clip, parentElement) {
     parentElement.appendChild(divEmotion);
   });
 
+  parentElement.classList.add("dropDown-emotion");
   parentElement.classList.add("dropDown-enable");
   return parentElement;
 }

@@ -187,22 +187,28 @@ a {
   flex-direction: column; }
   .overlay-window h1 {
     padding: 0.5rem;
-    border-bottom: 2px solid #ee8753;
-    cursor: pointer; }
+    border-bottom: 2px solid #ee8753; }
   .overlay-window .attribute {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     padding: 2px;
-    border-bottom: 1px solid gray; }
+    border-bottom: 1px solid gray;
+    cursor: default; }
     .overlay-window .attribute label {
       padding: 10px, 1rem;
       color: #0a0526; }
     .overlay-window .attribute .attribute-content {
-      padding: 10px;
-      cursor: pointer; }
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding: 10px; }
       .overlay-window .attribute .attribute-content:hover {
         background-color: #f7c8b0; }
+
+.dropDown-enable,
+.movie-title {
+  cursor: pointer; }
 
 .overlay-box {
   border-radius: 4px;
@@ -233,6 +239,9 @@ a {
     padding: 10px 0;
     color: #999;
     font-size: 0.8rem; }
+  .overlay-box .update-field {
+    padding: 5px;
+    font-size: 1rem; }
 
 .no-wrap {
   background: rgba(242, 241, 238, 0.6);
@@ -312,7 +321,7 @@ a {
 table {
   margin: 20px 0;
   font-size: 1rem;
-  cursor: pointer; }
+  cursor: default; }
 
 th {
   padding: 12px 15px;

@@ -49,12 +49,30 @@ function insertClips(connection, movieName, clips, callback) {
   );
 }
 
-function updateClipField(connection, field, clip_id, updated, callback) {
+function getClipField(connection, clip_id, field, callback) {
+  console.log(`SELECT ${field} FROM clips WHERE clip_id = ${clip_id}`);
   connection.query(
-    "UPDATE clips SET ? = ? WHERE clip_id = ?",
-    [field, updated, clip_id],
+    `SELECT ${field} FROM clips WHERE clip_id = ?`,
+    clip_id,
     (error, results, fields) => {
-      if (error) return callback(error);
+      if (error) {
+        console.log(error);
+        return callback(error);
+      }
+      callback(null, results);
+    }
+  );
+}
+
+function updateClipField(connection, clip_id, field, updated, callback) {
+  connection.query(
+    `UPDATE clips SET \`${field}\` = ? WHERE clip_id = ?`,
+    [updated, clip_id],
+    (error, results, fields) => {
+      if (error) {
+        return callback(error);
+      }
+      callback(null, results);
     }
   );
 }
@@ -170,4 +188,5 @@ module.exports = {
   allClipsInMovieWithEmotions,
   allEmotionsInClip,
   getClipDetail,
+  getClipField,
 };

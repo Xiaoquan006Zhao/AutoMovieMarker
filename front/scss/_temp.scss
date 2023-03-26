@@ -30,7 +30,6 @@
   h1 {
     padding: 0.5rem;
     border-bottom: 2px solid $secondary-color;
-    cursor: pointer;
   }
 
   .attribute {
@@ -39,6 +38,7 @@
     align-items: center;
     padding: 2px;
     border-bottom: 1px solid $lightgray;
+    cursor: default;
 
     label {
       padding: 10px, 1rem;
@@ -46,14 +46,21 @@
     }
 
     .attribute-content {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
       padding: 10px;
-      cursor: pointer;
 
       &:hover {
         background-color: lighten($secondary-color, 20%);
       }
     }
   }
+}
+
+.dropDown-enable,
+.movie-title {
+  cursor: pointer;
 }
 
 .overlay-box {
@@ -97,6 +104,11 @@
     padding: 10px 0;
     color: #999;
     font-size: 0.8rem;
+  }
+
+  .update-field {
+    padding: 5px;
+    font-size: 1rem;
   }
 }
 

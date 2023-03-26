@@ -124,3 +124,30 @@ export async function updateClipEmotionLink(clipId, emotionId, method) {
     method: method,
   });
 }
+
+export async function updateClipField(clipId, field, value) {
+  const response = await fetch(`${baseurl}/clips/${clipId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      field: field,
+      value: value,
+    }),
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function getClipField(clipId, field) {
+  const response = await fetch(`${baseurl}/clips/${clipId}/field/${field}`, {
+    method: "GET",
+  });
+
+  const data = await response.json();
+
+  return data;
+}

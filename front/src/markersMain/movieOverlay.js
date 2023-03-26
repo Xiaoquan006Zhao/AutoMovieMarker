@@ -4,11 +4,10 @@ import * as utils from "../utils/utils.js";
 import {
   handleOverlay,
   createEmotionEmbed,
-  createOverlayEmbed,
   createOverlaySection,
-} from "./overlayGeneral.js";
+} from "./generalOverlay.js";
 
-import { updateFieldOverlay } from "./emotionOverlay.js";
+import { updateFieldOverlay } from "./subOverlay.js";
 import { createMovieRow } from "./markersPage.js";
 
 export async function handleMovieOverlay(movieId, clicked) {
@@ -81,6 +80,8 @@ async function createClipsTable(movieId) {
         BodyTr.appendChild(createEmotionEmbed(clip, td));
       } else {
         td.appendChild(document.createTextNode(clip[attribute]));
+        td.classList.add("dropDown-text");
+        td.classList.add("dropDown-enable");
         BodyTr.appendChild(td);
       }
     });

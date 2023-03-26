@@ -3,11 +3,10 @@ import * as DB from "../utils/accessDB.js";
 import {
   handleOverlay,
   createEmotionEmbed,
-  createOverlayEmbed,
   createOverlaySection,
-} from "./overlayGeneral.js";
+} from "./generalOverlay.js";
 
-import { updateFieldOverlay } from "./emotionOverlay.js";
+import { updateFieldOverlay } from "./subOverlay.js";
 
 function getClipId(clicked, e) {
   const clipId = e.target.closest(".tooltip").id;
@@ -39,7 +38,7 @@ function createOverlayClipDetails(x, y, data) {
     movie: movie_name,
     timecode: timecode,
     emotions: emotion_names,
-    image: image_url,
+    image_url: image_url,
   };
 
   const divEventEnable = createOverlaySection(updateClip, clicked);
@@ -66,25 +65,32 @@ function createOverlayClipDetails(x, y, data) {
 }
 
 function createAttributeDiv(attributeName, attributeData, id) {
-  const div = document.createElement("div");
-  const attributeLabel = document.createElement("label");
-  attributeLabel.textContent =
-    attributeName.charAt(0).toUpperCase() + attributeName.slice(1) + ": ";
-  div.appendChild(attributeLabel);
+  const divRow = document.createElement("div");
 
+  // creating Label
+  const attributeLabel = document.createElement("label");
+  attributeLabel.textContent = attributeName;
+  divRow.appendChild(attributeLabel);
+
+  // creating content
   if (typeof attributeData === "string") {
     const attributeContent = document.createElement("h3");
     attributeContent.appendChild(document.createTextNode(attributeData));
     attributeContent.classList.add("attribute-content");
-    div.appendChild(attributeContent);
+    if (attributeName !== "movie") {
+      attributeContent.classList.add("dropDown-text");
+      attributeContent.classList.add("dropDown-enable");
+    }
+
+    divRow.appendChild(attributeContent);
   } else {
     attributeData.classList.add("attribute-content");
-    div.appendChild(attributeData);
+    divRow.appendChild(attributeData);
   }
 
-  div.classList.add("attribute");
-  div.id = id;
-  return div;
+  divRow.classList.add("attribute");
+  divRow.id = id;
+  return divRow;
 }
 
 export function handleClipOverlay(e) {

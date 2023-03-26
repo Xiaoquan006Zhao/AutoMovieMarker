@@ -1,20 +1,12 @@
 import * as DB from "../utils/accessDB.js";
+import { overlayContainer } from "../utils/config.js";
 
 import {
   handleOverlay,
   createEmotionEmbed,
   createOverlayEmbed,
   createOverlaySection,
-} from "./overlayGeneral.js";
-
-export function updateFieldOverlay(e) {
-  handleOverlay(
-    e,
-    getClipEmotions,
-    DB.getEmotionsLinkedAndUnlinedFromDB,
-    createOverlayEmotion
-  );
-}
+} from "./generalOverlay.js";
 
 function getClipEmotions(clicked) {
   const clipId = clicked.parentElement.id;
@@ -132,4 +124,86 @@ function createOverlayEmotion(x, y, data) {
   divBox.appendChild(divUnlinked);
 
   divEventEnable.appendChild(divBox);
+}
+
+// ------------------------------  handle Emotion ends ------------------------------------------
+
+function findFieldName(clicked) {
+  let fieldName;
+  if (clicked.tagName === "H3") {
+    fieldName = clicked.parentElement.querySelector("label").textContent;
+  } else if (clicked.tagName === "TD") {
+    const column = clicked.cellIndex;
+
+    const table = clicked.closest("table");
+    const header = table.querySelector("thead").querySelector("tr");
+    fieldName = header.querySelector(
+      `th:nth-child(${clicked.cellIndex + 1})`
+    ).textContent;
+  }
+
+  return fieldName;
+}
+
+function getClipField(clicked) {
+  const text = clicked.textContent;
+
+  const fieldName = findFieldName(clicked);
+
+  return { text, fieldName, clicked };
+}
+
+async function updateField(updateReference) {
+  const clip_id = updateReference.parentElement.id;
+
+  const fieldName = findFieldName(updateReference);
+
+  const updated = await DB.getClipField(clip_id, fieldName);
+  console.log(updated[0][fieldName]);
+  updateReference.textContent = updated[0][fieldName];
+}
+
+async function createOverlayField(x, y, data) {
+  const { text, fieldName, clicked } = data;
+
+  const clip_id = clicked.parentElement.id;
+
+  const divEventEnable = createOverlaySection(updateField, clicked, x, y);
+
+  const divBox = document.createElement("div");
+  divBox.classList.add("overlay-box");
+
+  const inputBox = document.createElement("input");
+  inputBox.setAttribute("type", "text");
+  inputBox.classList.add("update-field");
+  inputBox.value = text;
+
+  inputBox.addEventListener("keydown", async (e) => {
+    if (e.key === "Enter") {
+      await DB.updateClipField(clip_id, fieldName, inputBox.value);
+
+      // use enter to trigger click event, as if I have clicked out of overlay
+      const nextDivBlockTrigger =
+        overlayContainer.lastChild.querySelector(".stop-event");
+      nextDivBlockTrigger.click();
+    }
+  });
+
+  divBox.appendChild(inputBox);
+
+  divEventEnable.appendChild(divBox);
+  inputBox.focus();
+}
+
+export function updateFieldOverlay(e) {
+  if (e.target.closest(".dropDown-emotion")) {
+    handleOverlay(
+      e,
+      getClipEmotions,
+      DB.getEmotionsLinkedAndUnlinedFromDB,
+      createOverlayEmotion
+    );
+  } else if (e.target.closest(".dropDown-text")) {
+    handleOverlay(e, getClipField, null, createOverlayField);
+  }
 }

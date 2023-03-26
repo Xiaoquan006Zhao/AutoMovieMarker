@@ -5,7 +5,7 @@ import {
   createEmotionEmbed,
   createOverlayEmbed,
   createOverlaySection,
-} from "./overlayGeneral.js";
+} from "./generalOverlay.js";
 
 import { handleMovieOverlay, updateMovie } from "./movieOverlay.js";
 import { handleClipOverlay } from "./clipDetailsOverlay.js";
