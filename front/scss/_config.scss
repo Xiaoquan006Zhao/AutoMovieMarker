@@ -5,6 +5,7 @@ $primary-color: #0a0526;
 $secondary-color: #ee8753;
 $light-color: #fffcfc;
 $dark-color: #00214d;
+$lightgray: lighten(#000, 50%);
 
 .color {
   &-primary {

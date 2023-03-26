@@ -3,7 +3,7 @@ const itemInput = document.getElementById("item-input");
 const itemList = document.getElementById("item-list");
 const formBtn = itemForm.querySelector(".btn-primary");
 
-import { baseurl } from "./config.js";
+import { baseurl } from "./utils/config.js";
 
 tinymce.init({
   selector: "#item-input",

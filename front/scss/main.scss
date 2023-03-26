@@ -84,7 +84,7 @@ th {
 
 td {
   position: relative;
-  max-width: 200px;
+  max-width: 150px;
   min-width: 100px;
   white-space: nowrap;
   overflow: hidden;
@@ -112,4 +112,34 @@ td {
 th:hover,
 td:hover {
   background-color: lighten($secondary-color, 20%);
+}
+
+.tooltip {
+  position: relative;
+
+  .tooltiptext {
+    // visual
+    background-color: $secondary-color;
+    border: 3px solid $primary-color;
+    border-radius: 6px;
+    padding: 12px;
+    padding-top: 7px;
+    font-size: 0.9rem;
+    height: 100%;
+
+    // non-visual
+    visibility: hidden;
+    white-space: nowrap;
+    text-align: auto;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    left: 0px;
+  }
+
+  &:hover .tooltiptext {
+    visibility: visible;
+  }
 }

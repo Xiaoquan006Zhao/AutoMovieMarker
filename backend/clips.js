@@ -2,6 +2,23 @@ const { formatResults } = require("./utils");
 
 const clipProperties = ["clip_id", "timecode", "description", "image_url"];
 
+function getClipDetail(connection, clip_id, callback) {
+  connection.query(
+    `SELECT clips.clip_id, movies.movie_name, clips.timecode, clips.description, 
+    clips.image_url, emotions.emotion_id, emotions.emotion_name
+    FROM clips
+    JOIN movies ON clips.movie_id = movies.movie_id
+    JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id
+    JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id
+    WHERE clips.clip_id = ?`,
+    clip_id,
+    (error, results, fields) => {
+      if (error) return callback(error);
+      callback(null, results);
+    }
+  );
+}
+
 function insertClips(connection, movieName, clips, callback) {
   connection.query(
     "SELECT movie_id FROM movies WHERE movie_name = ?",
@@ -84,7 +101,10 @@ function removeEmotionFromClip(connection, clip_id, emotion_id, callback) {
 
 function allClipsMatch(connection, movie_id, emotion_id, callback) {
   connection.query(
-    "SELECT clips.clip_id, description, image_url, timecode FROM clips JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id WHERE movie_id = ? AND emotion_id = ?",
+    `SELECT clips.clip_id, description, image_url, timecode 
+    FROM clips 
+    JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id 
+    WHERE movie_id = ? AND emotion_id = ?`,
     [movie_id, emotion_id],
     (error, results, fields) => {
       if (error) return callback(error);
@@ -95,7 +115,12 @@ function allClipsMatch(connection, movie_id, emotion_id, callback) {
 
 function allClipsInMovie(connection, movie_id, callback) {
   connection.query(
-    "SELECT clips.clip_id, clips.timecode, clips.description, emotions.emotion_name, emotions.emotion_id FROM clips LEFT JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id LEFT JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id WHERE clips.movie_id = ?",
+    `SELECT clips.clip_id, clips.timecode, clips.description, 
+    emotions.emotion_name, emotions.emotion_id 
+    FROM clips 
+    LEFT JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id 
+    LEFT JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id 
+    WHERE clips.movie_id = ?`,
     movie_id,
     (error, results, fields) => {
       if (error) return callback(error);
@@ -106,7 +131,10 @@ function allClipsInMovie(connection, movie_id, callback) {
 
 function allEmotionsInClip(connection, clip_id, callback) {
   connection.query(
-    "SELECT emotions.emotion_name, emotions.emotion_id FROM emotions JOIN clip_emotions ON emotions.emotion_id = clip_emotions.emotion_id WHERE clip_emotions.clip_id = ?",
+    `SELECT emotions.emotion_name, emotions.emotion_id 
+    FROM emotions 
+    JOIN clip_emotions ON emotions.emotion_id = clip_emotions.emotion_id 
+    WHERE clip_emotions.clip_id = ?`,
     clip_id,
     (error, results, fields) => {
       if (error) return callback(error);
@@ -117,7 +145,12 @@ function allEmotionsInClip(connection, clip_id, callback) {
 
 function allClipsInMovieWithEmotions(connection, movie_id, callback) {
   connection.query(
-    "SELECT clips.clip_id, clips.timecode, clips.description, emotions.emotion_name, emotions.emotion_id FROM clips INNER JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id INNER JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id WHERE clips.movie_id = ?",
+    `SELECT clips.clip_id, clips.timecode, clips.description, 
+    emotions.emotion_name, emotions.emotion_id 
+    FROM clips 
+    INNER JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id 
+    INNER JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id 
+    WHERE clips.movie_id = ?`,
     movie_id,
     (error, results, fields) => {
       if (error) return callback(error);
@@ -136,4 +169,5 @@ module.exports = {
   allClipsMatch,
   allClipsInMovieWithEmotions,
   allEmotionsInClip,
+  getClipDetail,
 };

@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const {
+  getClipDetail,
   insertClips,
   updateClipField,
   deleteClip,
@@ -157,6 +158,18 @@ app.delete("/movies/:id", (req, res) => {
 });
 
 // Endpoints for clips
+
+app.get("/clip/:id", (req, res) => {
+  const { id } = req.params;
+
+  getClipDetail(connection, id, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    res.json(result);
+  });
+});
+
 app.post("/clips", (req, res) => {
   const { movieName, clips } = req.body;
   insertClips(connection, movieName, clips, (err, result) => {

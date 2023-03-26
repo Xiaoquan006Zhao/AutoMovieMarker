@@ -1,0 +1,92 @@
+import { overlayContainer } from "../utils/config.js";
+import * as DB from "../utils/accessDB.js";
+import {
+  handleOverlay,
+  createEmotionEmbed,
+  createOverlayEmbed,
+  createOverlaySection,
+} from "./overlayGeneral.js";
+
+import { updateFieldOverlay } from "./emotionOverlay.js";
+
+function getClipId(clicked, e) {
+  const clipId = e.target.closest(".tooltip").id;
+
+  return { clipId, clicked };
+}
+
+function updateClip(updateReference) {
+  // triggers the next callback in the overlay.
+  const nextDivBlockTrigger =
+    overlayContainer.lastChild.querySelector(".stop-event");
+  nextDivBlockTrigger.click();
+}
+
+function createOverlayClipDetails(x, y, data) {
+  const { clipsWithEmotion, clicked } = data;
+
+  const {
+    clip_id,
+    description,
+    emotion_ids,
+    emotion_names,
+    image_url,
+    movie_name,
+    timecode,
+  } = clipsWithEmotion[0];
+
+  const attributes = {
+    movie: movie_name,
+    timecode: timecode,
+    emotions: emotion_names,
+    image: image_url,
+  };
+
+  const divEventEnable = createOverlaySection(updateClip, clicked);
+
+  const divWindow = document.createElement("div");
+  divWindow.classList.add("overlay-window");
+
+  const title = document.createElement("h1");
+  title.appendChild(document.createTextNode(description));
+  divWindow.appendChild(title);
+
+  for (let key in attributes) {
+    const data =
+      key === "emotions"
+        ? createEmotionEmbed(clipsWithEmotion[0], document.createElement("div"))
+        : attributes[key];
+    const newDiv = createAttributeDiv(key, data, clip_id);
+    divWindow.appendChild(newDiv);
+  }
+
+  divWindow.addEventListener("click", updateFieldOverlay);
+
+  divEventEnable.appendChild(divWindow);
+}
+
+function createAttributeDiv(attributeName, attributeData, id) {
+  const div = document.createElement("div");
+  const attributeLabel = document.createElement("label");
+  attributeLabel.textContent =
+    attributeName.charAt(0).toUpperCase() + attributeName.slice(1) + ": ";
+  div.appendChild(attributeLabel);
+
+  if (typeof attributeData === "string") {
+    const attributeContent = document.createElement("h3");
+    attributeContent.appendChild(document.createTextNode(attributeData));
+    attributeContent.classList.add("attribute-content");
+    div.appendChild(attributeContent);
+  } else {
+    attributeData.classList.add("attribute-content");
+    div.appendChild(attributeData);
+  }
+
+  div.classList.add("attribute");
+  div.id = id;
+  return div;
+}
+
+export function handleClipOverlay(e) {
+  handleOverlay(e, getClipId, DB.getClipDetailFromDB, createOverlayClipDetails);
+}

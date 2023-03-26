@@ -184,12 +184,25 @@ a {
   max-height: 90vh;
   padding: 1rem;
   display: flex;
-  white-space: nowrap;
-  flex-direction: column;
-  overflow: visible; }
+  flex-direction: column; }
   .overlay-window h1 {
     padding: 0.5rem;
-    border-bottom: 2px solid #ee8753; }
+    border-bottom: 2px solid #ee8753;
+    cursor: pointer; }
+  .overlay-window .attribute {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    padding: 2px;
+    border-bottom: 1px solid gray; }
+    .overlay-window .attribute label {
+      padding: 10px, 1rem;
+      color: #0a0526; }
+    .overlay-window .attribute .attribute-content {
+      padding: 10px;
+      cursor: pointer; }
+      .overlay-window .attribute .attribute-content:hover {
+        background-color: #f7c8b0; }
 
 .overlay-box {
   border-radius: 4px;
@@ -198,7 +211,7 @@ a {
   max-width: calc(100vw - 24px);
   width: 30vw;
   min-height: 34px;
-  max-height: 697px;
+  max-height: 90vh;
   padding: 0.3rem;
   display: flex;
   white-space: nowrap;
@@ -227,26 +240,23 @@ a {
   width: 100%;
   min-height: 34px;
   font-size: 14px;
-  margin-right: 0px;
-  margin-bottom: 0px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 20fr;
   align-items: center;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
   z-index: 1; }
   .no-wrap:hover {
-    background: rgba(224, 222, 215, 0.6); }
-  .no-wrap #dot {
-    margin-right: 5px;
-    border-radius: 99px;
-    height: 8px;
-    width: 8px;
-    background-color: #91918e; }
-  .no-wrap .text {
-    display: block;
-    border-bottom: 2px solid gainsboro; }
+    background: rgba(224, 222, 215, 0.6);
+    overflow: visible; }
+
+#dot {
+  margin-right: 5px;
+  border-radius: 99px;
+  height: 8px !important;
+  width: 8px !important;
+  background-color: #aaa; }
 
 #navbar {
   display: flex;
@@ -312,7 +322,7 @@ th {
 
 td {
   position: relative;
-  max-width: 200px;
+  max-width: 150px;
   min-width: 100px;
   white-space: nowrap;
   overflow: hidden;
@@ -335,3 +345,24 @@ td {
 th:hover,
 td:hover {
   background-color: #f7c8b0; }
+
+.tooltip {
+  position: relative; }
+  .tooltip .tooltiptext {
+    background-color: #ee8753;
+    border: 3px solid #0a0526;
+    border-radius: 6px;
+    padding: 12px;
+    padding-top: 7px;
+    font-size: 0.9rem;
+    height: 100%;
+    visibility: hidden;
+    white-space: nowrap;
+    text-align: auto;
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    left: 0px; }
+  .tooltip:hover .tooltiptext {
+    visibility: visible; }

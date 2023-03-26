@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   mode: "development",
   entry: {
-    table: "./src/table.js",
+    markersMain: "./src/markersMain/markersPage.js",
     emotionsList: "./src/emotionsList.js",
     main: "./src/main.js",
   },
