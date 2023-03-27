@@ -78,7 +78,14 @@ function createOverlayEmotion(x, y, data) {
     clicked,
   } = data;
 
-  const divEventEnable = createOverlaySection(updateEmotion, clicked, x, y);
+  const divEventEnable = createOverlaySection(
+    updateEmotion,
+    clicked,
+    x,
+    y,
+    clicked.offsetHeight,
+    clicked.offsetWidth
+  );
 
   const divBox = document.createElement("div");
   divBox.classList.add("overlay-box");
@@ -181,8 +188,8 @@ async function createOverlayField(x, y, data) {
     clicked,
     x,
     y,
-    clicked.clientHeight,
-    clicked.clientWidth
+    clicked.offsetHeight,
+    clicked.offsetWidth
   );
 
   const divBox = document.createElement("div");
