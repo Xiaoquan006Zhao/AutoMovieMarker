@@ -9,7 +9,10 @@ import {
 } from "./generalOverlay.js";
 
 function getClipEmotions(clicked) {
-  const clipId = clicked.closest("tr").id;
+  let tempId = clicked.parentElement.id;
+  // opened from movie page or main page clip description
+  const clipId = tempId ? tempId : clicked.closest("tr").id;
+
   const divs = clicked.querySelectorAll("div");
   const emotions = [];
   const emotionIds = [];
@@ -47,7 +50,8 @@ async function LinkEmotion(e, method) {
 }
 
 async function updateEmotion(updateReference) {
-  const clip_id = updateReference.closest("tr").id;
+  let tempId = updateReference.parentElement.id;
+  const clip_id = tempId ? tempId : updateReference.closest("tr").id;
 
   const emotions = await DB.getEmotionInClipFromDB(clip_id);
 
@@ -142,6 +146,9 @@ function findFieldName(clicked) {
       `th:nth-child(${clicked.cellIndex + 1})`
     ).textContent;
   }
+  if (clicked.tagName === "H1") {
+    fieldName = "description";
+  }
 
   return fieldName;
 }
@@ -169,18 +176,28 @@ async function createOverlayField(x, y, data) {
 
   const clip_id = clicked.parentElement.id;
 
-  const divEventEnable = createOverlaySection(updateField, clicked, x, y);
+  const divEventEnable = createOverlaySection(
+    updateField,
+    clicked,
+    x,
+    y,
+    clicked.clientHeight,
+    clicked.clientWidth
+  );
 
   const divBox = document.createElement("div");
   divBox.classList.add("overlay-box");
 
-  const inputBox = document.createElement("input");
+  const inputBox = document.createElement("textarea");
   inputBox.setAttribute("type", "text");
   inputBox.classList.add("update-field");
   inputBox.value = text;
 
   inputBox.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
+      console.log(clip_id);
+      console.log(fieldName);
+      console.log(inputBox.value);
       await DB.updateClipField(clip_id, fieldName, inputBox.value);
 
       // use enter to trigger click event, as if I have clicked out of overlay

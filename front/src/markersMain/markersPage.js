@@ -108,7 +108,9 @@ function createOverlayClipDescriptions(x, y, data) {
     updateMovie,
     clicked.parentElement,
     x,
-    y
+    y,
+    clicked.clientHeight,
+    clicked.clientWidth
   );
 
   const divBox = document.createElement("div");

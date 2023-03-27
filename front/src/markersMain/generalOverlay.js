@@ -4,7 +4,9 @@ export function createOverlaySection(
   callback_update,
   updateReference,
   x = 100,
-  y = 100
+  y = 100,
+  height,
+  width
 ) {
   const divTop = document.createElement("div");
   divTop.setAttribute(
@@ -22,8 +24,19 @@ export function createOverlaySection(
   const divPos = document.createElement("div");
   divPos.setAttribute(
     "style",
-    `position: fixed;left: ${x}px;top: ${y}px;pointer-events: none;`
+    `position: fixed;left: ${x}px;top: ${
+      y - (height ? height : 0)
+    }px;pointer-events: none;`
   );
+
+  if (height) {
+    console.log(height);
+    divPos.style.height = height + "px";
+  }
+  if (width) {
+    console.log(width);
+    divPos.style.width = width + "px";
+  }
 
   const divEventEnable = document.createElement("div");
   divEventEnable.setAttribute(

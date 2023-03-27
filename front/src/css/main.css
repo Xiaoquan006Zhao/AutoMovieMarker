@@ -232,8 +232,7 @@ a {
   background: white;
   box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   max-width: calc(100vw - 24px);
-  width: 30vw;
-  min-height: 34px;
+  width: 100%;
   max-height: 90vh;
   padding: 0.3rem;
   display: flex;
@@ -257,8 +256,10 @@ a {
     color: #999;
     font-size: 0.8rem; }
   .overlay-box .update-field {
+    width: 100%;
     padding: 5px;
-    font-size: 1rem; }
+    font-size: 1rem;
+    height: auto !important; }
 
 .no-wrap {
   background: rgba(242, 241, 238, 0.6);
@@ -267,12 +268,11 @@ a {
   min-height: 34px;
   font-size: 14px;
   display: grid;
-  grid-template-columns: 1fr 20fr;
+  grid-template-columns: 1fr 200fr;
   align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
-  z-index: 1; }
+  cursor: pointer; }
   .no-wrap:hover {
     background: rgba(224, 222, 215, 0.6);
     overflow: visible; }
@@ -408,14 +408,14 @@ td:hover {
   position: relative; }
   .tooltip .tooltiptext {
     background-color: #ee8753;
-    border: 3px solid #0a0526;
+    border: 2px solid #0a0526;
     border-radius: 6px;
-    padding: 12px;
+    padding: 10px;
     padding-top: 7px;
     font-size: 0.9rem;
-    height: 100%;
+    width: 170%;
     visibility: hidden;
-    white-space: nowrap;
+    white-space: pre-wrap;
     text-align: auto;
     /* Position the tooltip text */
     position: absolute;
@@ -424,3 +424,5 @@ td:hover {
     left: 0px; }
   .tooltip:hover .tooltiptext {
     visibility: visible; }
+  .tooltip:hover div {
+    visibility: hidden !important; }

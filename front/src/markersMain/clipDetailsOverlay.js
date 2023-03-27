@@ -48,10 +48,13 @@ function createOverlayClipDetails(x, y, data) {
   const divEventEnable = createOverlaySection(updateClip, clicked);
 
   const divWindow = document.createElement("div");
+  divWindow.id = clip_id;
   divWindow.classList.add("overlay-window");
 
   const title = document.createElement("h1");
   title.appendChild(document.createTextNode(description));
+  title.classList.add("dropDown-enable");
+  title.classList.add("dropDown-text");
   divWindow.appendChild(title);
 
   for (let key in attributes) {
