@@ -9,7 +9,10 @@ import {
 import { updateFieldOverlay } from "./subOverlay.js";
 
 function getClipId(clicked, e) {
-  const clipId = e.target.closest(".tooltip").id;
+  const tooltip = e.target.closest(".tooltip");
+
+  // opened from main page's clip descriptions or movie page clip table
+  const clipId = tooltip ? tooltip.id : e.target.closest("tr").id;
 
   return { clipId, clicked };
 }
@@ -18,6 +21,7 @@ function updateClip(updateReference) {
   // triggers the next callback in the overlay.
   const nextDivBlockTrigger =
     overlayContainer.lastChild.querySelector(".stop-event");
+
   nextDivBlockTrigger.click();
 }
 

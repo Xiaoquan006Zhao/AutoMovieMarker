@@ -9,6 +9,7 @@ import {
 
 import { updateFieldOverlay } from "./subOverlay.js";
 import { createMovieRow } from "./markersPage.js";
+import { handleClipOverlay } from "./clipDetailsOverlay.js";
 
 export async function handleMovieOverlay(movieId, clicked) {
   createOverlayMovie(movieId, clicked);
@@ -30,6 +31,7 @@ async function createOverlayMovie(movieId, clicked) {
   const divEventEnable = createOverlaySection(updateMovie, clicked);
 
   const divWindow = document.createElement("div");
+  divWindow.id = movieId;
   divWindow.classList.add("overlay-window");
 
   const title = document.createElement("h1");
@@ -41,6 +43,54 @@ async function createOverlayMovie(movieId, clicked) {
   divWindow.appendChild(table);
 
   divEventEnable.appendChild(divWindow);
+}
+
+function createClipRow(
+  clip,
+  clipsAttributes,
+  clipsTableBody,
+  insertBeforeThis
+) {
+  const BodyTr = document.createElement("tr");
+  BodyTr.id = clip.clip_id;
+
+  if (!insertBeforeThis) {
+    clipsTableBody.appendChild(BodyTr);
+  } else {
+    clipsTableBody.insertBefore(BodyTr, insertBeforeThis);
+  }
+
+  clipsAttributes.forEach((attribute) => {
+    const td = document.createElement("td");
+    if (attribute === "emotions") {
+      const divEmotions = document.createElement("div");
+      createEmotionEmbed(clip, divEmotions);
+      td.appendChild(divEmotions);
+
+      BodyTr.appendChild(td);
+    } else {
+      td.appendChild(document.createTextNode(clip[attribute]));
+      td.classList.add("dropDown-text");
+      td.classList.add("dropDown-enable");
+      BodyTr.appendChild(td);
+    }
+  });
+
+  BodyTr.addEventListener("mouseenter", (e) => {
+    createAddDeleteOpenButton(BodyTr);
+  });
+
+  BodyTr.addEventListener("mouseout", (e) => {
+    const tr = e.currentTarget;
+    const relatedTarget = e.relatedTarget;
+
+    // Check if the relatedTarget is a child of BodyTr
+    if (!tr.contains(relatedTarget)) {
+      const firstTd = e.currentTarget.firstChild;
+      firstTd.removeChild(firstTd.lastChild);
+      tr.removeChild(tr.lastChild);
+    }
+  });
 }
 
 async function createClipsTable(movieId) {
@@ -70,23 +120,93 @@ async function createClipsTable(movieId) {
   const clipsWithEmotions = utils.combineClipEmotion(data);
 
   clipsWithEmotions.forEach((clip) => {
-    const BodyTr = document.createElement("tr");
-    BodyTr.id = clip.clip_id;
-    clipsTableBody.appendChild(BodyTr);
-
-    clipsAttributes.forEach((attribute) => {
-      const td = document.createElement("td");
-      if (attribute === "emotions") {
-        BodyTr.appendChild(createEmotionEmbed(clip, td));
-      } else {
-        td.appendChild(document.createTextNode(clip[attribute]));
-        td.classList.add("dropDown-text");
-        td.classList.add("dropDown-enable");
-        BodyTr.appendChild(td);
-      }
-    });
+    createClipRow(clip, clipsAttributes, clipsTableBody);
   });
 
   clipsTableBody.addEventListener("click", updateFieldOverlay);
   return clipsTable;
+}
+
+function createAddDeleteOpenButton(parentClipRow) {
+  const firstTd = parentClipRow.firstChild;
+
+  // float buttons
+  const divButtons = document.createElement("div");
+  divButtons.classList.add("front-button-wrap");
+
+  const addButton = document.createElement("div");
+  addButton.innerText = "+";
+
+  const deleteButton = document.createElement("div");
+  deleteButton.innerText = "x";
+
+  divButtons.append(addButton, deleteButton);
+  parentClipRow.appendChild(divButtons);
+
+  const openButton = document.createElement("div");
+  openButton.classList.add("open-button-style");
+  openButton.innerText = "Open";
+
+  [addButton, deleteButton, openButton].forEach((button) => {
+    button.classList.add("btn-small");
+  });
+
+  buttonClickEventAdd(addButton);
+  buttonClickEventDelete(deleteButton);
+  buttonClickEventOpen(openButton);
+
+  firstTd.appendChild(openButton);
+}
+
+function hoverEventsToButton(button) {
+  button.addEventListener("mouseenter", (e) => {
+    e.currentTarget.classList.add("bg-dark");
+  });
+
+  button.addEventListener("mouseout", (e) => {
+    e.currentTarget.classList.remove("bg-dark");
+  });
+}
+
+function buttonClickEventAdd(button) {
+  hoverEventsToButton(button);
+
+  button.addEventListener("click", async (e) => {
+    const movie_id = e.currentTarget.closest(".overlay-window").id;
+    const tableBody = e.currentTarget.closest("tbody");
+    const currentTr = e.currentTarget.closest("tr");
+    const data = await DB.insertClip(movie_id);
+
+    const inserted_id = data.insertId;
+    const clip = {
+      clip_id: inserted_id,
+      description: "",
+      emotion_ids: [],
+      emotion_names: [],
+      timecode: "00:00:00",
+    };
+    createClipRow(
+      clip,
+      ["description", "timecode", "emotions"],
+      tableBody,
+      currentTr
+    );
+  });
+}
+
+function buttonClickEventDelete(button) {
+  hoverEventsToButton(button);
+
+  button.addEventListener("click", async (e) => {
+    const tr = e.currentTarget.closest("tr");
+    const clip_id = tr.id;
+    await DB.deleteClip(clip_id);
+    tr.remove();
+  });
+}
+
+function buttonClickEventOpen(button) {
+  hoverEventsToButton(button);
+
+  button.addEventListener("click", handleClipOverlay);
 }

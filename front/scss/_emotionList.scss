@@ -1,0 +1,39 @@
+#item-form {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Form & Input */
+.form-input {
+  font-size: 18px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+
+  &:focus {
+    border: 2px solid $secondary-color;
+    padding: 9px;
+  }
+}
+
+/* Items */
+
+.items {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 1rem;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 0 5px 20px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}

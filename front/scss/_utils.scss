@@ -53,6 +53,15 @@ a {
     @include set-color-and-bg($dark-color);
   }
 
+  &-small {
+    @extend %btn-shared;
+    border-radius: 5px;
+    font-weight: 400;
+    padding: 0rem;
+    border: 2px solid $primary-color;
+    @include set-color-and-bg($light-color);
+  }
+
   &-remove {
     @extend %btn-shared;
     font-size: 16px;

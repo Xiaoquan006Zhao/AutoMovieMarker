@@ -15,27 +15,12 @@ function getClipDetail(connection, req, callback) {
   templateQuery(connection, query, [clip_id], callback);
 }
 
-function insertClips(connection, req, callback) {
-  const { movieName, clips } = req.body;
+function insertClip(connection, req, callback) {
+  const { movie_id } = req.params;
 
-  const queryMovieId = "SELECT movie_id FROM movies WHERE movie_name = ?";
-  let movieId;
+  const queryInsertCip = `Insert into clips (movie_id, image_url) values (?, ?)`;
 
-  templateQuery(connection, queryMovieId, [movieName], (error, results) => {
-    if (error) callback(error);
-    movieId = results[0].movie_id;
-  });
-
-  const values = clips
-    .map(
-      (clip) =>
-        `('${clip.timecode}', '${clip.description}', '${clip.image_url}', ${movieId})`
-    )
-    .join(",");
-
-  const queryInsertCip = `INSERT INTO clips (timecode, description, image_url, movie_id) VALUES ?`;
-
-  templateQuery(connection, queryInsertCip, values, callback);
+  templateQuery(connection, queryInsertCip, [movie_id, "no image"], callback);
 }
 
 function getClipField(connection, req, callback) {
@@ -125,7 +110,7 @@ function allClipsInMovieWithEmotions(connection, req, callback) {
 }
 
 module.exports = {
-  insertClips,
+  insertClip,
   addEmotionToClip,
   updateClipField,
   allClipsInMovie,

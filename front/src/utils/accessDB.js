@@ -11,6 +11,14 @@ async function templateFetch(query, method) {
   return data;
 }
 
+export async function deleteClip(clipId) {
+  return await templateFetch(`/clips/${clipId}`, "DELETE");
+}
+
+export async function insertClip(movieId) {
+  return await templateFetch(`/clips/${movieId}`, "POST");
+}
+
 // Retrive all emotions
 export async function getEmotionsFromDB() {
   return await templateFetch("/emotions", "GET");

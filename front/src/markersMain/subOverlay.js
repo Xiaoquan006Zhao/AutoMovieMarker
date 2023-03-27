@@ -9,7 +9,7 @@ import {
 } from "./generalOverlay.js";
 
 function getClipEmotions(clicked) {
-  const clipId = clicked.parentElement.id;
+  const clipId = clicked.closest("tr").id;
   const divs = clicked.querySelectorAll("div");
   const emotions = [];
   const emotionIds = [];
@@ -47,7 +47,7 @@ async function LinkEmotion(e, method) {
 }
 
 async function updateEmotion(updateReference) {
-  const clip_id = updateReference.parentElement.id;
+  const clip_id = updateReference.closest("tr").id;
 
   const emotions = await DB.getEmotionInClipFromDB(clip_id);
 
@@ -59,6 +59,7 @@ async function updateEmotion(updateReference) {
     const divEmotion = document.createElement("div");
     divEmotion.id = emotion.emotion_id;
     divEmotion.appendChild(document.createTextNode(emotion.emotion_name));
+
     updateReference.appendChild(divEmotion);
   });
 }
@@ -146,7 +147,7 @@ function findFieldName(clicked) {
 }
 
 function getClipField(clicked) {
-  const text = clicked.textContent;
+  const text = clicked.firstChild.textContent;
 
   const fieldName = findFieldName(clicked);
 
@@ -160,7 +161,7 @@ async function updateField(updateReference) {
 
   const updated = await DB.getClipField(clip_id, fieldName);
   console.log(updated[0][fieldName]);
-  updateReference.textContent = updated[0][fieldName];
+  updateReference.firstChild.textContent = updated[0][fieldName];
 }
 
 async function createOverlayField(x, y, data) {

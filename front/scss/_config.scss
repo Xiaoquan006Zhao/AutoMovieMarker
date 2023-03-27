@@ -6,6 +6,7 @@ $secondary-color: #ee8753;
 $light-color: #fffcfc;
 $dark-color: #00214d;
 $lightgray: lighten(#000, 50%);
+$light-color-transparent: rgba(255, 252, 252, 0.6);
 
 .color {
   &-primary {
@@ -40,6 +41,10 @@ $lightgray: lighten(#000, 50%);
 
   &-dark {
     @include set-color-and-bg($dark-color);
+  }
+
+  &-secondaryLight {
+    @include set-color-and-bg(lighten($secondary-color, 20%));
   }
 }
 

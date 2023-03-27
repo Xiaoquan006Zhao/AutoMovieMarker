@@ -59,7 +59,7 @@ handleRequest(GET, "/movies", MOVIE.allMovies);
 handleRequest(PUT, "/movies/:movie_id", MOVIE.updateMovie);
 handleRequest(DELETE, "/movies/:movie_id", MOVIE.deleteMovie);
 handleRequest(GET, "/clip/:clip_id", CLIP.getClipDetail);
-handleRequest(POST, "/clips", CLIP.insertClips);
+handleRequest(POST, "/clips/:movie_id", CLIP.insertClip);
 handleRequest(GET, "/clips/:clip_id/field/:field", CLIP.getClipField);
 handleRequest(PUT, "/clips/:clip_id", CLIP.updateClipField);
 handleRequest(DELETE, "/clips/:clip_id", CLIP.deleteClip);
