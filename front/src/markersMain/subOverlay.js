@@ -174,7 +174,6 @@ async function updateField(updateReference) {
   const fieldName = findFieldName(updateReference);
 
   const updated = await DB.getClipField(clip_id, fieldName);
-  console.log(updated[0][fieldName]);
   updateReference.firstChild.textContent = updated[0][fieldName];
 }
 
@@ -208,9 +207,22 @@ async function createOverlayField(x, y, data) {
 
   inputBox.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
-      console.log(clip_id);
-      console.log(fieldName);
-      console.log(inputBox.value);
+      e.preventDefault();
+      if (fieldName === "timecode") {
+        // Define the regular expression pattern
+        const pattern =
+          /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]):\d+$/;
+
+        // Test the string against the pattern
+        const isMatching = pattern.test(inputBox.value);
+
+        if (!isMatching) {
+          alert(
+            "Timecode is not of right format. \nExpect: hour:minute:second:frames"
+          );
+          return;
+        }
+      }
       await DB.updateClipField(clip_id, fieldName, inputBox.value);
 
       // use enter to trigger click event, as if I have clicked out of overlay

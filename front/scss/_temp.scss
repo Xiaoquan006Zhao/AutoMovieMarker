@@ -108,6 +108,8 @@
 }
 
 .grow-wrap {
+  // used on textarea to auto-resize
+  // https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
   height: 10px;
   width: 100%;
   display: grid;
@@ -125,22 +127,25 @@
   -moz-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
-}
-.grow-wrap::after {
-  content: attr(data-replicated-value) " ";
-  white-space: pre-wrap;
-  visibility: hidden;
-}
-.grow-wrap > textarea {
-  // resize: none;
-  overflow: hidden;
-}
-.grow-wrap > textarea,
-.grow-wrap::after {
-  border: 1px solid black;
-  padding: 0.5rem;
-  font: inherit;
-  grid-area: 1 / 1 / 2 / 2;
+
+  &::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+  }
+
+  & > textarea {
+    // resize: none;
+    overflow: hidden;
+  }
+
+  & > textarea,
+  &::after {
+    border: 1px solid black;
+    padding: 0.5rem;
+    font: inherit;
+    grid-area: 1 / 1 / 2 / 2;
+  }
 }
 
 .no-wrap {

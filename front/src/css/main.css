@@ -279,21 +279,17 @@ a {
   -moz-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto; }
-
-.grow-wrap::after {
-  content: attr(data-replicated-value) " ";
-  white-space: pre-wrap;
-  visibility: hidden; }
-
-.grow-wrap > textarea {
-  overflow: hidden; }
-
-.grow-wrap > textarea,
-.grow-wrap::after {
-  border: 1px solid black;
-  padding: 0.5rem;
-  font: inherit;
-  grid-area: 1 / 1 / 2 / 2; }
+  .grow-wrap::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden; }
+  .grow-wrap > textarea {
+    overflow: hidden; }
+  .grow-wrap > textarea, .grow-wrap::after {
+    border: 1px solid black;
+    padding: 0.5rem;
+    font: inherit;
+    grid-area: 1 / 1 / 2 / 2; }
 
 .no-wrap {
   background: rgba(242, 241, 238, 0.6);

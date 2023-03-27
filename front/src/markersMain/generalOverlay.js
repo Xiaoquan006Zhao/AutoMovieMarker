@@ -30,11 +30,9 @@ export function createOverlaySection(
   );
 
   if (height) {
-    console.log(height);
     divPos.style.height = height + "px";
   }
   if (width) {
-    console.log(width);
     divPos.style.width = width + "px";
   }
 
