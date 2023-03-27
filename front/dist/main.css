@@ -29,6 +29,10 @@
   background-color: #00214d;
   color: #ddd; }
 
+.bg-secondaryLight {
+  background-color: #f7c8b0;
+  color: #000; }
+
 .py-1 {
   padding-top: 1rem;
   padding-bottom: 1rem; }
@@ -76,7 +80,7 @@
 a {
   text-decoration: none; }
 
-.btn-primary, .btn-secondary, .btn-light, .btn-dark, .btn-remove {
+.btn-primary, .btn-secondary, .btn-light, .btn-dark, .btn-small, .btn-remove {
   display: inline-block;
   padding: 0.8rem 2rem;
   transition: all 0.5s;
@@ -84,7 +88,7 @@ a {
   cursor: pointer;
   border-radius: 10px;
   font-weight: 900; }
-  .btn-primary:hover, .btn-secondary:hover, .btn-light:hover, .btn-dark:hover, .btn-remove:hover {
+  .btn-primary:hover, .btn-secondary:hover, .btn-light:hover, .btn-dark:hover, .btn-small:hover, .btn-remove:hover {
     opacity: 0.9; }
 
 .btn-primary {
@@ -102,6 +106,14 @@ a {
 .btn-dark {
   background-color: #00214d;
   color: #ddd; }
+
+.btn-small {
+  border-radius: 5px;
+  font-weight: 400;
+  padding: 0rem;
+  border: 2px solid #0a0526;
+  background-color: #fffcfc;
+  color: #000; }
 
 .btn-remove {
   font-size: 16px;
@@ -136,6 +148,10 @@ a {
 .bg-dark {
   background-color: #00214d;
   color: #ddd; }
+
+.bg-secondaryLight {
+  background-color: #f7c8b0;
+  color: #000; }
 
 .py-1 {
   padding-top: 1rem;
@@ -184,36 +200,42 @@ a {
   width: 80vw;
   margin: auto;
   min-height: 80vh;
-  max-height: 90vh;
-  padding: 1rem;
+  max-height: calc(100vh - 100px - 30px);
+  padding: 2rem;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column; }
   .overlay-window h1 {
     padding: 0.5rem;
-    border-bottom: 2px solid #ee8753;
-    cursor: pointer; }
+    border-bottom: 2px solid #ee8753; }
   .overlay-window .attribute {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     padding: 2px;
-    border-bottom: 1px solid gray; }
+    border-bottom: 1px solid gray;
+    cursor: default; }
     .overlay-window .attribute label {
       padding: 10px, 1rem;
       color: #0a0526; }
     .overlay-window .attribute .attribute-content {
-      padding: 10px;
-      cursor: pointer; }
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding: 10px; }
       .overlay-window .attribute .attribute-content:hover {
         background-color: #f7c8b0; }
+
+.dropDown-enable,
+.movie-title {
+  cursor: pointer; }
 
 .overlay-box {
   border-radius: 4px;
   background: white;
   box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   max-width: calc(100vw - 24px);
-  width: 30vw;
-  min-height: 34px;
+  width: 100%;
   max-height: 90vh;
   padding: 0.3rem;
   display: flex;
@@ -236,6 +258,21 @@ a {
     padding: 10px 0;
     color: #999;
     font-size: 0.8rem; }
+  .overlay-box .grow-wrap {
+    width: 100%;
+    font-size: 1rem;
+    display: grid; }
+  .overlay-box .grow-wrap::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden; }
+  .overlay-box .grow-wrap > textarea {
+    overflow: hidden; }
+  .overlay-box .grow-wrap > textarea,
+  .overlay-box .grow-wrap::after {
+    border: 1px solid black;
+    padding: 0.5rem;
+    grid-area: 1 / 1 / 2 / 2; }
 
 .no-wrap {
   background: rgba(242, 241, 238, 0.6);
@@ -244,12 +281,11 @@ a {
   min-height: 34px;
   font-size: 14px;
   display: grid;
-  grid-template-columns: 1fr 20fr;
+  grid-template-columns: 1fr 200fr;
   align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
-  z-index: 1; }
+  cursor: pointer; }
   .no-wrap:hover {
     background: rgba(224, 222, 215, 0.6);
     overflow: visible; }
@@ -260,25 +296,6 @@ a {
   height: 8px !important;
   width: 8px !important;
   background-color: #aaa; }
-
-#navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; }
-  #navbar .nav-link {
-    display: inline-block;
-    padding: 0.8rem 2rem;
-    transition: all 0.5s;
-    border-bottom: 2px solid transparent;
-    cursor: pointer;
-    border-radius: 1.5rem;
-    font-weight: 900;
-    color: #ddd; }
-    #navbar .nav-link:hover {
-      border-bottom: 2px solid #ee8753; }
-  #navbar .selected {
-    background-color: #ee8753;
-    color: #000; }
 
 #item-form {
   padding: 10px;
@@ -312,10 +329,34 @@ a {
     font-weight: 700;
     cursor: pointer; }
 
+#navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+  #navbar .nav-link {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    transition: all 0.5s;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    border-radius: 1.5rem;
+    font-weight: 900;
+    color: #ddd; }
+    #navbar .nav-link:hover {
+      border-bottom: 2px solid #ee8753; }
+  #navbar .selected {
+    background-color: #ee8753;
+    color: #000; }
+
+.hidden {
+  display: hidden; }
+
 table {
   margin: 20px 0;
   font-size: 1rem;
-  cursor: pointer; }
+  cursor: default;
+  width: 100%;
+  height: 100%; }
 
 th {
   padding: 12px 15px;
@@ -323,15 +364,42 @@ th {
   font-weight: bold;
   border-bottom: 2px solid #0a0526; }
 
-td {
+.dropDown-emotion {
+  width: 100%;
+  height: 100%;
+  display: flex; }
+  .dropDown-emotion div {
+    padding-left: 8px; }
+
+tr {
   position: relative;
+  width: 100%;
+  height: 100%; }
+  tr .front-button-wrap {
+    position: absolute;
+    top: -1px;
+    left: -10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    tr .front-button-wrap div {
+      padding: 1px 2px; }
+    tr .front-button-wrap > div {
+      margin-bottom: 2px; }
+  tr .open-button-style {
+    position: absolute;
+    padding: 3px;
+    top: 9px;
+    right: 1px; }
+
+td {
   max-width: 150px;
   min-width: 100px;
+  position: relative;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 10px 10px;
-  vertical-align: middle;
+  padding: 15px;
   border-bottom: 1px solid #ddd; }
   td .count {
     border-radius: 5px;
@@ -353,14 +421,14 @@ td:hover {
   position: relative; }
   .tooltip .tooltiptext {
     background-color: #ee8753;
-    border: 3px solid #0a0526;
+    border: 2px solid #0a0526;
     border-radius: 6px;
-    padding: 12px;
+    padding: 10px;
     padding-top: 7px;
     font-size: 0.9rem;
-    height: 100%;
+    width: 170%;
     visibility: hidden;
-    white-space: nowrap;
+    white-space: pre-wrap;
     text-align: auto;
     /* Position the tooltip text */
     position: absolute;
@@ -369,4 +437,6 @@ td:hover {
     left: 0px; }
   .tooltip:hover .tooltiptext {
     visibility: visible; }
+  .tooltip:hover div {
+    visibility: hidden !important; }
 

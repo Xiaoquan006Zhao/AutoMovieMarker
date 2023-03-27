@@ -187,10 +187,16 @@ async function createOverlayField(x, y, data) {
 
   const divBox = document.createElement("div");
   divBox.classList.add("overlay-box");
+  divBox.classList.add("grow-wrap");
 
   const inputBox = document.createElement("textarea");
-  inputBox.setAttribute("type", "text");
-  inputBox.classList.add("update-field");
+  inputBox.setAttribute("name", "text");
+  inputBox.setAttribute("lang", "en");
+  inputBox.id = "text";
+  inputBox.setAttribute(
+    "onInput",
+    "this.parentNode.dataset.replicatedValue = this.value"
+  );
   inputBox.value = text;
 
   inputBox.addEventListener("keydown", async (e) => {
@@ -208,6 +214,8 @@ async function createOverlayField(x, y, data) {
   });
 
   divBox.appendChild(inputBox);
+  divBox.setAttribute("lang", "en");
+  inputBox.parentNode.dataset.replicatedValue = inputBox.value;
 
   divEventEnable.appendChild(divBox);
   inputBox.focus();
