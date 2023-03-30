@@ -108,34 +108,19 @@
 }
 
 .grow-wrap {
-  // used on textarea to auto-resize
+  // used on textarea to auto resize
   // https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
   height: 10px;
-  width: 100%;
+  width: 100% !important;
   display: grid;
-
-  white-space: -moz-pre-wrap; /* Mozilla */
-  white-space: -hp-pre-wrap; /* HP printers */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: pre-wrap; /* CSS 2.1 */
-  white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
-  word-wrap: break-word; /* IE */
-  word-break: break-all;
-
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto;
 
   &::after {
     content: attr(data-replicated-value) " ";
-    white-space: pre-wrap;
     visibility: hidden;
+    white-space: pre-wrap;
   }
 
   & > textarea {
-    // resize: none;
     overflow: hidden;
   }
 

@@ -3,123 +3,44 @@
   <head>
     <title>Auto Height Textarea</title>
     <style>
-      .grow-wrap {
-        height: 10px;
-        width: 200px;
-        max-width: 200px;
-        display: grid;
-
-        white-space: -moz-pre-wrap; /* Mozilla */
-        white-space: -hp-pre-wrap; /* HP printers */
-        white-space: -o-pre-wrap; /* Opera 7 */
-        white-space: -pre-wrap; /* Opera 4-6 */
-        white-space: pre-wrap; /* CSS 2.1 */
-        white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
-        word-wrap: break-word; /* IE */
-        word-break: break-all;
-
-        -webkit-hyphens: auto;
-        -moz-hyphens: auto;
-        -ms-hyphens: auto;
-        hyphens: auto;
-
-        overflow-wrap: break-word;
-        word-wrap: break-word;
+      .relative-wrap {
+        /*relative on second parent*/
+        position: relative;
       }
-      .grow-wrap::after {
-        content: attr(data-replicated-value) " ";
 
-        /* white-space: pre-wrap; */
-
-        visibility: hidden;
-      }
-      .grow-wrap > textarea {
-        width: 200px;
-        max-width: 200px;
-        resize: none;
-
+      .overflow-wrap {
+        height: 250px;
+        width: 250px;
         overflow: hidden;
-      }
-      .grow-wrap > textarea,
-      .grow-wrap::after {
-        border: 1px solid black;
-        padding: 0.5rem;
-        font: inherit;
+        background: lightblue;
 
-        grid-area: 1 / 1 / 2 / 2;
+        /*no relative on immediate parent*/
       }
 
-      body {
-        padding: 20px;
-        font-size: 20px;
+      .respect-overflow {
+        position: relative;
+        top: 75px;
+        left: 225px;
+        height: 50px;
+        width: 50px;
+        background: green;
       }
-
-      h2 {
-        text-align: center;
-        margin-bottom: 14px;
-      }
-
-      p {
-        margin: 0 auto;
-        max-width: 300px;
-        border: solid 2px #ccc;
-        padding: 12px;
-      }
-
-      button {
-        display: block;
-        margin: 20px auto;
-      }
-
-      .ow {
-        -webkit-hyphens: auto;
-        -moz-hyphens: auto;
-        -ms-hyphens: auto;
-        hyphens: auto;
-
-        overflow-wrap: break-word;
-        word-wrap: break-word;
+      .no-overflow {
+        position: absolute;
+        top: 150px;
+        left: 225px;
+        height: 50px;
+        width: 50px;
+        background: red;
       }
     </style>
   </head>
   <body>
-    <h2>overflow-wrap/word-wrap demo</h2>
-
-    <p>
-      This is the first time I've seen the
-      word&nbsp;Pneumonoultramicroscopicsilicovolcanoconiosis. It's a long one.
-    </p>
-
-    <button>Toggle Overflow Wrap</button>
-
-    <div></div>
+    <div class="relative-wrap">
+      <div class="overflow-wrap">
+        <div class="respect-overflow"></div>
+        <div class="no-overflow"></div>
+      </div>
+    </div>
   </body>
-  <script>
-    const inputBox = document.createElement("textarea");
-    inputBox.setAttribute("lang", "en");
-    inputBox.setAttribute("name", "text");
-
-    inputBox.id = "text";
-    // inputBox.classList.add("update-field");
-    inputBox.setAttribute(
-      "onInput",
-      "this.parentNode.dataset.replicatedValue = this.value"
-    );
-    inputBox.value = "jbhjbhjhbjxPneumonoultramicroscopicsilicovolcanoconiosis";
-
-    const div = document.querySelector("div");
-    div.setAttribute("lang", "en");
-    div.classList.add("grow-wrap");
-    div.appendChild(inputBox);
-    div.dataset.replicatedValue = inputBox.value;
-
-    document.querySelector("p").setAttribute("lang", "en");
-    document.querySelector("button").addEventListener(
-      "click",
-      function () {
-        document.querySelector("p").classList.toggle("ow");
-      },
-      false
-    );
-  </script>
 </html>

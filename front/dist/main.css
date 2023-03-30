@@ -69,7 +69,9 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box !important;
-  font-family: Arial, Helvetica, sans-serif; }
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-wrap: break-word;
+  word-break: break-word; }
 
 .container {
   max-width: 1280px;
@@ -235,7 +237,7 @@ a {
   background: white;
   box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   max-width: calc(100vw - 24px);
-  width: 100%;
+  width: 105%;
   max-height: 90vh;
   padding: 0.3rem;
   display: flex;
@@ -258,20 +260,21 @@ a {
     padding: 10px 0;
     color: #999;
     font-size: 0.8rem; }
-  .overlay-box .grow-wrap {
-    width: 100%;
-    font-size: 1rem;
-    display: grid; }
-  .overlay-box .grow-wrap::after {
+
+.grow-wrap {
+  height: 10px;
+  width: 100% !important;
+  display: grid; }
+  .grow-wrap::after {
     content: attr(data-replicated-value) " ";
-    white-space: pre-wrap;
-    visibility: hidden; }
-  .overlay-box .grow-wrap > textarea {
+    visibility: hidden;
+    white-space: pre-wrap; }
+  .grow-wrap > textarea {
     overflow: hidden; }
-  .overlay-box .grow-wrap > textarea,
-  .overlay-box .grow-wrap::after {
+  .grow-wrap > textarea, .grow-wrap::after {
     border: 1px solid black;
     padding: 0.5rem;
+    font: inherit;
     grid-area: 1 / 1 / 2 / 2; }
 
 .no-wrap {
@@ -400,6 +403,7 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 15px;
+  padding-right: 0rem;
   border-bottom: 1px solid #ddd; }
   td .count {
     border-radius: 5px;

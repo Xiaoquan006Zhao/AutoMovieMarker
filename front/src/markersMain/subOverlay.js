@@ -197,7 +197,7 @@ async function createOverlayField(x, y, data) {
 
   const inputBox = document.createElement("textarea");
   inputBox.setAttribute("name", "text");
-  inputBox.setAttribute("lang", "en");
+  // inputBox.setAttribute("lang", "en");
   inputBox.id = "text";
   inputBox.setAttribute(
     "onInput",
@@ -233,7 +233,7 @@ async function createOverlayField(x, y, data) {
   });
 
   divBox.appendChild(inputBox);
-  divBox.setAttribute("lang", "en");
+  // divBox.setAttribute("lang", "en");
   inputBox.parentNode.dataset.replicatedValue = inputBox.value;
 
   divEventEnable.appendChild(divBox);

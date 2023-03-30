@@ -79,12 +79,12 @@ async function addItemToStorage(item) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name: item }),
+    body: JSON.stringify({ emotion_name: item }),
   });
 
   const data = await response.json();
 
-  return data;
+  return data.insertId;
 }
 
 async function getItemsFromStorage() {

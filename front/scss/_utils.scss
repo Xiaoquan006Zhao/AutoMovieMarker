@@ -5,6 +5,9 @@
   margin: 0;
   box-sizing: border-box !important;
   font-family: Arial, Helvetica, sans-serif;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .container {

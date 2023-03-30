@@ -88,7 +88,7 @@ function createClipRow(
     if (!tr.contains(relatedTarget)) {
       const firstTd = e.currentTarget.firstChild;
       firstTd.removeChild(firstTd.lastChild);
-      tr.removeChild(tr.lastChild);
+      firstTd.removeChild(firstTd.lastChild);
     }
   });
 }
@@ -141,9 +141,11 @@ function createAddDeleteOpenButton(parentClipRow) {
   deleteButton.innerText = "x";
 
   divButtons.append(addButton, deleteButton);
-  parentClipRow.appendChild(divButtons);
+  firstTd.appendChild(divButtons);
 
   const openButton = document.createElement("div");
+  const openWrapper = document.createElement("div");
+  openWrapper.classList.add("open-button-wrapper");
   openButton.classList.add("open-button-style");
   openButton.innerText = "Open";
 
@@ -155,7 +157,8 @@ function createAddDeleteOpenButton(parentClipRow) {
   buttonClickEventDelete(deleteButton);
   buttonClickEventOpen(openButton);
 
-  firstTd.appendChild(openButton);
+  openWrapper.appendChild(openButton);
+  firstTd.appendChild(openWrapper);
 }
 
 function hoverEventsToButton(button) {
@@ -172,6 +175,7 @@ function buttonClickEventAdd(button) {
   hoverEventsToButton(button);
 
   button.addEventListener("click", async (e) => {
+    e.stopPropagation();
     const movie_id = e.currentTarget.closest(".overlay-window").id;
     const tableBody = e.currentTarget.closest("tbody");
     const currentTr = e.currentTarget.closest("tr");
@@ -183,7 +187,7 @@ function buttonClickEventAdd(button) {
       description: "",
       emotion_ids: [],
       emotion_names: [],
-      timecode: "00:00:00",
+      timecode: "00:00:00:00",
     };
     createClipRow(
       clip,
@@ -198,6 +202,7 @@ function buttonClickEventDelete(button) {
   hoverEventsToButton(button);
 
   button.addEventListener("click", async (e) => {
+    e.stopPropagation();
     const tr = e.currentTarget.closest("tr");
     const clip_id = tr.id;
     await DB.deleteClip(clip_id);
