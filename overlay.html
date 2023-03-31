@@ -1,125 +1,151 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Auto Height Textarea</title>
+    <title>Dynamic Button Table</title>
     <style>
-      .grow-wrap {
-        height: 10px;
-        width: 200px;
-        max-width: 200px;
-        display: grid;
-
-        white-space: -moz-pre-wrap; /* Mozilla */
-        white-space: -hp-pre-wrap; /* HP printers */
-        white-space: -o-pre-wrap; /* Opera 7 */
-        white-space: -pre-wrap; /* Opera 4-6 */
-        white-space: pre-wrap; /* CSS 2.1 */
-        white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
-        word-wrap: break-word; /* IE */
-        word-break: break-all;
-
-        -webkit-hyphens: auto;
-        -moz-hyphens: auto;
-        -ms-hyphens: auto;
-        hyphens: auto;
-
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-      }
-      .grow-wrap::after {
-        content: attr(data-replicated-value) " ";
-
-        /* white-space: pre-wrap; */
-
-        visibility: hidden;
-      }
-      .grow-wrap > textarea {
-        width: 200px;
-        max-width: 200px;
-        resize: none;
-
-        overflow: hidden;
-      }
-      .grow-wrap > textarea,
-      .grow-wrap::after {
-        border: 1px solid black;
-        padding: 0.5rem;
-        font: inherit;
-
-        grid-area: 1 / 1 / 2 / 2;
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box !important;
+        font-family: Arial, Helvetica, sans-serif;
       }
 
-      body {
-        padding: 20px;
-        font-size: 20px;
+      th:hover,
+      td:hover {
+        background-color: #42d038;
       }
 
-      h2 {
-        text-align: center;
-        margin-bottom: 14px;
+      .window {
+        width: 80vw;
+        margin: auto;
       }
 
-      p {
-        margin: 0 auto;
-        max-width: 300px;
-        border: solid 2px #ccc;
-        padding: 12px;
+      table {
+        box-sizing: border-box;
+        /* border-collapse: collapse; */
+        border-spacing: 0px;
+        margin: 20px 0px;
+        font-size: 1rem;
+        cursor: default;
+        width: 100%;
+        height: 100%;
       }
 
-      button {
-        display: block;
-        margin: 20px auto;
+      th {
+        max-width: 150px;
+        min-width: 100px;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: bold;
+        border-bottom: 10px solid #000;
+        border-right: 10px solid #000;
       }
 
-      .ow {
-        -webkit-hyphens: auto;
-        -moz-hyphens: auto;
-        -ms-hyphens: auto;
-        hyphens: auto;
+      td {
+        max-width: 150px;
+        min-width: 100px;
+        position: relative;
+        white-space: nowrap;
+        /* overflow: hidden; */
+        text-overflow: ellipsis;
+        padding: 15px;
+        padding-right: 0rem;
+        border-bottom: 10px solid #000;
+        border-right: 10px solid #000;
+      }
 
-        overflow-wrap: break-word;
-        word-wrap: break-word;
+      tr {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .btn-container {
+        position: absolute;
+        left: -10px;
+        top: -1px;
+        display: none;
+      }
+
+      .btn-container button {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        transition: all 0.5s;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+        font-weight: 900;
+
+        border-radius: 5px;
+        font-weight: 400;
+        padding: 0rem;
+        border: 2px solid #000;
       }
     </style>
   </head>
   <body>
-    <h2>overflow-wrap/word-wrap demo</h2>
+    <div class="window">
+      <table>
+        <thead>
+          <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Item 1-1</td>
+            <td>Item 1-2</td>
+            <td>Item 1-3</td>
+          </tr>
 
-    <p>
-      This is the first time I've seen the
-      word&nbsp;Pneumonoultramicroscopicsilicovolcanoconiosis. It's a long one.
-    </p>
+          <tr>
+            <td>Item 2-1</td>
+            <td>Item 2-2</td>
+            <td>Item 2-3</td>
+          </tr>
+          <tr>
+            <td>Item 2-1</td>
+            <td>Item 2-2</td>
+            <td>Item 2-3</td>
+          </tr>
+          <tr>
+            <td>Item 2-1</td>
+            <td>Item 2-2</td>
+            <td>Item 2-3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <button>Toggle Overflow Wrap</button>
+    <script>
+      const tbody = document.querySelector("tbody");
+      const rows = tbody.querySelectorAll("tr");
 
-    <div></div>
+      rows.forEach((row) => {
+        let btn = null;
+        const btnContainer = document.createElement("div");
+        btnContainer.classList.add("btn-container");
+
+        row.addEventListener("mouseover", function () {
+          if (!btn) {
+            btn = document.createElement("button");
+            btn.innerText = "Button";
+            btnContainer.appendChild(btn);
+            row.appendChild(btnContainer);
+          }
+          btnContainer.style.display = "block";
+        });
+
+        row.addEventListener("mouseout", function () {
+          if (btn) {
+            btnContainer.style.display = "none";
+            btnContainer.removeChild(btn);
+            btn = null;
+          }
+        });
+      });
+    </script>
   </body>
-  <script>
-    const inputBox = document.createElement("textarea");
-    inputBox.setAttribute("lang", "en");
-    inputBox.setAttribute("name", "text");
-
-    inputBox.id = "text";
-    // inputBox.classList.add("update-field");
-    inputBox.setAttribute(
-      "onInput",
-      "this.parentNode.dataset.replicatedValue = this.value"
-    );
-    inputBox.value = "jbhjbhjhbjxPneumonoultramicroscopicsilicovolcanoconiosis";
-
-    const div = document.querySelector("div");
-    div.setAttribute("lang", "en");
-    div.classList.add("grow-wrap");
-    div.appendChild(inputBox);
-    div.dataset.replicatedValue = inputBox.value;
-
-    document.querySelector("p").setAttribute("lang", "en");
-    document.querySelector("button").addEventListener(
-      "click",
-      function () {
-        document.querySelector("p").classList.toggle("ow");
-      },
-      false
-    );
-  </script>
 </html>

@@ -66,7 +66,9 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box !important;
-  font-family: Arial, Helvetica, sans-serif; }
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-wrap: break-word;
+  word-break: break-word; }
 
 .container {
   max-width: 1280px;
@@ -258,31 +260,12 @@ a {
 
 .grow-wrap {
   height: 10px;
-  width: 100%;
-  display: grid;
-  white-space: -moz-pre-wrap;
-  /* Mozilla */
-  white-space: -hp-pre-wrap;
-  /* HP printers */
-  white-space: -o-pre-wrap;
-  /* Opera 7 */
-  white-space: -pre-wrap;
-  /* Opera 4-6 */
-  white-space: pre-wrap;
-  /* CSS 2.1 */
-  white-space: pre-line;
-  /* CSS 3 (and 2.1 as well, actually) */
-  word-wrap: break-word;
-  /* IE */
-  word-break: break-all;
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto; }
+  width: 100% !important;
+  display: grid; }
   .grow-wrap::after {
     content: attr(data-replicated-value) " ";
-    white-space: pre-wrap;
-    visibility: hidden; }
+    visibility: hidden;
+    white-space: pre-wrap; }
   .grow-wrap > textarea {
     overflow: hidden; }
   .grow-wrap > textarea, .grow-wrap::after {
@@ -369,6 +352,7 @@ a {
   display: hidden; }
 
 table {
+  border-spacing: 0px;
   margin: 20px 0;
   font-size: 1rem;
   cursor: default;
@@ -379,7 +363,7 @@ th {
   padding: 12px 15px;
   text-align: left;
   font-weight: bold;
-  border-bottom: 2px solid #0a0526; }
+  box-shadow: -3px 0px 0px inset #fff, 0px -2px 0px inset #333; }
 
 .dropDown-emotion {
   width: 100%;
@@ -387,6 +371,11 @@ th {
   display: flex; }
   .dropDown-emotion div {
     padding-left: 8px; }
+
+.test-shrink {
+  position: absolute;
+  top: -1px;
+  left: -10px; }
 
 tr {
   position: relative;
@@ -405,9 +394,9 @@ tr {
       margin-bottom: 2px; }
   tr .open-button-style {
     position: absolute;
-    padding: 3px;
     top: 9px;
-    right: 1px; }
+    right: 1px;
+    padding: 3px; }
 
 td {
   max-width: 150px;
@@ -418,18 +407,11 @@ td {
   text-overflow: ellipsis;
   padding: 15px;
   padding-right: 0rem;
-  border-bottom: 1px solid #ddd; }
+  box-shadow: -3px 0px 0px inset #fff, 0px -1px 0px inset #aaa; }
   td .count {
     border-radius: 5px;
     padding: 0.5rem;
     margin-right: 0.5rem; }
-  td .clips-select {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 200px;
-    padding: 10px;
-    border: 1px solid #ccc; }
 
 th:hover,
 td:hover {

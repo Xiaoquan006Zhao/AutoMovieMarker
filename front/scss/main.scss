@@ -32,9 +32,9 @@
   display: hidden;
 }
 
-// table for emtion and movie
 table {
   // border-collapse: collapse;
+  border-spacing: 0px;
   margin: 20px 0;
   font-size: 1rem;
   cursor: default;
@@ -42,15 +42,15 @@ table {
   height: 100%;
 }
 
-%float-shared {
-  position: absolute;
-}
-
 th {
   padding: 12px 15px;
   text-align: left;
   font-weight: bold;
-  border-bottom: 2px solid $primary-color;
+  // achieves the same visual effects as a bottom and right border
+  // Hack, since border do not work well with two colors and I can not use
+  // border-collapse: seperate; as I will be dynaimcally adding elements to tr
+  // it creates a visual defect
+  box-shadow: -3px 0px 0px inset #fff, 0px -2px 0px inset #333;
 }
 
 .dropDown-emotion {
@@ -61,6 +61,12 @@ th {
   div {
     padding-left: 8px;
   }
+}
+
+.test-shrink {
+  position: absolute;
+  top: -1px;
+  left: -10px;
 }
 
 tr {
@@ -84,12 +90,12 @@ tr {
       margin-bottom: 2px;
     }
   }
-
+  // Child of td element, here because it's together with front-button-wrap ()
   .open-button-style {
     position: absolute;
-    padding: 3px;
     top: 9px;
     right: 1px;
+    padding: 3px;
   }
 }
 
@@ -102,7 +108,7 @@ td {
   text-overflow: ellipsis;
   padding: 15px;
   padding-right: 0rem;
-  border-bottom: 1px solid #ddd;
+  box-shadow: -3px 0px 0px inset #fff, 0px -1px 0px inset #aaa;
 
   .count {
     border-radius: 5px;
@@ -110,14 +116,14 @@ td {
     margin-right: 0.5rem;
   }
 
-  .clips-select {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 200px;
-    padding: 10px;
-    border: 1px solid #ccc;
-  }
+  // .clips-select {
+  //   position: absolute;
+  //   top: 0px;
+  //   left: 0px;
+  //   width: 200px;
+  //   padding: 10px;
+  //   border: 1px solid #ccc;
+  // }
 }
 
 th:hover,
