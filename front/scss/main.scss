@@ -33,6 +33,8 @@
 }
 
 table {
+  white-space: nowrap !important;
+
   // border-collapse: collapse;
   border-spacing: 0px;
   margin: 20px 0;
@@ -103,11 +105,11 @@ td {
   max-width: 150px;
   min-width: 100px;
   position: relative;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 15px;
   padding-right: 0rem;
+  // refer to th for reasons to use box-shadow
   box-shadow: -3px 0px 0px inset #fff, 0px -1px 0px inset #aaa;
 
   .count {
