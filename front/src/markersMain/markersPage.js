@@ -9,6 +9,7 @@ import {
 
 import { handleMovieOverlay, updateMovie } from "./movieOverlay.js";
 import { handleClipOverlay } from "./clipDetailsOverlay.js";
+import { overlayContainer } from "../utils/config.js";
 
 const tableHeaderRow = document.querySelector("#table-header-row");
 const tableBody = document.querySelector("tbody");
@@ -16,6 +17,16 @@ const tableHead = document.querySelector("thead");
 
 let emotions = [];
 let emotionsId = [];
+
+// Global ESC click to close the frontmost overlay
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && overlayContainer.lastChild) {
+    const nextDivBlockTrigger =
+      overlayContainer.lastChild.querySelector(".stop-event");
+
+    nextDivBlockTrigger.click();
+  }
+});
 
 // helper method to create "th" element
 function createHeaderColumns(headers) {

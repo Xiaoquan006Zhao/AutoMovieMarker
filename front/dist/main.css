@@ -69,7 +69,9 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box !important;
-  font-family: Arial, Helvetica, sans-serif; }
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-wrap: break-word;
+  word-break: break-word; }
 
 .container {
   max-width: 1280px;
@@ -235,7 +237,7 @@ a {
   background: white;
   box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   max-width: calc(100vw - 24px);
-  width: 100%;
+  width: 105%;
   max-height: 90vh;
   padding: 0.3rem;
   display: flex;
@@ -258,20 +260,21 @@ a {
     padding: 10px 0;
     color: #999;
     font-size: 0.8rem; }
-  .overlay-box .grow-wrap {
-    width: 100%;
-    font-size: 1rem;
-    display: grid; }
-  .overlay-box .grow-wrap::after {
+
+.grow-wrap {
+  height: 10px;
+  width: 100% !important;
+  display: grid; }
+  .grow-wrap::after {
     content: attr(data-replicated-value) " ";
-    white-space: pre-wrap;
-    visibility: hidden; }
-  .overlay-box .grow-wrap > textarea {
+    visibility: hidden;
+    white-space: pre-wrap; }
+  .grow-wrap > textarea {
     overflow: hidden; }
-  .overlay-box .grow-wrap > textarea,
-  .overlay-box .grow-wrap::after {
+  .grow-wrap > textarea, .grow-wrap::after {
     border: 1px solid black;
     padding: 0.5rem;
+    font: inherit;
     grid-area: 1 / 1 / 2 / 2; }
 
 .no-wrap {
@@ -352,6 +355,8 @@ a {
   display: hidden; }
 
 table {
+  white-space: nowrap !important;
+  border-spacing: 0px;
   margin: 20px 0;
   font-size: 1rem;
   cursor: default;
@@ -362,7 +367,7 @@ th {
   padding: 12px 15px;
   text-align: left;
   font-weight: bold;
-  border-bottom: 2px solid #0a0526; }
+  box-shadow: -3px 0px 0px inset #fff, 0px -2px 0px inset #333; }
 
 .dropDown-emotion {
   width: 100%;
@@ -370,6 +375,11 @@ th {
   display: flex; }
   .dropDown-emotion div {
     padding-left: 8px; }
+
+.test-shrink {
+  position: absolute;
+  top: -1px;
+  left: -10px; }
 
 tr {
   position: relative;
@@ -388,30 +398,23 @@ tr {
       margin-bottom: 2px; }
   tr .open-button-style {
     position: absolute;
-    padding: 3px;
     top: 9px;
-    right: 1px; }
+    right: 1px;
+    padding: 3px; }
 
 td {
   max-width: 150px;
   min-width: 100px;
   position: relative;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 15px;
-  border-bottom: 1px solid #ddd; }
+  padding-right: 0rem;
+  box-shadow: -3px 0px 0px inset #fff, 0px -1px 0px inset #aaa; }
   td .count {
     border-radius: 5px;
     padding: 0.5rem;
     margin-right: 0.5rem; }
-  td .clips-select {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 200px;
-    padding: 10px;
-    border: 1px solid #ccc; }
 
 th:hover,
 td:hover {
