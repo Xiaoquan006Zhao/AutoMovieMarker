@@ -8,7 +8,7 @@ import {
 } from "./generalOverlay.js";
 
 import { updateFieldOverlay } from "./subOverlay.js";
-import { createMovieRow } from "./markersPage.js";
+import { createMovieRow, applyFilters } from "./markersPage.js";
 import { handleClipOverlay } from "./clipDetailsOverlay.js";
 
 export async function handleMovieOverlay(movieId, clicked) {
@@ -23,6 +23,7 @@ export async function updateMovie(updateReference) {
   tableElement.insertBefore(newElement, siblingElement);
 
   updateReference.remove();
+  applyFilters();
 }
 
 async function createOverlayMovie(movieId, clicked) {
@@ -77,7 +78,7 @@ function createClipRow(
   });
 
   BodyTr.addEventListener("mouseenter", (e) => {
-    createAddDeleteOpenButton(BodyTr);
+    createAddDeleteOpenButton(BodyTr, clickAdd, clickDelete, handleClipOverlay);
   });
 
   BodyTr.addEventListener("mouseout", (e) => {
@@ -127,7 +128,12 @@ async function createClipsTable(movieId) {
   return clipsTable;
 }
 
-function createAddDeleteOpenButton(parentClipRow) {
+export function createAddDeleteOpenButton(
+  parentClipRow,
+  addCallback,
+  deleteCallback,
+  openCallback
+) {
   const firstTd = parentClipRow.firstChild;
 
   // float buttons
@@ -151,11 +157,13 @@ function createAddDeleteOpenButton(parentClipRow) {
     button.classList.add("btn-small");
   });
 
-  buttonClickEventAdd(addButton);
-  buttonClickEventDelete(deleteButton);
-  buttonClickEventOpen(openButton);
+  buttonClickEventAdd(addButton, addCallback);
+  buttonClickEventDelete(deleteButton, deleteCallback);
 
-  firstTd.appendChild(openButton);
+  if (openCallback) {
+    buttonClickEventOpen(openButton, openCallback);
+    firstTd.appendChild(openButton);
+  }
 }
 
 function hoverEventsToButton(button) {
@@ -168,45 +176,50 @@ function hoverEventsToButton(button) {
   });
 }
 
-function buttonClickEventAdd(button) {
-  hoverEventsToButton(button);
+// helper function to handle click add button
+async function clickAdd(e) {
+  const movie_id = e.currentTarget.closest(".overlay-window").id;
+  const tableBody = e.currentTarget.closest("tbody");
+  const currentTr = e.currentTarget.closest("tr");
+  const data = await DB.insertClip(movie_id);
 
-  button.addEventListener("click", async (e) => {
-    const movie_id = e.currentTarget.closest(".overlay-window").id;
-    const tableBody = e.currentTarget.closest("tbody");
-    const currentTr = e.currentTarget.closest("tr");
-    const data = await DB.insertClip(movie_id);
-
-    const inserted_id = data.insertId;
-    const clip = {
-      clip_id: inserted_id,
-      description: "",
-      emotion_ids: [],
-      emotion_names: [],
-      timecode: "00:00:00",
-    };
-    createClipRow(
-      clip,
-      ["description", "timecode", "emotions"],
-      tableBody,
-      currentTr
-    );
-  });
+  const inserted_id = data.insertId;
+  const clip = {
+    clip_id: inserted_id,
+    description: "",
+    emotion_ids: [],
+    emotion_names: [],
+    timecode: "00:00:00",
+  };
+  createClipRow(
+    clip,
+    ["description", "timecode", "emotions"],
+    tableBody,
+    currentTr
+  );
 }
 
-function buttonClickEventDelete(button) {
+function buttonClickEventAdd(button, clickCallback) {
   hoverEventsToButton(button);
 
-  button.addEventListener("click", async (e) => {
-    const tr = e.currentTarget.closest("tr");
-    const clip_id = tr.id;
-    await DB.deleteClip(clip_id);
-    tr.remove();
-  });
+  button.addEventListener("click", clickCallback);
 }
 
-function buttonClickEventOpen(button) {
+async function clickDelete(e) {
+  const tr = e.currentTarget.closest("tr");
+  const clip_id = tr.id;
+  await DB.deleteClip(clip_id);
+  tr.remove();
+}
+
+function buttonClickEventDelete(button, clickCallback) {
   hoverEventsToButton(button);
 
-  button.addEventListener("click", handleClipOverlay);
+  button.addEventListener("click", clickCallback);
+}
+
+function buttonClickEventOpen(button, clickCallback) {
+  hoverEventsToButton(button);
+
+  button.addEventListener("click", clickCallback);
 }

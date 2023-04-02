@@ -8,6 +8,10 @@ $dark-color: #00214d;
 $lightgray: lighten(#000, 50%);
 $light-color-transparent: rgba(255, 252, 252, 0.6);
 
+.hidden {
+  visibility: hidden;
+}
+
 .color {
   &-primary {
     color: $primary-color;
@@ -45,6 +49,10 @@ $light-color-transparent: rgba(255, 252, 252, 0.6);
 
   &-secondaryLight {
     @include set-color-and-bg(lighten($secondary-color, 20%));
+  }
+
+  &-red {
+    @include set-color-and-bg(lighten(rgb(219, 79, 79), 20%));
   }
 }
 
