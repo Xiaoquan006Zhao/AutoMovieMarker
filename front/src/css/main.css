@@ -366,9 +366,10 @@ a {
   display: hidden; }
 
 #filters {
-  margin-top: 20px; }
+  margin-top: 20px;
+  margin-bottom: 10px; }
   #filters .table-filter {
-    width: 200px;
+    min-width: 200px;
     padding: 15px;
     position: relative; }
     #filters .table-filter .select-filter {

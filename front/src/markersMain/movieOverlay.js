@@ -8,7 +8,8 @@ import {
 } from "./generalOverlay.js";
 
 import { updateFieldOverlay } from "./subOverlay.js";
-import { createMovieRow, applyFilters } from "./markersPage.js";
+import { createMovieRow } from "./markersPage.js";
+import { applyFilters } from "./filterEmotion";
 import { handleClipOverlay } from "./clipDetailsOverlay.js";
 
 export async function handleMovieOverlay(movieId, clicked) {
@@ -77,8 +78,18 @@ function createClipRow(
     }
   });
 
+  const buttonSetup = [];
+  buttonSetup.push({
+    content: "+",
+    callback: clickAdd,
+  });
+  buttonSetup.push({
+    content: "x",
+    callback: clickDelete,
+  });
+
   BodyTr.addEventListener("mouseenter", (e) => {
-    createAddDeleteOpenButton(BodyTr, clickAdd, clickDelete, handleClipOverlay);
+    createAddDeleteOpenButton(BodyTr, buttonSetup, handleClipOverlay);
   });
 
   BodyTr.addEventListener("mouseout", (e) => {
@@ -130,36 +141,28 @@ async function createClipsTable(movieId) {
 
 export function createAddDeleteOpenButton(
   parentClipRow,
-  addCallback,
-  deleteCallback,
+  buttonSetup,
   openCallback
 ) {
-  const firstTd = parentClipRow.firstChild;
-
   // float buttons
   const divButtons = document.createElement("div");
   divButtons.classList.add("front-button-wrap");
 
-  const addButton = document.createElement("div");
-  addButton.innerText = "+";
+  buttonSetup.forEach((button) => {
+    const addButton = document.createElement("div");
+    addButton.innerText = button.content;
+    divButtons.appendChild(addButton);
+    addButton.classList.add("btn-small");
+    buttonClickEventAdd(addButton, button.callback);
+  });
 
-  const deleteButton = document.createElement("div");
-  deleteButton.innerText = "x";
-
-  divButtons.append(addButton, deleteButton);
   parentClipRow.appendChild(divButtons);
 
   const openButton = document.createElement("div");
   openButton.classList.add("open-button-style");
   openButton.innerText = "Open";
-
-  [addButton, deleteButton, openButton].forEach((button) => {
-    button.classList.add("btn-small");
-  });
-
-  buttonClickEventAdd(addButton, addCallback);
-  buttonClickEventDelete(deleteButton, deleteCallback);
-
+  openButton.classList.add("btn-small");
+  const firstTd = parentClipRow.firstChild;
   if (openCallback) {
     buttonClickEventOpen(openButton, openCallback);
     firstTd.appendChild(openButton);
