@@ -1,4 +1,4 @@
-import { createAddDeleteOpenButton } from "./movieOverlay";
+import { createButtons } from "./generalOverlay";
 import { emotions } from "./markersPage";
 
 const tableFilterRow = document.querySelector("#filters");
@@ -220,7 +220,7 @@ export function addFilter() {
   });
 
   thFilter.addEventListener("mouseenter", (e) => {
-    createAddDeleteOpenButton(thFilter, buttonSetup);
+    createButtons(thFilter, buttonSetup);
   });
 
   thFilter.addEventListener("mouseout", (e) => {

@@ -5,6 +5,7 @@ import {
   handleOverlay,
   createEmotionEmbed,
   createOverlaySection,
+  createButtons,
 } from "./generalOverlay.js";
 
 import { updateFieldOverlay } from "./subOverlay.js";
@@ -89,7 +90,14 @@ function createClipRow(
   });
 
   BodyTr.addEventListener("mouseenter", (e) => {
-    createAddDeleteOpenButton(BodyTr, buttonSetup, handleClipOverlay);
+    createButtons(BodyTr, buttonSetup);
+
+    const openButton = document.createElement("div");
+    openButton.classList.add("open-button-style");
+    openButton.innerText = "Open";
+    openButton.classList.add("btn-small");
+    openButton.addEventListener("click", handleClipOverlay);
+    BodyTr.firstChild.appendChild(openButton);
   });
 
   BodyTr.addEventListener("mouseout", (e) => {
@@ -139,46 +147,6 @@ async function createClipsTable(movieId) {
   return clipsTable;
 }
 
-export function createAddDeleteOpenButton(
-  parentClipRow,
-  buttonSetup,
-  openCallback
-) {
-  // float buttons
-  const divButtons = document.createElement("div");
-  divButtons.classList.add("front-button-wrap");
-
-  buttonSetup.forEach((button) => {
-    const addButton = document.createElement("div");
-    addButton.innerText = button.content;
-    divButtons.appendChild(addButton);
-    addButton.classList.add("btn-small");
-    buttonClickEventAdd(addButton, button.callback);
-  });
-
-  parentClipRow.appendChild(divButtons);
-
-  const openButton = document.createElement("div");
-  openButton.classList.add("open-button-style");
-  openButton.innerText = "Open";
-  openButton.classList.add("btn-small");
-  const firstTd = parentClipRow.firstChild;
-  if (openCallback) {
-    buttonClickEventOpen(openButton, openCallback);
-    firstTd.appendChild(openButton);
-  }
-}
-
-function hoverEventsToButton(button) {
-  button.addEventListener("mouseenter", (e) => {
-    e.currentTarget.classList.add("bg-dark");
-  });
-
-  button.addEventListener("mouseout", (e) => {
-    e.currentTarget.classList.remove("bg-dark");
-  });
-}
-
 // helper function to handle click add button
 async function clickAdd(e) {
   const movie_id = e.currentTarget.closest(".overlay-window").id;
@@ -192,7 +160,7 @@ async function clickAdd(e) {
     description: "",
     emotion_ids: [],
     emotion_names: [],
-    timecode: "00:00:00",
+    timecode: "00:00:00:00",
   };
   createClipRow(
     clip,
@@ -202,27 +170,9 @@ async function clickAdd(e) {
   );
 }
 
-function buttonClickEventAdd(button, clickCallback) {
-  hoverEventsToButton(button);
-
-  button.addEventListener("click", clickCallback);
-}
-
 async function clickDelete(e) {
   const tr = e.currentTarget.closest("tr");
   const clip_id = tr.id;
   await DB.deleteClip(clip_id);
   tr.remove();
-}
-
-function buttonClickEventDelete(button, clickCallback) {
-  hoverEventsToButton(button);
-
-  button.addEventListener("click", clickCallback);
-}
-
-function buttonClickEventOpen(button, clickCallback) {
-  hoverEventsToButton(button);
-
-  button.addEventListener("click", clickCallback);
 }

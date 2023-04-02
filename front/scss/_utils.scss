@@ -63,6 +63,10 @@ a {
     padding: 0rem;
     border: 2px solid $primary-color;
     @include set-color-and-bg($light-color);
+
+    &:hover {
+      @include set-color-and-bg($dark-color);
+    }
   }
 
   &-remove {

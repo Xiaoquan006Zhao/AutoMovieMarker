@@ -120,6 +120,9 @@ a {
   border: 2px solid #0a0526;
   background-color: #fffcfc;
   color: #000; }
+  .btn-small:hover {
+    background-color: #00214d;
+    color: #ddd; }
 
 .btn-remove {
   font-size: 16px;

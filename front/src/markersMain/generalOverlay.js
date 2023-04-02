@@ -105,3 +105,23 @@ export function createOverlayEmbed(text) {
 
   return divWrap;
 }
+
+export function createButtons(parent, buttonSetup) {
+  // float buttons
+  const divButtons = document.createElement("div");
+  divButtons.classList.add("front-button-wrap");
+
+  buttonSetup.forEach((button) => {
+    const addButton = document.createElement("div");
+    addButton.innerText = button.content;
+    divButtons.appendChild(addButton);
+    addButton.classList.add("btn-small");
+    buttonClickEventAdd(addButton, button.callback);
+  });
+
+  parent.appendChild(divButtons);
+}
+
+function buttonClickEventAdd(button, clickCallback) {
+  button.addEventListener("click", clickCallback);
+}

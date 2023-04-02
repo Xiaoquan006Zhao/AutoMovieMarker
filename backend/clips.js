@@ -8,8 +8,8 @@ function getClipDetail(connection, req, callback) {
   clips.image_url, emotions.emotion_id, emotions.emotion_name
   FROM clips
   JOIN movies ON clips.movie_id = movies.movie_id
-  JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id
-  JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id
+  LEFT JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id
+  LEFT JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id
   WHERE clips.clip_id = ?`;
 
   templateQuery(connection, query, [clip_id], callback);
