@@ -97,6 +97,7 @@ export function createOverlayEmbed(text) {
   divDot.id = "dot";
 
   const divText = document.createElement("div");
+  divText.classList.add("emotion-text");
 
   divText.appendChild(document.createTextNode(text));
 

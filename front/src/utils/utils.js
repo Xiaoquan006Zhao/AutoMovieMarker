@@ -36,5 +36,21 @@ export function combineClipEmotion(data) {
     }
   }
 
+  clipsWithEmotions.sort((a, b) => {
+    const aTime = convertTimecodeToSeconds(a.timecode);
+    const bTime = convertTimecodeToSeconds(b.timecode);
+    return aTime - bTime;
+  });
+
   return clipsWithEmotions;
+}
+
+function convertTimecodeToSeconds(timecode) {
+  const parts = timecode.split(":");
+  const hours = parseInt(parts[0]);
+  const minutes = parseInt(parts[1]);
+  const seconds = parseInt(parts[2]);
+  const frames = parseInt(parts[3]);
+  const totalSeconds = hours * 3600 + minutes * 60 + seconds + frames / 30;
+  return totalSeconds;
 }

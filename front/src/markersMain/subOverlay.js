@@ -68,6 +68,38 @@ async function updateEmotion(updateReference) {
   });
 }
 
+function filterOverlayEmotion(filterInput, divLinked, divUnlinked) {
+  filterInput.addEventListener("input", (e) => {
+    const filterValue = e.currentTarget.value.toLowerCase();
+    const linkedEmotionsDivs = divLinked.querySelectorAll(".no-wrap");
+    const unlinkedEmotionsDivs = divUnlinked.querySelectorAll(".no-wrap");
+
+    linkedEmotionsDivs.forEach((div) => {
+      const emotionText = div
+        .querySelector(".emotion-text")
+        .textContent.toLowerCase();
+
+      if (emotionText.includes(filterValue)) {
+        div.style.display = "";
+      } else {
+        div.style.display = "none";
+      }
+    });
+
+    unlinkedEmotionsDivs.forEach((div) => {
+      const emotionText = div
+        .querySelector(".emotion-text")
+        .textContent.toLowerCase();
+
+      if (emotionText.includes(filterValue)) {
+        div.style.display = "";
+      } else {
+        div.style.display = "none";
+      }
+    });
+  });
+}
+
 function createOverlayEmotion(x, y, data) {
   const {
     emotions,
@@ -136,6 +168,9 @@ function createOverlayEmotion(x, y, data) {
   divBox.appendChild(divUnlinked);
 
   divEventEnable.appendChild(divBox);
+
+  filterOverlayEmotion(filterInput, divLinked, divUnlinked);
+  filterInput.focus();
 }
 
 // ------------------------------  handle Emotion ends ------------------------------------------
