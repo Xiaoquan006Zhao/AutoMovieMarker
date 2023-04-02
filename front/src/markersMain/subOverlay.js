@@ -27,8 +27,8 @@ function getClipEmotions(clicked) {
 
 async function LinkEmotion(e, method) {
   // topmost visable overlay container
-  const divBox = e.target.closest(".overlay-box");
-  const clipId = divBox.id;
+  const duvWrapper = e.target.closest(".scroll-wrapper");
+  const clipId = duvWrapper.id;
   // div that contains the information
   const emotionElement = e.target.closest(".no-wrap");
   const emotionId = emotionElement.id;
@@ -37,7 +37,7 @@ async function LinkEmotion(e, method) {
   const anotherEmotionTag =
     method === "POST" ? ".linked-emotion" : ".unlinked-emotion";
 
-  const divAnother = divBox.querySelector(anotherEmotionTag);
+  const divAnother = duvWrapper.querySelector(anotherEmotionTag);
 
   const newdivWrap = createOverlayEmbed(emotionName);
   newdivWrap.id = emotionId;
@@ -121,7 +121,10 @@ function createOverlayEmotion(x, y, data) {
 
   const divBox = document.createElement("div");
   divBox.classList.add("overlay-box");
-  divBox.id = clipId;
+
+  const divWrapper = document.createElement("div");
+  divWrapper.classList.add("scroll-wrapper");
+  divWrapper.id = clipId;
 
   const divFilter = document.createElement("div");
   divFilter.classList.add("filter");
@@ -131,11 +134,11 @@ function createOverlayEmotion(x, y, data) {
   filterInput.setAttribute("placeholder", "Link or create a page");
 
   divFilter.appendChild(filterInput);
-  divBox.appendChild(divFilter);
+  divWrapper.appendChild(divFilter);
 
   const linkedEmotionsLabel = document.createElement("label");
   linkedEmotionsLabel.textContent = "Linked Emotions";
-  divBox.appendChild(linkedEmotionsLabel);
+  divWrapper.appendChild(linkedEmotionsLabel);
 
   const divLinked = document.createElement("div");
   divLinked.classList.add("linked-emotion");
@@ -148,11 +151,11 @@ function createOverlayEmotion(x, y, data) {
 
   divLinked.addEventListener("click", (e) => LinkEmotion(e, "DELETE"));
 
-  divBox.appendChild(divLinked);
+  divWrapper.appendChild(divLinked);
 
   const unlinkedEmotionsLabel = document.createElement("label");
   unlinkedEmotionsLabel.textContent = "Unlinked Emotions";
-  divBox.appendChild(unlinkedEmotionsLabel);
+  divWrapper.appendChild(unlinkedEmotionsLabel);
 
   const divUnlinked = document.createElement("div");
   divUnlinked.classList.add("unlinked-emotion");
@@ -165,7 +168,9 @@ function createOverlayEmotion(x, y, data) {
 
   divUnlinked.addEventListener("click", (e) => LinkEmotion(e, "POST"));
 
-  divBox.appendChild(divUnlinked);
+  divWrapper.appendChild(divUnlinked);
+
+  divBox.appendChild(divWrapper);
 
   divEventEnable.appendChild(divBox);
 

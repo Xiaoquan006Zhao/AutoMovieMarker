@@ -24,9 +24,7 @@ export function createOverlaySection(
   const divPos = document.createElement("div");
   divPos.setAttribute(
     "style",
-    `position: fixed;left: ${x}px;top: ${
-      y - (height ? height : 0)
-    }px;pointer-events: none;`
+    `position: fixed;left: ${x}px;top: ${y}px;pointer-events: none;`
   );
 
   if (height) {
@@ -39,7 +37,7 @@ export function createOverlaySection(
   const divEventEnable = document.createElement("div");
   divEventEnable.setAttribute(
     "style",
-    "position: relative; top: 100%; pointer-events: auto;"
+    "position: relative; top: 0%; pointer-events: auto;"
   );
 
   divPos.appendChild(divEventEnable);
@@ -73,7 +71,7 @@ export async function handleOverlay(
 
   const rect = clicked.getBoundingClientRect();
   // callback_createOverlay(rect.x, rect.y + clicked.clientHeight, data);
-  callback_createOverlay(rect.x, rect.y, data);
+  callback_createOverlay(rect.left, rect.top, data);
 }
 
 export function createEmotionEmbed(clip, parentElement) {
