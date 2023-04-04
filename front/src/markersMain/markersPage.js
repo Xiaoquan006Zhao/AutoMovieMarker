@@ -51,8 +51,12 @@ async function init() {
 
   await createEmotionHeader();
 
-  tableBody.appendChild(await createMovieRow(1));
-  tableBody.appendChild(await createMovieRow(121));
+  const movieIdsRaw = await DB.getAllMovieIds();
+  const movieIds = movieIdsRaw.map((raw) => raw.movie_id);
+
+  movieIds.forEach(async (movieId) => {
+    tableBody.appendChild(await createMovieRow(movieId));
+  });
 
   tableBody.addEventListener("click", handleOverlayBody);
 

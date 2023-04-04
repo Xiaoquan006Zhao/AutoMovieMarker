@@ -160,3 +160,8 @@ export async function updateEmotion(emotionId, value) {
 export async function getEmotionNameFromDB(emotion_id) {
   return await templateFetch(`/emotions/${emotion_id}`, "GET");
 }
+
+// Given a emotion_id, retrive emotion_name
+export async function getAllMovieIds() {
+  return await templateFetch(`/movies`, "GET");
+}

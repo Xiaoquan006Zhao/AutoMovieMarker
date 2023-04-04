@@ -205,6 +205,16 @@ function init() {
       insertText(document.querySelector("#emotion-input"), e.detail.unicode);
     });
 
+  // Global ESC click to close the frontmost overlay
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlayContainer.lastChild) {
+      const nextDivBlockTrigger =
+        overlayContainer.lastChild.querySelector(".stop-event");
+
+      nextDivBlockTrigger.click();
+    }
+  });
+
   resetUI();
 }
 

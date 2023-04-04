@@ -3,7 +3,7 @@ const { formatResults, templateQuery } = require("./utils");
 const movieProperties = ["movie_id", "movie_name"];
 
 function allMovies(connection, req, callback) {
-  const query = "SELECT * from movies";
+  const query = "SELECT movie_id from movies";
   templateQuery(connection, query, null, callback);
 }
 
