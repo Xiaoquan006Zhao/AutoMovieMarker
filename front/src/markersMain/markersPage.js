@@ -52,7 +52,7 @@ async function init() {
   await createEmotionHeader();
 
   tableBody.appendChild(await createMovieRow(1));
-  tableBody.appendChild(await createMovieRow(2));
+  tableBody.appendChild(await createMovieRow(121));
 
   tableBody.addEventListener("click", handleOverlayBody);
 
