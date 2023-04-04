@@ -121,3 +121,42 @@ export async function updateClipField(clipId, field, value) {
 export async function getClipField(clipId, field) {
   return await templateFetch(`/clips/${clipId}/field/${field}`, "GET");
 }
+
+export async function insertEmotion(emotionName) {
+  const response = await fetch(`${baseurl}/emotions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ emotion_name: emotionName }),
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function deleteEmotion(emotionId) {
+  return await templateFetch(`/emotions/${emotionId}`, "DELETE");
+}
+
+export async function updateEmotion(emotionId, value) {
+  const response = await fetch(`${baseurl}/emotions/${emotionId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      emotion_name: value,
+    }),
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+// Given a emotion_id, retrive emotion_name
+export async function getEmotionNameFromDB(emotion_id) {
+  return await templateFetch(`/emotions/${emotion_id}`, "GET");
+}

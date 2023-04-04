@@ -53,11 +53,14 @@ handleRequest(GET, "/emotions", EMOTION.allEmotions);
 handleRequest(PUT, "/emotions/:emotion_id", EMOTION.updateEmotion);
 handleRequest(DELETE, "/emotions/:emotion_id", EMOTION.deleteEmotion);
 handleRequest(GET, "/emotions-clip/:clip_id", CLIP.allEmotionsInClip);
+handleRequest(GET, "/emotions/:emotion_id", EMOTION.getEmotionById);
+
 handleRequest(POST, "/movies", MOVIE.insertMovie);
 handleRequest(GET, "/movies/:movie_id", MOVIE.getMovieById);
 handleRequest(GET, "/movies", MOVIE.allMovies);
 handleRequest(PUT, "/movies/:movie_id", MOVIE.updateMovie);
 handleRequest(DELETE, "/movies/:movie_id", MOVIE.deleteMovie);
+
 handleRequest(GET, "/clip/:clip_id", CLIP.getClipDetail);
 handleRequest(POST, "/clips/:movie_id", CLIP.insertClip);
 handleRequest(GET, "/clips/:clip_id/field/:field", CLIP.getClipField);

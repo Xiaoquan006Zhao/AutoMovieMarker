@@ -2,6 +2,12 @@ const { formatResults, templateQuery } = require("./utils");
 
 const emotionProperties = ["emotion_id", "emotion_name"];
 
+function getEmotionById(connection, req, callback) {
+  const { emotion_id } = req.params;
+  const query = "SELECT emotion_name from emotions where emotion_id = ?";
+  templateQuery(connection, query, [emotion_id], callback);
+}
+
 function allEmotions(connection, req, callback) {
   const query = "SELECT * from emotions";
   templateQuery(connection, query, null, callback);
@@ -37,4 +43,10 @@ function deleteEmotion(connection, req, callback) {
   templateQuery(connection, queryDeleteEmotion, [emotion_id], callback);
 }
 
-module.exports = { insertEmotion, updateEmotion, allEmotions, deleteEmotion };
+module.exports = {
+  insertEmotion,
+  updateEmotion,
+  allEmotions,
+  deleteEmotion,
+  getEmotionById,
+};

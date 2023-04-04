@@ -6,7 +6,7 @@ module.exports = {
   mode: "development",
   entry: {
     markersMain: "./src/markersMain/markersPage.js",
-    emotionsList: "./src/emotionsList.js",
+    emotionsList: "./src/emotionList/emotionsList.js",
     main: "./src/main.js",
   },
   output: {
