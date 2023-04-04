@@ -1,19 +1,20 @@
 #item-form {
   padding: 10px;
-  border-bottom: 1px solid #ccc;
 }
 
-/* Form & Input */
-.form-input {
-  font-size: 18px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
+#emotion-input-submit {
+  display: flex;
+  align-items: center;
+  justify-content: left;
 
-  &:focus {
-    border: 2px solid $secondary-color;
-    padding: 9px;
+  input {
+    border: none;
+    outline: none;
+    border-bottom: 3px solid $primary_color;
+    padding-bottom: 7px;
+    font-size: 1rem;
+    width: 170px;
+    margin: 10px;
   }
 }
 

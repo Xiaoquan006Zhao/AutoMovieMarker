@@ -83,6 +83,11 @@
   margin: auto;
   overflow: hidden; }
 
+.divider {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #0a0526; }
+
 a {
   text-decoration: none; }
 
@@ -319,19 +324,20 @@ a {
   background-color: #aaa; }
 
 #item-form {
-  padding: 10px;
-  border-bottom: 1px solid #ccc; }
+  padding: 10px; }
 
-/* Form & Input */
-.form-input {
-  font-size: 18px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none; }
-  .form-input:focus {
-    border: 2px solid #ee8753;
-    padding: 9px; }
+#emotion-input-submit {
+  display: flex;
+  align-items: center;
+  justify-content: left; }
+  #emotion-input-submit input {
+    border: none;
+    outline: none;
+    border-bottom: 3px solid #0a0526;
+    padding-bottom: 7px;
+    font-size: 1rem;
+    width: 170px;
+    margin: 10px; }
 
 /* Items */
 .items {

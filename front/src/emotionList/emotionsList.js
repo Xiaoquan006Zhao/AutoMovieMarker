@@ -4,6 +4,7 @@ import {
 } from "../markersMain/generalOverlay";
 
 import { overlayContainer } from "../utils/config";
+import insertText from "insert-text-at-cursor";
 
 import {
   updateEmotion,
@@ -13,18 +14,9 @@ import {
   getEmotionNameFromDB,
 } from "../utils/accessDB";
 
-const itemForm = document.querySelector("#item-form");
-const itemInput = document.getElementById("item-input");
+const submitButton = document.querySelector("Button");
+const emotionInput = document.getElementById("emotion-input");
 const itemList = document.getElementById("item-list");
-
-tinymce.init({
-  selector: "#item-input",
-  plugins: "emoticons",
-  toolbar: "emoticons",
-  height: 150,
-  width: "100%",
-  menubar: false,
-});
 
 async function displayItems() {
   const records = await getEmotionsFromDB();
@@ -37,9 +29,7 @@ async function displayItems() {
 }
 
 async function onAddItemSubmit(e) {
-  e.preventDefault();
-
-  const newEmotion = tinymce.get("item-input").getContent({ format: "text" });
+  const newEmotion = emotionInput.value;
 
   // Validate Input
   if (newEmotion === "") {
@@ -47,7 +37,6 @@ async function onAddItemSubmit(e) {
     return;
   }
 
-  // Add item to storage
   const insertResponse = await insertEmotion(newEmotion);
   const emotionId = await insertResponse.insertId;
 
@@ -55,8 +44,6 @@ async function onAddItemSubmit(e) {
   addItemToDOM(newEmotion, emotionId);
 
   resetUI();
-
-  itemInput.value = "";
 }
 
 // helper method to create the emotion card
@@ -91,6 +78,8 @@ function addItemToDOM(item, itemId) {
   itemList.appendChild(li);
 }
 
+// ---------------------------------   Overlay starts   ----------------------------------------------
+
 function getEmotionLi(clicked) {
   const emotion_name = clicked.firstChild.textContent;
   const emotion_id = clicked.id;
@@ -106,41 +95,60 @@ async function updateEmotionLi(updateReference) {
   updateReference.firstChild.textContent = newName[0].emotion_name;
 }
 
+function createEmojiPicker(emotion_name) {
+  const divWrapper = document.createElement("div");
+
+  // create the parent div element
+  const emotionInputSubmit = document.createElement("div");
+  emotionInputSubmit.setAttribute("id", "emotion-input-submit");
+
+  // create the label element
+  const label = document.createElement("label");
+
+  // create the input element and set its attributes
+  const input = document.createElement("input");
+  input.setAttribute("id", "emotion-input");
+  input.setAttribute("type", "text");
+  input.setAttribute("placeholder", "Type here");
+
+  input.value = emotion_name;
+
+  // append the input element to the label element
+  label.appendChild(input);
+
+  // append the label and button elements to the parent div element
+  emotionInputSubmit.appendChild(label);
+
+  // create the emoji-picker element
+  const emojiPicker = document.createElement("emoji-picker");
+
+  emojiPicker.addEventListener("emoji-click", (e) => {
+    insertText(input, e.detail.unicode);
+  });
+
+  divWrapper.append(emotionInputSubmit, emojiPicker);
+
+  return { divWrapper, input };
+}
+
 function createOverlayEmotionUpdate(x, y, data) {
   const { emotion_name, emotion_id, clicked } = data;
 
   const divEventEnable = createOverlaySection(
     updateEmotionLi,
     clicked,
-    x,
-    y,
-    200,
-    300
+    x < window.innerWidth / 2 - window.scrollX ? x + 150 : x - 345,
+    y - 250,
+    500,
+    345
   );
 
   const divBox = document.createElement("div");
   divBox.classList.add("overlay-box");
 
-  const form = document.createElement("form");
-  form.setAttribute("id", "emotion-form");
+  divBox.style.maxHeight = "100%";
 
-  const input = document.createElement("input");
-  input.setAttribute("type", "text");
-  input.setAttribute("class", "form-input");
-  input.setAttribute("id", "emotion-input");
-  input.setAttribute("name", "item");
-  input.setAttribute("placeholder", "Enter Emotion Category");
-  input.value = emotion_name;
-  form.appendChild(input);
-
-  tinymce.init({
-    selector: "#emotion-input",
-    plugins: "emoticons",
-    toolbar: "emoticons",
-    height: 150,
-    width: "100%",
-    menubar: false,
-  });
+  const { divWrapper, input } = createEmojiPicker(emotion_name);
 
   input.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
@@ -155,11 +163,11 @@ function createOverlayEmotionUpdate(x, y, data) {
     }
   });
 
-  divBox.appendChild(form);
-  divBox.setAttribute("lang", "en");
-
+  divBox.appendChild(divWrapper);
   divEventEnable.appendChild(divBox);
   input.focus();
+  input.selectionStart = 0;
+  input.selectionEnd = 0;
 }
 
 function onClickItem(e) {
@@ -167,7 +175,6 @@ function onClickItem(e) {
     removeItem(e.target.parentElement.parentElement);
   } else if (e.target.closest(".dropDown-enable")) {
     const li = e.target.closest(".dropDown-enable");
-    console.log(li.firstChild.textContent);
 
     handleOverlay(e, getEmotionLi, null, createOverlayEmotionUpdate);
   }
@@ -182,16 +189,21 @@ function removeItem(item) {
 }
 
 function resetUI() {
-  itemInput.value = "";
-  tinyMCE.activeEditor.setContent("");
+  emotionInput.value = "";
 }
 
 // Initialize app
 function init() {
   // Event Listeners
-  itemForm.addEventListener("submit", onAddItemSubmit);
+  submitButton.addEventListener("click", onAddItemSubmit);
   itemList.addEventListener("click", onClickItem);
   document.addEventListener("DOMContentLoaded", displayItems);
+
+  document
+    .querySelector("emoji-picker")
+    .addEventListener("emoji-click", (e) => {
+      insertText(document.querySelector("#emotion-input"), e.detail.unicode);
+    });
 
   resetUI();
 }

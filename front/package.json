@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "emoji-picker-element": "^1.16.0",
+    "insert-text-at-cursor": "^0.3.0",
     "mysql": "^2.18.1",
     "node-sass": "^8.0.0",
     "webpack-merge": "^5.8.0"
