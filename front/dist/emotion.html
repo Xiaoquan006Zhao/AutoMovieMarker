@@ -38,38 +38,22 @@
     <section class="container my-2">
       <section class="input-analysis-wrapper">
         <div id="emotion-input-submit">
-          <label>
-            <input id="emotion-input" type="text" placeholder="Type here" />
-          </label>
-          <button type="submit" class="btn-primary my-1">
+          <input id="emotion-input" type="text" placeholder="Type here" />
+          <button id="add-emotion-button" class="btn-primary">
             <i class="fa-solid fa-plus"></i> Add Emotion
+          </button>
+        </div>
+
+        <div class="add-category-wrapper">
+          <input id="category-input" type="text" placeholder="Type here" />
+          <button id="add-category-button" class="btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Category
           </button>
         </div>
 
         <emoji-picker></emoji-picker>
 
-        <div class="categories">
-          <button type="submit" class="btn-primary my-1">
-            <i class="fa-solid fa-plus"></i> Add Category
-          </button>
-
-          <div id="category-1" class="category">
-            <h2>Category 1</h2>
-            <ul class="items">
-              <li draggable="true">Item 1</li>
-              <li draggable="true">Item 2</li>
-              <li draggable="true">Item 3</li>
-            </ul>
-          </div>
-          <div id="category-2" class="category">
-            <h2>Category 2</h2>
-            <ul class="items">
-              <li draggable="true">Item 4</li>
-              <li draggable="true">Item 5</li>
-              <li draggable="true">Item 6</li>
-            </ul>
-          </div>
-        </div>
+        <div class="categories"></div>
       </section>
 
       <div class="divider"></div>

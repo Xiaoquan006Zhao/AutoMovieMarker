@@ -19,11 +19,18 @@ function insertEmotion(connection, req, callback) {
   templateQuery(connection, query, [emotion_name], callback);
 }
 
-function updateEmotion(connection, req, callback) {
+function updateEmotionName(connection, req, callback) {
   const { emotion_id } = req.params;
   const { emotion_name } = req.body;
   const query = "UPDATE emotions SET emotion_name = ? WHERE emotion_id = ?";
   templateQuery(connection, query, [emotion_name, emotion_id], callback);
+}
+
+function updateEmotionCategory(connection, req, callback) {
+  const { emotion_id } = req.params;
+  const { category } = req.body;
+  const query = "UPDATE emotions SET category = ? WHERE emotion_id = ?";
+  templateQuery(connection, query, [category, emotion_id], callback);
 }
 
 function deleteEmotion(connection, req, callback) {
@@ -45,7 +52,8 @@ function deleteEmotion(connection, req, callback) {
 
 module.exports = {
   insertEmotion,
-  updateEmotion,
+  updateEmotionName,
+  updateEmotionCategory,
   allEmotions,
   deleteEmotion,
   getEmotionById,

@@ -140,14 +140,30 @@ export async function deleteEmotion(emotionId) {
   return await templateFetch(`/emotions/${emotionId}`, "DELETE");
 }
 
-export async function updateEmotion(emotionId, value) {
-  const response = await fetch(`${baseurl}/emotions/${emotionId}`, {
+export async function updateEmotionName(emotionId, value) {
+  const response = await fetch(`${baseurl}/emotions-name/${emotionId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       emotion_name: value,
+    }),
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function updateEmotionCategory(emotionId, value) {
+  const response = await fetch(`${baseurl}/emotions-category/${emotionId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      category: value,
     }),
   });
 

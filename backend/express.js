@@ -50,7 +50,13 @@ function handleRequest(method, endpoint, callback) {
 
 handleRequest(POST, "/emotions", EMOTION.insertEmotion);
 handleRequest(GET, "/emotions", EMOTION.allEmotions);
-handleRequest(PUT, "/emotions/:emotion_id", EMOTION.updateEmotion);
+handleRequest(PUT, "/emotions-name/:emotion_id", EMOTION.updateEmotionName);
+handleRequest(
+  PUT,
+  "/emotions-category/:emotion_id",
+  EMOTION.updateEmotionCategory
+);
+
 handleRequest(DELETE, "/emotions/:emotion_id", EMOTION.deleteEmotion);
 handleRequest(GET, "/emotions-clip/:clip_id", CLIP.allEmotionsInClip);
 handleRequest(GET, "/emotions/:emotion_id", EMOTION.getEmotionById);

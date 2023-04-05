@@ -54,3 +54,12 @@ function convertTimecodeToSeconds(timecode) {
   const totalSeconds = hours * 3600 + minutes * 60 + seconds + frames / 30;
   return totalSeconds;
 }
+
+export function validateInputText(inputText, inputElement) {
+  if (inputText === "") {
+    inputElement.value = "";
+    alert("Please add an item");
+    return false;
+  }
+  return true;
+}

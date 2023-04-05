@@ -6,17 +6,19 @@ import {
 import { overlayContainer } from "../utils/config";
 import insertText from "insert-text-at-cursor";
 
-import * as dragDrop from "./dragAndDropCategory";
+import { createDraggable } from "./dragAndDropCategory";
 
 import {
-  updateEmotion,
+  updateEmotionName,
   insertEmotion,
   deleteEmotion,
   getEmotionsFromDB,
   getEmotionNameFromDB,
 } from "../utils/accessDB";
 
-const submitButton = document.querySelector("Button");
+import { validateInputText } from "../utils/utils";
+
+const addEmotionButton = document.querySelector("#add-emotion-button");
 const emotionInput = document.getElementById("emotion-input");
 const itemList = document.getElementById("item-list");
 
@@ -25,6 +27,7 @@ async function displayItems() {
 
   records.forEach((record) => {
     addItemToDOM(record.emotion_name, record.emotion_id);
+    createDraggable(record.emotion_name, record.emotion_id, record.category);
   });
 
   resetUI();
@@ -33,10 +36,7 @@ async function displayItems() {
 async function onAddItemSubmit(e) {
   const newEmotion = emotionInput.value.trim();
 
-  // Validate Input
-  if (newEmotion === "") {
-    emotionInput.value = "";
-    alert("Please add an item");
+  if (!validateInputText(newEmotion, emotionInput)) {
     return;
   }
 
@@ -105,9 +105,6 @@ function createEmojiPicker(emotion_name) {
   const emotionInputSubmit = document.createElement("div");
   emotionInputSubmit.setAttribute("id", "emotion-input-submit");
 
-  // create the label element
-  const label = document.createElement("label");
-
   // create the input element and set its attributes
   const input = document.createElement("input");
   input.setAttribute("id", "emotion-input");
@@ -116,11 +113,8 @@ function createEmojiPicker(emotion_name) {
 
   input.value = emotion_name;
 
-  // append the input element to the label element
-  label.appendChild(input);
-
   // append the label and button elements to the parent div element
-  emotionInputSubmit.appendChild(label);
+  emotionInputSubmit.appendChild(input);
 
   // create the emoji-picker element
   const emojiPicker = document.createElement("emoji-picker");
@@ -157,7 +151,7 @@ function createOverlayEmotionUpdate(x, y, data) {
     if (e.key === "Enter") {
       e.preventDefault();
 
-      await updateEmotion(emotion_id, input.value);
+      await updateEmotionName(emotion_id, input.value);
 
       // use enter to trigger click event, as if I have clicked out of overlay
       const nextDivBlockTrigger =
@@ -198,7 +192,7 @@ function resetUI() {
 // Initialize app
 function init() {
   // Event Listeners
-  submitButton.addEventListener("click", onAddItemSubmit);
+  addEmotionButton.addEventListener("click", onAddItemSubmit);
   itemList.addEventListener("click", onClickItem);
   document.addEventListener("DOMContentLoaded", displayItems);
 
