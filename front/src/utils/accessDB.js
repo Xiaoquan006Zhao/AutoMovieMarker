@@ -165,3 +165,19 @@ export async function getEmotionNameFromDB(emotion_id) {
 export async function getAllMovieIds() {
   return await templateFetch(`/movies`, "GET");
 }
+
+export async function updateMovieName(movieId, value) {
+  const response = await fetch(`${baseurl}/movies/${movieId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      movie_name: value,
+    }),
+  });
+
+  const data = await response.json();
+
+  return data;
+}

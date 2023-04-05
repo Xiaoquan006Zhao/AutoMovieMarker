@@ -8,7 +8,7 @@ import {
   createButtons,
 } from "./generalOverlay.js";
 
-import { updateFieldOverlay } from "./subOverlay.js";
+import { updateFieldOverlay, updateMovietitleOverlay } from "./subOverlay.js";
 import { createMovieRow } from "./markersPage.js";
 import { applyFilters } from "./filterEmotion";
 import { handleClipOverlay } from "./clipDetailsOverlay.js";
@@ -39,6 +39,10 @@ async function createOverlayMovie(movieId, clicked) {
 
   const title = document.createElement("h1");
   title.appendChild(document.createTextNode(movieName[0].movie_name));
+  title.classList.add("dropDown-enable");
+  title.classList.add("dropDown-text");
+
+  title.addEventListener("click", updateMovietitleOverlay);
 
   divWindow.appendChild(title);
 

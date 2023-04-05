@@ -292,3 +292,72 @@ export function updateFieldOverlay(e) {
     handleOverlay(e, getClipField, null, createOverlayField);
   }
 }
+
+// ------------------------------------------  Update Movie Title   --------------------------------------
+
+function getMovieName(clicked) {
+  const movie_id = clicked.closest(".overlay-window").id;
+  const movieName = clicked.textContent;
+  console.log(movie_id);
+  console.log(movieName);
+
+  return { movie_id, movieName, clicked };
+}
+
+async function updateMovieTitle(updateReference) {
+  const movie_id = updateReference.closest(".overlay-window").id;
+
+  const movieName = await DB.getMovieNameFromDB(movie_id);
+  updateReference.textContent = movieName[0].movie_name;
+}
+
+function createUpdateMovieTitleOverlay(x, y, data) {
+  const { movie_id, movieName, clicked } = data;
+
+  const divEventEnable = createOverlaySection(
+    updateMovieTitle,
+    clicked,
+    x,
+    y,
+    clicked.offsetHeight,
+    clicked.offsetWidth
+  );
+
+  const divBox = document.createElement("div");
+  divBox.classList.add("overlay-box");
+  divBox.classList.add("grow-wrap");
+
+  const inputBox = document.createElement("textarea");
+  inputBox.setAttribute("name", "text");
+  inputBox.setAttribute("lang", "en");
+  inputBox.id = "text";
+  inputBox.setAttribute(
+    "onInput",
+    "this.parentNode.dataset.replicatedValue = this.value"
+  );
+  inputBox.value = movieName;
+
+  inputBox.addEventListener("keydown", async (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      await DB.updateMovieName(movie_id, inputBox.value);
+
+      // use enter to trigger click event, as if I have clicked out of overlay
+      const nextDivBlockTrigger =
+        overlayContainer.lastChild.querySelector(".stop-event");
+      nextDivBlockTrigger.click();
+    }
+  });
+
+  divBox.appendChild(inputBox);
+  divBox.setAttribute("lang", "en");
+  inputBox.parentNode.dataset.replicatedValue = inputBox.value;
+
+  divEventEnable.appendChild(divBox);
+  inputBox.focus();
+}
+
+export function updateMovietitleOverlay(e) {
+  handleOverlay(e, getMovieName, null, createUpdateMovieTitleOverlay);
+}
