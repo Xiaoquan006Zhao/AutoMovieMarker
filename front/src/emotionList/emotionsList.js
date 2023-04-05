@@ -6,6 +6,8 @@ import {
 import { overlayContainer } from "../utils/config";
 import insertText from "insert-text-at-cursor";
 
+import * as dragDrop from "./dragAndDropCategory";
+
 import {
   updateEmotion,
   insertEmotion,
@@ -29,10 +31,11 @@ async function displayItems() {
 }
 
 async function onAddItemSubmit(e) {
-  const newEmotion = emotionInput.value;
+  const newEmotion = emotionInput.value.trim();
 
   // Validate Input
   if (newEmotion === "") {
+    emotionInput.value = "";
     alert("Please add an item");
     return;
   }
