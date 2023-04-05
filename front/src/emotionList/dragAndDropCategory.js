@@ -4,6 +4,7 @@ import { updateEmotionCategory } from "../utils/accessDB";
 const addCategoryButton = document.querySelector("#add-category-button");
 const categoryInput = document.getElementById("category-input");
 let draggedItem = null;
+let enterCount = 0;
 
 function init() {
   addCategoryButton.addEventListener("click", (e) => {
@@ -52,7 +53,8 @@ function addDragAndDrop(category) {
     const relatedTarget = e.relatedTarget;
 
     if (!categoryElement.contains(relatedTarget)) {
-      e.target.classList.remove("dropzone");
+      e.currentTarget.classList.remove("dropzone");
+      return;
     }
   });
 
