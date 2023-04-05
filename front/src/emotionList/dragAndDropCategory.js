@@ -1,26 +1,14 @@
 import { validateInputText } from "../utils/utils";
-
-const items = document.querySelectorAll(".items li");
-const categories = document.querySelectorAll(".category");
+import { updateEmotionCategory } from "../utils/accessDB";
 
 const addCategoryButton = document.querySelector("#add-category-button");
 const categoryInput = document.getElementById("category-input");
-
-addCategoryButton.addEventListener("click", (e) => {
-  createCategory();
-});
-
-import { updateEmotionCategory } from "../utils/accessDB";
-
 let draggedItem = null;
 
 function init() {
-  //   items.forEach((item) => {
-  //     item.addEventListener("dragstart", addDragToLi);
-  //   });
-  //   categories.forEach((category) => {
-  //     addDragAndDrop(category);
-  //   });
+  addCategoryButton.addEventListener("click", (e) => {
+    createCategory();
+  });
 }
 
 function addDragToLi(e) {
@@ -29,6 +17,24 @@ function addDragToLi(e) {
   category.classList.add("dropzone");
 }
 
+export function createDraggable(emotion_name, emotion_id, emotion_category) {
+  const li = document.createElement("li");
+  li.setAttribute("draggable", true);
+  li.id = emotion_id;
+  li.appendChild(document.createTextNode(emotion_name));
+
+  li.addEventListener("dragstart", addDragToLi);
+
+  let categoryElement = document.querySelector(`#${emotion_category}`);
+
+  if (!categoryElement) {
+    categoryElement = createCategory(emotion_category);
+  }
+
+  categoryElement.querySelector("ul").appendChild(li);
+}
+
+// helper method to add eventlisteners for category
 function addDragAndDrop(category) {
   category.addEventListener("dragenter", (e) => {
     const category = e.target.closest(".category");
@@ -62,23 +68,6 @@ function addDragAndDrop(category) {
       await updateEmotionCategory(draggedItem.id, newCategory);
     }
   });
-}
-
-export function createDraggable(emotion_name, emotion_id, emotion_category) {
-  const li = document.createElement("li");
-  li.setAttribute("draggable", true);
-  li.id = emotion_id;
-  li.appendChild(document.createTextNode(emotion_name));
-
-  li.addEventListener("dragstart", addDragToLi);
-
-  let categoryElement = document.querySelector(`#${emotion_category}`);
-
-  if (!categoryElement) {
-    categoryElement = createCategory(emotion_category);
-  }
-
-  categoryElement.querySelector("ul").appendChild(li);
 }
 
 function createCategory(categoryText) {
