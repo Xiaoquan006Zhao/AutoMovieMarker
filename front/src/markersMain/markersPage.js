@@ -7,7 +7,7 @@ import {
   createOverlaySection,
 } from "./generalOverlay.js";
 
-import { handleMovieOverlay, updateMovie } from "./movieOverlay.js";
+import { createOverlayMovie, updateMovie } from "./movieOverlay.js";
 import { handleClipOverlay } from "./clipDetailsOverlay.js";
 import { overlayContainer } from "../utils/config.js";
 import { addFilter, resetFilter } from "./filterEmotion";
@@ -175,7 +175,7 @@ async function handleOverlayBody(e) {
   if (e.target.classList.contains("movie-title")) {
     const movieId = e.target.parentElement.id;
     // passing the entire row as update reference
-    handleMovieOverlay(movieId, e.target.parentElement);
+    createOverlayMovie(movieId, e.target.parentElement);
   } else {
     handleOverlay(
       e,

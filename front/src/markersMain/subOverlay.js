@@ -1,5 +1,6 @@
 import * as DB from "../utils/accessDB.js";
 import { overlayContainer } from "../utils/config.js";
+import * as utils from "../utils/utils.js";
 
 import {
   handleOverlay,
@@ -25,7 +26,7 @@ function getClipEmotions(clicked) {
   return { emotions, emotionIds, clipId, clicked };
 }
 
-async function LinkEmotion(e, method) {
+async function LinkEmotion(e, method, updateReference) {
   // topmost visable overlay container
   const duvWrapper = e.target.closest(".scroll-wrapper");
   const clipId = duvWrapper.id;
@@ -47,25 +48,28 @@ async function LinkEmotion(e, method) {
   emotionElement.remove();
 
   DB.updateClipEmotionLink(clipId, emotionId, method);
+  utils.update(updateReference);
 }
 
 async function updateEmotion(updateReference) {
-  let tempId = updateReference.parentElement.id;
-  const clip_id = tempId ? tempId : updateReference.closest("tr").id;
+  if (utils.isUpdated(updateReference)) {
+    let tempId = updateReference.parentElement.id;
+    const clip_id = tempId ? tempId : updateReference.closest("tr").id;
 
-  const emotions = await DB.getEmotionInClipFromDB(clip_id);
+    const emotions = await DB.getEmotionInClipFromDB(clip_id);
 
-  while (updateReference.firstChild) {
-    updateReference.removeChild(updateReference.firstChild);
+    while (updateReference.firstChild) {
+      updateReference.removeChild(updateReference.firstChild);
+    }
+
+    emotions.forEach((emotion) => {
+      const divEmotion = document.createElement("div");
+      divEmotion.id = emotion.emotion_id;
+      divEmotion.appendChild(document.createTextNode(emotion.emotion_name));
+
+      updateReference.appendChild(divEmotion);
+    });
   }
-
-  emotions.forEach((emotion) => {
-    const divEmotion = document.createElement("div");
-    divEmotion.id = emotion.emotion_id;
-    divEmotion.appendChild(document.createTextNode(emotion.emotion_name));
-
-    updateReference.appendChild(divEmotion);
-  });
 }
 
 function filterOverlayEmotion(filterInput, divLinked, divUnlinked) {
@@ -149,7 +153,7 @@ function createOverlayEmotion(x, y, data) {
     divLinked.appendChild(newdivWrap);
   });
 
-  divLinked.addEventListener("click", (e) => LinkEmotion(e, "DELETE"));
+  divLinked.addEventListener("click", (e) => LinkEmotion(e, "DELETE", clicked));
 
   divWrapper.appendChild(divLinked);
 
@@ -166,7 +170,7 @@ function createOverlayEmotion(x, y, data) {
     divUnlinked.appendChild(newdivWrap);
   });
 
-  divUnlinked.addEventListener("click", (e) => LinkEmotion(e, "POST"));
+  divUnlinked.addEventListener("click", (e) => LinkEmotion(e, "POST", clicked));
 
   divWrapper.appendChild(divUnlinked);
 
@@ -209,12 +213,12 @@ function getClipField(clicked) {
 }
 
 async function updateField(updateReference) {
-  const clip_id = updateReference.parentElement.id;
-
-  const fieldName = findFieldName(updateReference);
-
-  const updated = await DB.getClipField(clip_id, fieldName);
-  updateReference.firstChild.textContent = updated[0][fieldName];
+  if (utils.isUpdated(updateReference)) {
+    const clip_id = updateReference.parentElement.id;
+    const fieldName = findFieldName(updateReference);
+    const updatedName = await DB.getClipField(clip_id, fieldName);
+    updateReference.firstChild.textContent = updatedName[0][fieldName];
+  }
 }
 
 async function createOverlayField(x, y, data) {
@@ -248,27 +252,30 @@ async function createOverlayField(x, y, data) {
   inputBox.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (fieldName === "timecode") {
-        // Define the regular expression pattern
-        const pattern =
-          /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]):\d+$/;
+      if (utils.validateInputText(inputBox.value, inputBox)) {
+        if (fieldName === "timecode") {
+          // Define the regular expression pattern
+          const pattern =
+            /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]):\d+$/;
 
-        // Test the string against the pattern
-        const isMatching = pattern.test(inputBox.value);
+          // Test the string against the pattern
+          const isMatching = pattern.test(inputBox.value);
 
-        if (!isMatching) {
-          alert(
-            "Timecode is not of right format. \nExpect: hour:minute:second:frames"
-          );
-          return;
+          if (!isMatching) {
+            alert(
+              "Timecode is not of right format. \nExpect: hour:minute:second:frames"
+            );
+            return;
+          }
         }
-      }
-      await DB.updateClipField(clip_id, fieldName, inputBox.value);
+        await DB.updateClipField(clip_id, fieldName, inputBox.value);
+        utils.update(clicked);
 
-      // use enter to trigger click event, as if I have clicked out of overlay
-      const nextDivBlockTrigger =
-        overlayContainer.lastChild.querySelector(".stop-event");
-      nextDivBlockTrigger.click();
+        // use enter to trigger click event, as if I have clicked out of overlay
+        const nextDivBlockTrigger =
+          overlayContainer.lastChild.querySelector(".stop-event");
+        nextDivBlockTrigger.click();
+      }
     }
   });
 
@@ -293,22 +300,21 @@ export function updateFieldOverlay(e) {
   }
 }
 
-// ------------------------------------------  Update Movie Title   --------------------------------------
+// ------------------------------------------  handle Field Ends   --------------------------------------
 
 function getMovieName(clicked) {
   const movie_id = clicked.closest(".overlay-window").id;
   const movieName = clicked.textContent;
-  console.log(movie_id);
-  console.log(movieName);
 
   return { movie_id, movieName, clicked };
 }
 
 async function updateMovieTitle(updateReference) {
-  const movie_id = updateReference.closest(".overlay-window").id;
-
-  const movieName = await DB.getMovieNameFromDB(movie_id);
-  updateReference.textContent = movieName[0].movie_name;
+  if (utils.isUpdated(updateReference)) {
+    const movie_id = updateReference.closest(".overlay-window").id;
+    const movieName = await DB.getMovieNameFromDB(movie_id);
+    updateReference.textContent = movieName[0].movie_name;
+  }
 }
 
 function createUpdateMovieTitleOverlay(x, y, data) {
@@ -340,6 +346,7 @@ function createUpdateMovieTitleOverlay(x, y, data) {
   inputBox.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
+      utils.update(clicked);
 
       await DB.updateMovieName(movie_id, inputBox.value);
 

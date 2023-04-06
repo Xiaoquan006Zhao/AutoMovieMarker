@@ -1,3 +1,8 @@
+// the movies and clips can be opened from not immediate overlays
+// This serves as a reference to if the nested overlays have update
+// Easier than keeping tack of updated css classes when a lot of nesting
+let topLevelUpdated = false;
+
 export function combineClipEmotion(data) {
   const clipsWithEmotions = [];
 
@@ -56,10 +61,33 @@ function convertTimecodeToSeconds(timecode) {
 }
 
 export function validateInputText(inputText, inputElement) {
+  inputText = inputText.trim();
   if (inputText === "") {
     inputElement.value = "";
     alert("Please add an item");
     return false;
   }
   return true;
+}
+
+export function isUpdated(updateReference) {
+  const updated = updateReference.classList.contains("updated");
+  updateReference.classList.remove("updated");
+  return updated;
+}
+
+export function update(updateReference) {
+  topLevelUpdate();
+  updateReference.classList.add("updated");
+}
+
+export function isTopLevelUpdated() {
+  const updated = topLevelUpdated;
+  topLevelUpdated = false;
+  return updated;
+}
+
+export function topLevelUpdate() {
+  console.log("top level needs update");
+  topLevelUpdated = true;
 }

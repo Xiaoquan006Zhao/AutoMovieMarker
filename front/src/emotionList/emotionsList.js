@@ -8,22 +8,16 @@ import insertText from "insert-text-at-cursor";
 
 import { createDraggable } from "./dragAndDropCategory";
 
-import {
-  updateEmotionName,
-  insertEmotion,
-  deleteEmotion,
-  getEmotionsFromDB,
-  getEmotionNameFromDB,
-} from "../utils/accessDB";
+import * as DB from "../utils/accessDB";
 
-import { validateInputText } from "../utils/utils";
+import * as utils from "../utils/utils";
 
 const addEmotionButton = document.querySelector("#add-emotion-button");
 const emotionInput = document.getElementById("emotion-input");
 const itemList = document.getElementById("item-list");
 
 async function displayItems() {
-  const records = await getEmotionsFromDB();
+  const records = await DB.getEmotionsFromDB();
 
   records.forEach((record) => {
     addItemToDOM(record.emotion_name, record.emotion_id);
@@ -34,13 +28,13 @@ async function displayItems() {
 }
 
 async function onAddItemSubmit(e) {
-  const newEmotion = emotionInput.value.trim();
+  const newEmotion = emotionInput.value;
 
-  if (!validateInputText(newEmotion, emotionInput)) {
+  if (!utils.validateInputText(newEmotion, emotionInput)) {
     return;
   }
 
-  const insertResponse = await insertEmotion(newEmotion);
+  const insertResponse = await DB.insertEmotion(newEmotion);
   const emotionId = await insertResponse.insertId;
 
   // Create item DOM element
@@ -91,11 +85,11 @@ function getEmotionLi(clicked) {
 }
 
 async function updateEmotionLi(updateReference) {
-  const emotion_id = updateReference.id;
-
-  const newName = await getEmotionNameFromDB(emotion_id);
-
-  updateReference.firstChild.textContent = newName[0].emotion_name;
+  if (utils.isUpdated(updateReference)) {
+    const emotion_id = updateReference.id;
+    const newName = await DB.getEmotionNameFromDB(emotion_id);
+    updateReference.firstChild.textContent = newName[0].emotion_name;
+  }
 }
 
 function createEmojiPicker(emotion_name) {
@@ -151,7 +145,8 @@ function createOverlayEmotionUpdate(x, y, data) {
     if (e.key === "Enter") {
       e.preventDefault();
 
-      await updateEmotionName(emotion_id, input.value);
+      await DB.updateEmotionName(emotion_id, input.value);
+      utils.update(clicked);
 
       // use enter to trigger click event, as if I have clicked out of overlay
       const nextDivBlockTrigger =
@@ -180,7 +175,7 @@ function onClickItem(e) {
 function removeItem(item) {
   if (confirm(`Do you want to delete [${item.textContent}]?`)) {
     // Remove item from DOM
-    deleteEmotion(item.id);
+    DB.deleteEmotion(item.id);
     item.remove();
   }
 }

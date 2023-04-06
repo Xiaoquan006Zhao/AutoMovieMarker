@@ -13,22 +13,20 @@ import { createMovieRow } from "./markersPage.js";
 import { applyFilters } from "./filterEmotion";
 import { handleClipOverlay } from "./clipDetailsOverlay.js";
 
-export async function handleMovieOverlay(movieId, clicked) {
-  createOverlayMovie(movieId, clicked);
-}
-
 export async function updateMovie(updateReference) {
-  const tableElement = updateReference.parentElement;
-  const newElement = await createMovieRow(updateReference.id);
+  if (utils.isTopLevelUpdated()) {
+    const tableElement = updateReference.parentElement;
+    const newElement = await createMovieRow(updateReference.id);
 
-  const siblingElement = updateReference.nextSibling;
-  tableElement.insertBefore(newElement, siblingElement);
+    const siblingElement = updateReference.nextSibling;
+    tableElement.insertBefore(newElement, siblingElement);
 
-  updateReference.remove();
-  applyFilters();
+    updateReference.remove();
+    applyFilters();
+  }
 }
 
-async function createOverlayMovie(movieId, clicked) {
+export async function createOverlayMovie(movieId, clicked) {
   const movieName = await DB.getMovieNameFromDB(movieId);
 
   const divEventEnable = createOverlaySection(updateMovie, clicked);
@@ -153,6 +151,7 @@ async function createClipsTable(movieId) {
 
 // helper function to handle click add button
 async function clickAdd(e) {
+  utils.topLevelUpdate();
   const movie_id = e.currentTarget.closest(".overlay-window").id;
   const tableBody = e.currentTarget.closest("tbody");
   const currentTr = e.currentTarget.closest("tr");
@@ -175,6 +174,7 @@ async function clickAdd(e) {
 }
 
 async function clickDelete(e) {
+  utils.topLevelUpdate();
   const tr = e.currentTarget.closest("tr");
   const clip_id = tr.id;
   await DB.deleteClip(clip_id);
