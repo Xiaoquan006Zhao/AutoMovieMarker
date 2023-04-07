@@ -47,9 +47,9 @@ export function createOverlaySection(
   overlayContainer.appendChild(divTop);
 
   // click out
-  divBlock.addEventListener("click", (e) => {
+  divBlock.addEventListener("click", async (e) => {
     overlayContainer.removeChild(overlayContainer.lastChild);
-    callback_update(updateReference);
+    await callback_update(updateReference);
   });
 
   return divEventEnable;

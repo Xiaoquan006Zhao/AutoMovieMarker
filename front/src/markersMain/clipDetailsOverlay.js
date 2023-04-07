@@ -1,5 +1,7 @@
 import { overlayContainer } from "../utils/config.js";
 import * as DB from "../utils/accessDB.js";
+import * as utils from "../utils/utils.js";
+
 import {
   handleOverlay,
   createEmotionEmbed,
@@ -11,18 +13,52 @@ import { updateFieldOverlay } from "./subOverlay.js";
 function getClipId(clicked, e) {
   const tooltip = e.target.closest(".tooltip");
 
+  clicked = tooltip ? tooltip : clicked.closest("tr");
+
   // opened from main page's clip descriptions or movie page clip table
   const clipId = tooltip ? tooltip.id : e.target.closest("tr").id;
-
   return { clipId, clicked };
 }
 
-function updateClip(updateReference) {
-  // triggers the next callback in the overlay.
-  const nextDivBlockTrigger =
-    overlayContainer.lastChild.querySelector(".stop-event");
+async function updateClip(updateReference) {
+  // passing true because this is the middle layer
+  if (utils.isTopLevelUpdated(true)) {
+    const { clipsWithEmotion } = await DB.getClipDetailFromDB({
+      clipId: updateReference.id,
+    });
+    const { description, timecode, emotion_ids, emotion_names } =
+      clipsWithEmotion[0];
 
-  nextDivBlockTrigger.click();
+    if (updateReference.tagName === "TR") {
+      const tds = updateReference.querySelectorAll("td");
+
+      tds[0].textContent = description;
+      tds[1].textContent = timecode;
+
+      // update emotions
+      const emotionWrapper = tds[2].querySelector(".dropDown-emotion");
+      while (emotionWrapper.firstChild) {
+        emotionWrapper.removeChild(emotionWrapper.firstChild);
+      }
+      emotion_names.forEach((emotion_name, index) => {
+        const divEmotion = document.createElement("div");
+        divEmotion.id = emotion_ids[index];
+        divEmotion.appendChild(document.createTextNode(emotion_name));
+
+        emotionWrapper.appendChild(divEmotion);
+      });
+    } else {
+      const emotionTextElement = updateReference.querySelector(".emotion-text");
+      const tooltipTextElement = updateReference.querySelector(".tooltiptext");
+      emotionTextElement.textContent = description;
+      tooltipTextElement.textContent = description;
+    }
+  }
+  // triggers the next callback in the overlay.
+  // const nextDivBlockTrigger =
+  //   overlayContainer.lastChild.querySelector(".stop-event");
+
+  // nextDivBlockTrigger.click();
 }
 
 function createOverlayClipDetails(x, y, data) {

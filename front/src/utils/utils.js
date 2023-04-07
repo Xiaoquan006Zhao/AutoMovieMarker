@@ -81,9 +81,11 @@ export function update(updateReference) {
   updateReference.classList.add("updated");
 }
 
-export function isTopLevelUpdated() {
+export function isTopLevelUpdated(middle) {
   const updated = topLevelUpdated;
-  topLevelUpdated = false;
+  if (!middle) {
+    topLevelUpdated = false;
+  }
   return updated;
 }
 

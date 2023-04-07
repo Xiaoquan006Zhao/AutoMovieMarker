@@ -98,7 +98,12 @@ function createClipRow(
     openButton.classList.add("open-button-style");
     openButton.innerText = "Open";
     openButton.classList.add("btn-small");
-    openButton.addEventListener("click", handleClipOverlay);
+    openButton.addEventListener("click", (e) => {
+      // Because openButton is inside descriptionTd
+      // Avoid activating updateDescriptionTd
+      e.stopPropagation();
+      handleClipOverlay(e);
+    });
     BodyTr.firstChild.appendChild(openButton);
   });
 
