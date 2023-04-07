@@ -9,16 +9,6 @@ export function createOverlaySection(
   height,
   width
 ) {
-  if (utils.willOverlayWidthOverflow40vw(x)) {
-    const viewportWidth = window.innerWidth;
-    x = x - (0.4 * viewportWidth - width);
-  }
-
-  if (utils.willOverlayHeightOverflow40vh(y)) {
-    const viewportHeight = window.innerHeight;
-    y = y - (0.4 * viewportHeight - height);
-  }
-
   const divTop = document.createElement("div");
   divTop.setAttribute(
     "style",
@@ -52,8 +42,7 @@ export function createOverlaySection(
   );
 
   divPos.appendChild(divEventEnable);
-  divTop.appendChild(divBlock);
-  divTop.appendChild(divPos);
+  divTop.append(divBlock, divPos);
 
   overlayContainer.appendChild(divTop);
 
