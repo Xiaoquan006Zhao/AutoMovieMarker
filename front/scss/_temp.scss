@@ -74,7 +74,13 @@
 
   height: 100%;
 
-  width: 40vw;
+  // width: 40vw;
+
+  min-width: 105%;
+  width: max-content;
+  white-space: nowrap;
+  max-width: 40vw;
+
   max-height: 40vh;
   padding: 0.3rem;
 
@@ -85,6 +91,7 @@
   overflow: visible !important;
 
   .scroll-wrapper {
+    display: inline-block;
     overflow-y: scroll !important;
   }
 
@@ -152,25 +159,21 @@
   border: 2px solid transparent;
 
   // non visual
-  display: grid;
-  grid-template-columns: 1fr 200fr;
-  align-items: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
   cursor: pointer;
-  // z-index: 1;
 
   &:hover {
     // background: lighten($secondary-color, 8%);
     border: 2px solid $secondary-color;
     overflow: visible;
   }
-}
 
-#dot {
-  margin-right: 5px;
-  border-radius: 99px;
-  height: 8px !important;
-  width: 8px !important;
-  background-color: #aaa;
+  .dot-icon::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 3px;
+    background-color: grey;
+  }
 }

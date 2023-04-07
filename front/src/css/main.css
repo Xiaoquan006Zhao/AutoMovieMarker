@@ -257,13 +257,17 @@ a {
   background: white;
   box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   height: 100%;
-  width: 40vw;
+  min-width: 105%;
+  width: max-content;
+  white-space: nowrap;
+  max-width: 40vw;
   max-height: 40vh;
   padding: 0.3rem;
   display: flex;
   flex-direction: column;
   overflow: visible !important; }
   .overlay-box .scroll-wrapper {
+    display: inline-block;
     overflow-y: scroll !important; }
   .overlay-box .filter {
     width: 100%;
@@ -307,22 +311,18 @@ a {
   min-height: 34px;
   font-size: 14px;
   border: 2px solid transparent;
-  display: grid;
-  grid-template-columns: 1fr 200fr;
-  align-items: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
   cursor: pointer; }
   .no-wrap:hover {
     border: 2px solid #ee8753;
     overflow: visible; }
-
-#dot {
-  margin-right: 5px;
-  border-radius: 99px;
-  height: 8px !important;
-  width: 8px !important;
-  background-color: #aaa; }
+  .no-wrap .dot-icon::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 3px;
+    background-color: grey; }
 
 .input-analysis-wrapper {
   display: grid;

@@ -102,16 +102,13 @@ export function createOverlayEmbed(text) {
   const divWrap = document.createElement("div");
   divWrap.classList.add("no-wrap");
 
-  const divDot = document.createElement("div");
-  divDot.id = "dot";
+  const spanText = document.createElement("span");
+  spanText.classList.add("emotion-text");
+  spanText.classList.add("dot-icon");
 
-  const divText = document.createElement("div");
-  divText.classList.add("emotion-text");
+  spanText.appendChild(document.createTextNode(text));
 
-  divText.appendChild(document.createTextNode(text));
-
-  divWrap.appendChild(divDot);
-  divWrap.appendChild(divText);
+  divWrap.appendChild(spanText);
 
   return divWrap;
 }
