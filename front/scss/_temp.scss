@@ -82,7 +82,7 @@
   display: flex;
   white-space: nowrap;
   flex-direction: column;
-  overflow: visible;
+  overflow: visible !important;
 
   .scroll-wrapper {
     overflow-y: scroll !important;

@@ -1,4 +1,3 @@
-import { overlayContainer } from "../utils/config.js";
 import * as DB from "../utils/accessDB.js";
 import * as utils from "../utils/utils.js";
 
@@ -48,17 +47,20 @@ async function updateClip(updateReference) {
         emotionWrapper.appendChild(divEmotion);
       });
     } else {
-      const emotionTextElement = updateReference.querySelector(".emotion-text");
-      const tooltipTextElement = updateReference.querySelector(".tooltiptext");
-      emotionTextElement.textContent = description;
-      tooltipTextElement.textContent = description;
+      // update the descriptions overlay in the main table
+      // const emotionTextElement = updateReference.querySelector(".emotion-text");
+      // const tooltipTextElement = updateReference.querySelector(".tooltiptext");
+      // emotionTextElement.textContent = description;
+      // tooltipTextElement.textContent = description;
+
+      // or just triggers the next callback in the overlay (essenially close it)
+      utils.doubleCloseOverlay();
+    }
+  } else {
+    if (updateReference.tagName !== "TR") {
+      utils.doubleCloseOverlay();
     }
   }
-  // triggers the next callback in the overlay.
-  // const nextDivBlockTrigger =
-  //   overlayContainer.lastChild.querySelector(".stop-event");
-
-  // nextDivBlockTrigger.click();
 }
 
 function createOverlayClipDetails(x, y, data) {

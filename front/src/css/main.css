@@ -264,7 +264,7 @@ a {
   display: flex;
   white-space: nowrap;
   flex-direction: column;
-  overflow: visible; }
+  overflow: visible !important; }
   .overlay-box .scroll-wrapper {
     overflow-y: scroll !important; }
   .overlay-box .filter {

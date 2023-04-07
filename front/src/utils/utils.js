@@ -1,3 +1,5 @@
+import { overlayContainer } from "../utils/config.js";
+
 // the movies and clips can be opened from not immediate overlays
 // This serves as a reference to if the nested overlays have update
 // Easier than keeping tack of updated css classes when a lot of nesting
@@ -92,4 +94,32 @@ export function isTopLevelUpdated(middle) {
 export function topLevelUpdate() {
   console.log("top level needs update");
   topLevelUpdated = true;
+}
+
+export function doubleCloseOverlay() {
+  const nextDivBlockTrigger =
+    overlayContainer.lastChild.querySelector(".stop-event");
+  nextDivBlockTrigger.click();
+}
+
+export function overlayOverflow(x, y, width, height) {
+  // Get the dimensions of the viewport
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  // Calculate the position of the bottom right corner of the overlay
+  const overlayRight = x + width;
+  const overlayBottom = y + height;
+
+  // Check if the overlay will overflow
+  const isOverflow =
+    overlayRight > viewportWidth || overlayBottom > viewportHeight;
+
+  if (isOverflow) {
+    console.log("Overlay will overflow!");
+  } else {
+    console.log("Overlay will not overflow.");
+  }
+
+  return isOverflow;
 }
