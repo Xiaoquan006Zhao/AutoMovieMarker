@@ -10,12 +10,12 @@ import {
 import { updateFieldOverlay } from "./subOverlay.js";
 
 function getClipId(clicked, e) {
-  const tooltip = e.target.closest(".tooltip");
+  const noWrap = e.target.closest(".no-wrap");
 
-  clicked = tooltip ? tooltip : clicked.closest("tr");
+  clicked = noWrap ? noWrap : clicked.closest("tr");
 
   // opened from main page's clip descriptions or movie page clip table
-  const clipId = tooltip ? tooltip.id : e.target.closest("tr").id;
+  const clipId = noWrap ? noWrap.id : e.target.closest("tr").id;
   return { clipId, clicked };
 }
 

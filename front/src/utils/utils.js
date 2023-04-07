@@ -102,18 +102,34 @@ export function doubleCloseOverlay() {
   nextDivBlockTrigger.click();
 }
 
-export function overlayOverflow(x, y, width, height) {
+export function willOverlayWidthOverflow40vw(x) {
   // Get the dimensions of the viewport
   const viewportWidth = window.innerWidth;
+
+  // Calculate the position of the bottom right corner of the overlay
+  const overlayRight = x + viewportWidth * 0.4;
+
+  // Check if the overlay will overflow
+  const isOverflow = overlayRight > viewportWidth;
+
+  if (isOverflow) {
+    console.log("Overlay will overflow!");
+  } else {
+    console.log("Overlay will not overflow.");
+  }
+
+  return isOverflow;
+}
+
+export function willOverlayHeightOverflow40vh(y) {
+  // Get the dimensions of the viewport
   const viewportHeight = window.innerHeight;
 
   // Calculate the position of the bottom right corner of the overlay
-  const overlayRight = x + width;
-  const overlayBottom = y + height;
+  const overlayBottom = y + viewportHeight * 0.4;
 
   // Check if the overlay will overflow
-  const isOverflow =
-    overlayRight > viewportWidth || overlayBottom > viewportHeight;
+  const isOverflow = overlayBottom > viewportHeight;
 
   if (isOverflow) {
     console.log("Overlay will overflow!");

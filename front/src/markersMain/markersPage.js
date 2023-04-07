@@ -151,18 +151,16 @@ function createOverlayClipDescriptions(x, y, data) {
   const divBox = document.createElement("div");
   divBox.classList.add("overlay-box");
 
+  const divWrapper = document.createElement("div");
+  divWrapper.classList.add("scroll-wrapper");
+  divBox.appendChild(divWrapper);
+
   descriptions.forEach((d, index) => {
     const newdivWrap = createOverlayEmbed(d);
 
-    const toolTipText = document.createElement("span");
-    toolTipText.appendChild(document.createTextNode(d));
-    toolTipText.classList.add("tooltiptext");
-
-    newdivWrap.appendChild(toolTipText);
-    newdivWrap.classList.add("tooltip");
     newdivWrap.id = clipIds[index];
 
-    divBox.appendChild(newdivWrap);
+    divWrapper.appendChild(newdivWrap);
   });
 
   divBox.addEventListener("click", handleClipOverlay);

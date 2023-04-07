@@ -142,39 +142,3 @@ th:hover,
 td:hover {
   background-color: lighten($secondary-color, 20%);
 }
-
-.tooltip {
-  position: relative;
-
-  .tooltiptext {
-    // visual
-    background-color: $secondary-color;
-    border: 2px solid $primary-color;
-    border-radius: 6px;
-    padding: 10px;
-    padding-top: 7px;
-    font-size: 0.9rem;
-    // height: 100%;
-    width: 170%;
-
-    // non-visual
-    visibility: hidden;
-    white-space: pre-wrap;
-    text-align: auto;
-
-    /* Position the tooltip text */
-    position: absolute;
-    z-index: 2;
-    top: 0px;
-    left: 0px;
-  }
-
-  &:hover {
-    .tooltiptext {
-      visibility: visible;
-    }
-    div {
-      visibility: hidden !important;
-    }
-  }
-}
