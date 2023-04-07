@@ -125,13 +125,22 @@ function createEmojiPicker(emotion_name) {
 function createOverlayEmotionUpdate(x, y, data) {
   const { emotion_name, emotion_id, clicked } = data;
 
+  // const divEventEnable = createOverlaySection(
+  //   updateEmotionLi,
+  //   clicked,
+  //   x < window.innerWidth / 2 - window.scrollX ? x + 150 : x - 345,
+  //   y - 250,
+  //   500,
+  //   345
+  // );
+
   const divEventEnable = createOverlaySection(
     updateEmotionLi,
     clicked,
-    x < window.innerWidth / 2 - window.scrollX ? x + 150 : x - 345,
-    y - 250,
-    500,
-    345
+    x,
+    y,
+    clicked.offsetHeight,
+    clicked.offsetWidth
   );
 
   const divBox = document.createElement("div");
@@ -160,6 +169,8 @@ function createOverlayEmotionUpdate(x, y, data) {
   input.focus();
   input.selectionStart = 0;
   input.selectionEnd = 0;
+
+  utils.offsetOverlayToViewport(divEventEnable);
 }
 
 function onClickItem(e) {

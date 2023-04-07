@@ -180,6 +180,8 @@ function createOverlayEmotion(x, y, data) {
 
   filterOverlayEmotion(filterInput, divLinked, divUnlinked);
   filterInput.focus();
+
+  utils.offsetOverlayToViewport(divEventEnable);
 }
 
 // ------------------------------  handle Emotion ends ------------------------------------------

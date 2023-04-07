@@ -139,9 +139,6 @@ function getMovieIdAndEmotionId(clicked) {
 function createOverlayClipDescriptions(x, y, data) {
   const { descriptions, clipIds, clicked } = data;
 
-  const clickedWidth = clicked.clientWidth;
-  const clickedHeight = clicked.clientHeight;
-
   const divEventEnable = createOverlaySection(
     updateMovie,
     clicked.parentElement,
@@ -171,18 +168,7 @@ function createOverlayClipDescriptions(x, y, data) {
 
   divEventEnable.appendChild(divBox);
 
-  // offset the overlay window to be within viewport
-  const overlayWidth = divEventEnable.firstElementChild.offsetWidth;
-  const overlayHeight = divEventEnable.firstElementChild.offsetHeight;
-  const divPos = divEventEnable.parentElement;
-
-  if (utils.willOverlayWidthOverflow40vw(x, overlayWidth)) {
-    divPos.style.left = x - (overlayWidth - clickedWidth) + "px";
-  }
-
-  if (utils.willOverlayHeightOverflow40vh(y, overlayHeight)) {
-    divPos.style.top = y - (overlayHeight - clickedHeight) + "px";
-  }
+  utils.offsetOverlayToViewport(divEventEnable);
 }
 
 async function handleOverlayBody(e) {

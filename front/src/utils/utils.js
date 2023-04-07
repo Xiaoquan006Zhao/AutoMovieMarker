@@ -102,7 +102,7 @@ export function doubleCloseOverlay() {
   nextDivBlockTrigger.click();
 }
 
-export function willOverlayWidthOverflow40vw(x, width) {
+function willOverlayWidthOverflow40vw(x, width) {
   // Get the dimensions of the viewport
   const viewportWidth = window.innerWidth;
 
@@ -121,7 +121,7 @@ export function willOverlayWidthOverflow40vw(x, width) {
   return isOverflow;
 }
 
-export function willOverlayHeightOverflow40vh(y, height) {
+function willOverlayHeightOverflow40vh(y, height) {
   // Get the dimensions of the viewport
   const viewportHeight = window.innerHeight;
 
@@ -138,4 +138,24 @@ export function willOverlayHeightOverflow40vh(y, height) {
   }
 
   return isOverflow;
+}
+
+export function offsetOverlayToViewport(divEventEnable) {
+  // offset the overlay window to be within viewport
+  const overlayWidth = divEventEnable.firstElementChild.offsetWidth;
+  const overlayHeight = divEventEnable.firstElementChild.offsetHeight;
+  const divPos = divEventEnable.parentElement;
+
+  const x = parseInt(divPos.style.left.match(/\d+/)[0]);
+  const y = parseInt(divPos.style.top.match(/\d+/)[0]);
+  const clickedWidth = parseInt(divPos.style.width.match(/\d+/)[0]);
+  const clickedHeight = parseInt(divPos.style.height.match(/\d+/)[0]);
+
+  if (willOverlayWidthOverflow40vw(x, overlayWidth)) {
+    divPos.style.left = x - (overlayWidth - clickedWidth) + "px";
+  }
+
+  if (willOverlayHeightOverflow40vh(y, overlayHeight)) {
+    divPos.style.top = y - (overlayHeight - clickedHeight) + "px";
+  }
 }
