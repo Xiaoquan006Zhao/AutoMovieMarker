@@ -255,31 +255,39 @@ a {
 .movie-title {
   cursor: pointer; }
 
+emoji-picker {
+  height: 40vh;
+  overflow: scroll !important; }
+
 .overlay-box {
   border-radius: 4px;
   background: white;
   box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(76, 47, 47, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
-  max-width: calc(100vw - 24px);
-  width: 105%;
+  width: max-content;
+  min-width: 105%;
+  max-width: 40vw;
   height: 100%;
   max-height: 40vh;
   padding: 0.3rem;
   display: flex;
   white-space: nowrap;
   flex-direction: column;
-  overflow: visible; }
+  overflow: visible !important; }
   .overlay-box .scroll-wrapper {
+    display: inline-block;
     overflow-y: scroll !important; }
   .overlay-box .filter {
     width: 100%;
     border-bottom: 2px solid gray;
-    padding-bottom: 5px;
-    margin-bottom: 5px; }
+    padding-bottom: 2px;
+    margin-bottom: 2px; }
     .overlay-box .filter input {
       border: none;
       padding: 0, 2px;
       width: 100%;
-      font-size: 1rem; }
+      font-size: 1rem;
+      margin: 0;
+      padding: 2px; }
       .overlay-box .filter input:focus {
         outline: none; }
   .overlay-box label {
@@ -309,22 +317,19 @@ a {
   width: 100%;
   min-height: 34px;
   font-size: 14px;
-  display: grid;
-  grid-template-columns: 1fr 200fr;
-  align-items: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  border: 2px solid transparent;
   cursor: pointer; }
   .no-wrap:hover {
-    background: rgba(224, 222, 215, 0.6);
+    border: 2px solid #ee8753;
     overflow: visible; }
-
-#dot {
-  margin-right: 5px;
-  border-radius: 99px;
-  height: 8px !important;
-  width: 8px !important;
-  background-color: #aaa; }
+  .no-wrap .dot-icon::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 3px;
+    background-color: grey; }
 
 .input-analysis-wrapper {
   display: grid;
@@ -488,27 +493,4 @@ td {
 th:hover,
 td:hover {
   background-color: #f7c8b0; }
-
-.tooltip {
-  position: relative; }
-  .tooltip .tooltiptext {
-    background-color: #ee8753;
-    border: 2px solid #0a0526;
-    border-radius: 6px;
-    padding: 10px;
-    padding-top: 7px;
-    font-size: 0.9rem;
-    width: 170%;
-    visibility: hidden;
-    white-space: pre-wrap;
-    text-align: auto;
-    /* Position the tooltip text */
-    position: absolute;
-    z-index: 2;
-    top: 0px;
-    left: 0px; }
-  .tooltip:hover .tooltiptext {
-    visibility: visible; }
-  .tooltip:hover div {
-    visibility: hidden !important; }
 

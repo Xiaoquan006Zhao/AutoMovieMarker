@@ -15,5 +15,5 @@ exports.handler = async (event, context) => {
 
   const response = await template.templatedQuery(query, [clip_id]);
 
-  return template.templateSend(response, template.stripMetaDataAndToJson);
+  return template.templateSend(response);
 };

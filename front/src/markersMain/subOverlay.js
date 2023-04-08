@@ -30,10 +30,11 @@ async function LinkEmotion(e, method, updateReference) {
   // topmost visable overlay container
   const duvWrapper = e.target.closest(".scroll-wrapper");
   const clipId = duvWrapper.id;
+
   // div that contains the information
   const emotionElement = e.target.closest(".no-wrap");
   const emotionId = emotionElement.id;
-  const emotionName = emotionElement.querySelector(":nth-child(2)").textContent;
+  const emotionName = emotionElement.textContent;
 
   const anotherEmotionTag =
     method === "POST" ? ".linked-emotion" : ".unlinked-emotion";
@@ -56,7 +57,7 @@ async function updateEmotion(updateReference) {
     let tempId = updateReference.parentElement.id;
     const clip_id = tempId ? tempId : updateReference.closest("tr").id;
 
-    const emotions = await DB.getEmotionInClipFromDB(clip_id);
+    const emotions = await DB.getAllEmotionInClip(clip_id);
 
     while (updateReference.firstChild) {
       updateReference.removeChild(updateReference.firstChild);
@@ -219,7 +220,7 @@ async function updateField(updateReference) {
     const clip_id = updateReference.parentElement.id;
     const fieldName = findFieldName(updateReference);
     const updatedName = await DB.getClipField(clip_id, fieldName);
-    updateReference.firstChild.textContent = updatedName[0][fieldName];
+    updateReference.firstChild.textContent = updatedName[fieldName];
   }
 }
 
@@ -294,7 +295,7 @@ export function updateFieldOverlay(e) {
     handleOverlay(
       e,
       getClipEmotions,
-      DB.getEmotionsLinkedAndUnlinedFromDB,
+      DB.getEmotionsLinkedAndUnlined,
       createOverlayEmotion
     );
   } else if (e.target.closest(".dropDown-text")) {
@@ -314,8 +315,8 @@ function getMovieName(clicked) {
 async function updateMovieTitle(updateReference) {
   if (utils.isUpdated(updateReference)) {
     const movie_id = updateReference.closest(".overlay-window").id;
-    const movieName = await DB.getMovieNameFromDB(movie_id);
-    updateReference.textContent = movieName[0].movie_name;
+    const movieName = await DB.getMovieName(movie_id);
+    updateReference.textContent = movieName.movie_name;
   }
 }
 

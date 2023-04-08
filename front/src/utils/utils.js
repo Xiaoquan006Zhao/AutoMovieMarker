@@ -112,12 +112,6 @@ function willOverlayWidthOverflow40vw(x, width) {
   // Check if the overlay will overflow
   const isOverflow = overlayRight > viewportWidth;
 
-  if (isOverflow) {
-    console.log("Overlay will overflow!");
-  } else {
-    console.log("Overlay will not overflow.");
-  }
-
   return isOverflow;
 }
 
@@ -130,12 +124,6 @@ function willOverlayHeightOverflow40vh(y, height) {
 
   // Check if the overlay will overflow
   const isOverflow = overlayBottom > viewportHeight;
-
-  if (isOverflow) {
-    console.log("Overlay will overflow!");
-  } else {
-    console.log("Overlay will not overflow.");
-  }
 
   return isOverflow;
 }

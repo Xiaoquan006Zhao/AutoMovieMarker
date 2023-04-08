@@ -17,7 +17,7 @@ const emotionInput = document.getElementById("emotion-input");
 const itemList = document.getElementById("item-list");
 
 async function displayItems() {
-  const records = await DB.getEmotionsFromDB();
+  const records = await DB.getAllEmotions();
 
   records.forEach((record) => {
     addItemToDOM(record.emotion_name, record.emotion_id);
@@ -87,8 +87,8 @@ function getEmotionLi(clicked) {
 async function updateEmotionLi(updateReference) {
   if (utils.isUpdated(updateReference)) {
     const emotion_id = updateReference.id;
-    const newName = await DB.getEmotionNameFromDB(emotion_id);
-    updateReference.firstChild.textContent = newName[0].emotion_name;
+    const newName = await DB.getEmotionName(emotion_id);
+    updateReference.firstChild.textContent = newName.emotion_name;
   }
 }
 
