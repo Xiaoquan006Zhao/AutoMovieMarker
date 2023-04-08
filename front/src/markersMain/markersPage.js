@@ -31,7 +31,7 @@ function createHeaderColumns(headers) {
 }
 
 async function createEmotionHeader() {
-  const records = await DB.getEmotionsFromDB();
+  const records = await DB.getAllEmotions();
 
   emotions = records.map((record) => {
     return record.emotion_name;
@@ -108,7 +108,7 @@ export async function createMovieRow(movieId) {
 
   const tr = document.createElement("tr");
   tr.setAttribute("id", movieId);
-  const clips = await DB.getClipsEmotionInMovieFromDB(movieId);
+  const clips = await DB.getClipsEmotionInMovie(movieId);
 
   clips.forEach((clip) => {
     const emotion = clip.emotion_name;
@@ -122,8 +122,8 @@ export async function createMovieRow(movieId) {
 
   const movieTd = tr.firstChild;
   movieTd.classList.add("movie-title");
-  const movieName = await DB.getMovieNameFromDB(movieId);
-  movieTd.appendChild(document.createTextNode(movieName[0].movie_name));
+  const movieName = await DB.getMovieName(movieId);
+  movieTd.appendChild(document.createTextNode(movieName.movie_name));
 
   return tr;
 }
@@ -133,7 +133,12 @@ export async function createMovieRow(movieId) {
 function getMovieIdAndEmotionId(clicked) {
   // becasue the clicked item is a td
   // the tr.id is movieId
-  return { movieId: clicked.parentElement.id, emotionId: clicked.id, clicked };
+
+  return {
+    movie_id: clicked.parentElement.id,
+    emotion_id: clicked.id,
+    clicked,
+  };
 }
 
 function createOverlayClipDescriptions(x, y, data) {
@@ -180,7 +185,7 @@ async function handleOverlayBody(e) {
     handleOverlay(
       e,
       getMovieIdAndEmotionId,
-      DB.getClipsMatchFromDB,
+      DB.getAllClipsMatch,
       createOverlayClipDescriptions
     );
   }

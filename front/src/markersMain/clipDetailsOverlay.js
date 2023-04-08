@@ -15,18 +15,20 @@ function getClipId(clicked, e) {
   clicked = noWrap ? noWrap : clicked.closest("tr");
 
   // opened from main page's clip descriptions or movie page clip table
-  const clipId = noWrap ? noWrap.id : e.target.closest("tr").id;
-  return { clipId, clicked };
+  const clip_id = noWrap ? noWrap.id : e.target.closest("tr").id;
+  return { clip_id, clicked };
 }
 
 async function updateClip(updateReference) {
   // passing true because this is the middle layer
   if (utils.isTopLevelUpdated(true)) {
-    const { clipsWithEmotion } = await DB.getClipDetailFromDB({
-      clipId: updateReference.id,
+    const { clipsWithEmotion } = await DB.getClipDetail({
+      clip_id: updateReference.id,
     });
     const { description, timecode, emotion_ids, emotion_names } =
       clipsWithEmotion[0];
+
+    console.log(clipsWithEmotion);
 
     if (updateReference.tagName === "TR") {
       const tds = updateReference.querySelectorAll("td");
@@ -144,5 +146,5 @@ function createAttributeDiv(attributeName, attributeData, id) {
 }
 
 export function handleClipOverlay(e) {
-  handleOverlay(e, getClipId, DB.getClipDetailFromDB, createOverlayClipDetails);
+  handleOverlay(e, getClipId, DB.getClipDetail, createOverlayClipDetails);
 }

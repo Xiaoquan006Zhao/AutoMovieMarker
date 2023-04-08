@@ -27,7 +27,7 @@ export async function updateMovie(updateReference) {
 }
 
 export async function createOverlayMovie(movieId, clicked) {
-  const movieName = await DB.getMovieNameFromDB(movieId);
+  const movieName = await DB.getMovieName(movieId);
 
   const divEventEnable = createOverlaySection(updateMovie, clicked);
 
@@ -36,7 +36,7 @@ export async function createOverlayMovie(movieId, clicked) {
   divWindow.classList.add("overlay-window");
 
   const title = document.createElement("h1");
-  title.appendChild(document.createTextNode(movieName[0].movie_name));
+  title.appendChild(document.createTextNode(movieName.movie_name));
   title.classList.add("dropDown-enable");
   title.classList.add("dropDown-text");
 
@@ -141,7 +141,7 @@ async function createClipsTable(movieId) {
   });
 
   // body
-  const data = await DB.getClipsInMovieFromDB(movieId);
+  const data = await DB.getAllClipsInMovie(movieId);
 
   // clean up data returned by DB
   const clipsWithEmotions = utils.combineClipEmotion(data);
