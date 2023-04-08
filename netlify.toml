@@ -1,0 +1,6 @@
+[build]
+  base = "front"
+
+[functions]
+  directory = "src/functions"
+
