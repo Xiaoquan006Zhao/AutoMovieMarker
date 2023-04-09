@@ -11,6 +11,8 @@ exports.handler = async (event, context) => {
     INNER JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id 
     WHERE clips.movie_id = ?`;
 
-  const response = await template.templatedQuery(queryString, [movie_id]);
+  const response = await template.templatedQuery(event, queryString, [
+    movie_id,
+  ]);
   return template.templateSend(response);
 };

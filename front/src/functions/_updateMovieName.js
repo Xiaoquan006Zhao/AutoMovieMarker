@@ -5,7 +5,7 @@ exports.handler = async (event, context) => {
   const { movie_id } = event.queryStringParameters;
   const { movie_name } = JSON.parse(event.body);
   const queryString = "UPDATE movies SET movie_name = ? WHERE movie_id = ?";
-  const data = await template.templatedQuery(queryString, [
+  const data = await template.templatedQuery(event, queryString, [
     movie_name,
     movie_id,
   ]);

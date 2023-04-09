@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="./markersMain.js" type="module" defer></script>
+    <script src="./markersMain.js" defer></script>
     <link rel="stylesheet" href="main.css" />
     <title>Movie Marker</title>
   </head>
@@ -13,9 +13,13 @@
     <header>
       <nav id="navbar" class="container py-1 bg-primary">
         <h2>Catelog movie clips based on emtions</h2>
-        <div>
+        <div style="display: flex">
           <a class="nav-link selected" href="index.html"> Movie Markers </a>
           <a class="nav-link" href="emotion.html"> Emotions </a>
+          <a id="auth-links" onclick="Clerk.openSignIn()" class="nav-link">
+            Sign In
+          </a>
+          <div id="user-button"></div>
         </div>
       </nav>
     </header>

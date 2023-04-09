@@ -7,10 +7,10 @@ exports.handler = async (event, context) => {
 
   const queryDeleteClipEmotion =
     "DELETE from clip_emotions WHERE emotion_id = ?";
-  await template.templatedQuery(queryDeleteClipEmotion, [emotion_id]);
+  await template.templatedQuery(event, queryDeleteClipEmotion, [emotion_id]);
 
   const queryDeleteEmotion = "DELETE from emotions WHERE emotion_id = ?";
-  const response = await template.templatedQuery(queryDeleteEmotion, [
+  const response = await template.templatedQuery(event, queryDeleteEmotion, [
     emotion_id,
   ]);
 

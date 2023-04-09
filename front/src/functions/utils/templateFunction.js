@@ -1,7 +1,14 @@
 const { createPool } = require("./connectDB.js");
+const { verifyToken } = require("./verifyJWT.js");
 
-async function templatedQuery(queryString, variable) {
-  const pool = await createPool();
+async function templatedQuery(event, queryString, variable) {
+  const authHeader = event.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+
+  const user_id = verifyToken(token);
+
+  const pool = await createPool(user_id);
+
   const connection = await pool.getConnection();
 
   try {

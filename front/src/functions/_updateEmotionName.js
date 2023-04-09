@@ -8,7 +8,7 @@ exports.handler = async (event, context) => {
 
   const queryString =
     "UPDATE emotions SET emotion_name = ? WHERE emotion_id = ?";
-  const response = await template.templatedQuery(queryString, [
+  const response = await template.templatedQuery(event, queryString, [
     value,
     emotion_id,
   ]);

@@ -28,8 +28,6 @@ async function updateClip(updateReference) {
     const { description, timecode, emotion_ids, emotion_names } =
       clipsWithEmotion[0];
 
-    console.log(clipsWithEmotion);
-
     if (updateReference.tagName === "TR") {
       const tds = updateReference.querySelectorAll("td");
 

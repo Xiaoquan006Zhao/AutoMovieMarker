@@ -1,14 +1,27 @@
 import { baseurl } from "./config.js";
 import * as utils from "./utils.js";
+import { accessToken } from "../auth/clerk.js";
 
-async function templateFetch(query, method) {
+async function templateFetch(query, method, body) {
   const response = await fetch(`${baseurl}${query}`, {
     method: method,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
   });
 
   const data = await response.json();
 
   return data;
+}
+
+export async function getNewAccessToken(user_id, currentTime) {
+  return await templateFetch(`/__generateJWT`, "POST", {
+    user_id: user_id,
+    currentTime: currentTime,
+  });
 }
 
 export async function deleteClip(clip_id) {
@@ -123,22 +136,13 @@ export async function updateClipEmotionLink(clip_id, emotion_id, method) {
 }
 
 export async function updateClipField(clip_id, field, value) {
-  const response = await fetch(
-    `${baseurl}/_updateClipField?clip_id=${clip_id}&field=${field}`,
+  return await templateFetch(
+    `/_updateClipField?clip_id=${clip_id}&field=${field}`,
+    "PUT",
     {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        value: value,
-      }),
+      value: value,
     }
   );
-
-  const data = await response.json();
-
-  return data;
 }
 
 export async function getClipField(clip_id, field) {
@@ -149,17 +153,7 @@ export async function getClipField(clip_id, field) {
 }
 
 export async function insertEmotion(emotionName) {
-  const response = await fetch(`${baseurl}/_insertEmotion`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ value: emotionName }),
-  });
-
-  const data = await response.json();
-
-  return data;
+  return await templateFetch(`/_insertEmotion`, "POST", { value: emotionName });
 }
 
 export async function deleteEmotion(emotion_id) {
@@ -170,41 +164,17 @@ export async function deleteEmotion(emotion_id) {
 }
 
 export async function updateEmotionName(emotion_id, value) {
-  const response = await fetch(
-    `${baseurl}/_updateEmotionName?emotion_id=${emotion_id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        value: value,
-      }),
-    }
+  return await templateFetch(
+    `/_updateEmotionName?emotion_id=${emotion_id}`,
+    "PUT",
+    { value: value }
   );
-
-  const data = await response.json();
-
-  return data;
 }
 
 export async function updateEmotionCategory(emotion_id, value) {
-  const response = await fetch(
-    `${baseurl}/_updateEmotionCategory?${emotion_id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        value: value,
-      }),
-    }
-  );
-
-  const data = await response.json();
-
-  return data;
+  return await templateFetch(`/_updateEmotionCategory?${emotion_id}`, "PUT", {
+    value: value,
+  });
 }
 
 // Given a emotion_id, retrive emotion_name
@@ -221,20 +191,7 @@ export async function getAllMovieIds() {
 }
 
 export async function updateMovieName(movie_id, value) {
-  const response = await fetch(
-    `${baseurl}/_updateMovieName?movie_id=${movie_id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        value: value,
-      }),
-    }
-  );
-
-  const data = await response.json();
-
-  return data;
+  return await templateFetch(`/_updateMovieName?movie_id=${movie_id}`, "PUT", {
+    value: value,
+  });
 }

@@ -4,6 +4,6 @@ const template = require("./utils/templateFunction");
 exports.handler = async (event, context) => {
   const { movie_id } = event.queryStringParameters;
   const queryString = "SELECT movie_name from movies where movie_id = ?";
-  const data = await template.templatedQuery(queryString, [movie_id]);
+  const data = await template.templatedQuery(event, queryString, [movie_id]);
   return template.templateSend(data, template.stripMetaDataAndToJson);
 };

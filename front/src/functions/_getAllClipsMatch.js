@@ -8,7 +8,10 @@ exports.handler = async (event, context) => {
     FROM clips 
     JOIN clip_emotions ON clips.clip_id = clip_emotions.clip_id 
     WHERE movie_id = ? AND emotion_id = ?`;
-  const data = await template.templatedQuery(query, [movie_id, emotion_id]);
+  const data = await template.templatedQuery(event, query, [
+    movie_id,
+    emotion_id,
+  ]);
 
   return template.templateSend(data);
 };

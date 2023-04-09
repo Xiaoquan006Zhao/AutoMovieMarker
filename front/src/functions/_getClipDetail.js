@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
   LEFT JOIN emotions ON clip_emotions.emotion_id = emotions.emotion_id
   WHERE clips.clip_id = ?`;
 
-  const response = await template.templatedQuery(query, [clip_id]);
+  const response = await template.templatedQuery(event, query, [clip_id]);
 
   return template.templateSend(response);
 };

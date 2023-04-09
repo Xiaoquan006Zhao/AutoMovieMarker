@@ -9,6 +9,6 @@ exports.handler = async (event, context) => {
     JOIN clip_emotions ON emotions.emotion_id = clip_emotions.emotion_id 
     WHERE clip_emotions.clip_id = ?`;
 
-  const response = await template.templatedQuery(queryString, [clip_id]);
+  const response = await template.templatedQuery(event, queryString, [clip_id]);
   return template.templateSend(response);
 };
