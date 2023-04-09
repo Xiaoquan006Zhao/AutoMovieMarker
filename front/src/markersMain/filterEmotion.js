@@ -20,10 +20,7 @@ function hideColumns(table, columnsNotToHide) {
     var cell = table.rows[0].cells[i];
     var columnIndex = i;
 
-    if (
-      columnsNotToHide.length !== 0 &&
-      columnsNotToHide.indexOf(columnIndex) === -1
-    ) {
+    if (columnsNotToHide.size !== 0 && !columnsNotToHide.has(columnIndex)) {
       cell.style.display = "none";
       for (var j = 0; j < table.rows.length; j++) {
         table.rows[j].cells[i].style.display = "none";
@@ -61,12 +58,11 @@ function getFilterValues() {
   for (let i = 0; i < filters.length; i++) {
     if (!filters[i].disabled) {
       var filter = filters[i];
-      var selectElems = filter.querySelectorAll("select");
+      var selectElems = filter.querySelector("select");
       var inputElem = filter.querySelector("input");
       var filterObj = {};
 
-      filterObj.type = selectElems[0].value;
-      filterObj.logic = selectElems[1].value;
+      filterObj.type = selectElems.value;
       filterObj.input = inputElem.value;
 
       filterValues.push(filterObj);
@@ -84,24 +80,23 @@ export function applyFilters() {
   );
 
   // Hide columns
-  const columnsNotToHide = [];
+  const columnsNotToHide = new Set();
+
+  const movieNameFilters = [];
+
   filterValues.forEach((filter) => {
     if (filter.type === "Movie") {
-      console.log("movie");
+      movieNameFilters.push(filter.input);
     }
 
     if (filter.type === "Emotion") {
       const filterEmotions = emotions.filter((emotion) =>
-        filter.logic === "contains"
-          ? emotion.toLowerCase().includes(filter.input.toLowerCase())
-          : emotion.toLowerCase() === filter.input.toLowerCase()
+        emotion.toLowerCase().includes(filter.input.toLowerCase())
       );
 
       filterEmotions.forEach((emotion) => {
         const index = emotions.indexOf(emotion);
-        if (!columnsNotToHide.includes(index)) {
-          columnsNotToHide.push(index);
-        }
+        columnsNotToHide.add(index);
       });
     }
   });
@@ -110,12 +105,33 @@ export function applyFilters() {
   // but hiderows need to be outside to restore the default display mode
   const rowsToHide = [];
 
-  if (columnsNotToHide.length !== 0) {
+  if (columnsNotToHide.size !== 0 || movieNameFilters.length !== 0) {
     const rows = document.querySelector("tbody").querySelectorAll("tr");
+
     for (let i = 0; i < rows.length; i++) {
       let hideRow = true;
-      for (let j = 0; j < columnsNotToHide.length; j++) {
-        if (rows[i].cells[columnsNotToHide[j]].textContent.trim() !== "") {
+
+      for (let j = 0; j < movieNameFilters.length; j++) {
+        const rowMovieName = rows[i].cells[0].textContent;
+        if (
+          rowMovieName.toLowerCase().includes(movieNameFilters[j].toLowerCase())
+        ) {
+          console.log("include: " + rowMovieName);
+          hideRow = false;
+          break;
+        }
+      }
+
+      // if row(movie) filter is provided don't add row
+
+      const columnsNotToHideArray = Array.from(columnsNotToHide);
+
+      for (
+        let j = 0;
+        movieNameFilters.length === 0 && j < columnsNotToHideArray.length;
+        j++
+      ) {
+        if (rows[i].cells[columnsNotToHideArray[j]].textContent.trim() !== "") {
           hideRow = false;
           break;
         }
@@ -127,7 +143,29 @@ export function applyFilters() {
     }
   }
 
-  if (filterValues.length !== 0 && columnsNotToHide.length === 0) {
+  console.log(rowsToHide);
+  console.log(columnsNotToHide);
+
+  if (rowsToHide.length !== 0 && columnsNotToHide.size === 0) {
+    const rows = document.querySelector("tbody").querySelectorAll("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+      if (!rowsToHide.includes(i + 1)) {
+        const tds = rows[i].querySelectorAll("td");
+        Array.from(tds).forEach((td, index) => {
+          if (td.id) {
+            columnsNotToHide.add(index);
+          }
+        });
+      }
+    }
+  }
+
+  if (
+    filterValues.length !== 0 &&
+    columnsNotToHide.size === 0 &&
+    rowsToHide.length === 0
+  ) {
     document.querySelector("#filter-warning").classList.remove("hidden");
   } else {
     document.querySelector("#filter-warning").classList.add("hidden");
@@ -168,42 +206,27 @@ export function addFilter() {
   const thFilter = document.createElement("th");
   thFilter.classList.add("table-filter");
 
-  const divSelect = document.createElement("div");
-  divSelect.classList.add("select-filter");
+  const divWrapper = document.createElement("div");
+  divWrapper.classList.add("flex-wrapper");
 
   const typeInput = document.createElement("select");
-
   const optionEmotion = document.createElement("option");
   optionEmotion.value = "Emotion";
   optionEmotion.text = "Emotion";
-  typeInput.appendChild(optionEmotion);
-
   const optionMovie = document.createElement("option");
   optionMovie.value = "Movie";
   optionMovie.text = "Movie";
-  typeInput.appendChild(optionMovie);
-
-  const logicInput = document.createElement("select");
-
-  const optionContains = document.createElement("option");
-  optionContains.value = "contains";
-  optionContains.text = "Contains";
-  logicInput.appendChild(optionContains);
-
-  const optionIs = document.createElement("option");
-  optionIs.value = "is";
-  optionIs.text = "Is";
-  logicInput.appendChild(optionIs);
+  typeInput.append(optionEmotion, optionMovie);
 
   const valueInput = document.createElement("input");
   valueInput.setAttribute("type", "text");
 
   typeInput.addEventListener("change", applyFilters);
-  logicInput.addEventListener("change", applyFilters);
   valueInput.addEventListener("input", applyFilters);
 
-  divSelect.append(typeInput, logicInput);
-  thFilter.append(divSelect, valueInput);
+  divWrapper.append(typeInput, valueInput);
+
+  thFilter.appendChild(divWrapper);
 
   const buttonSetup = [];
   buttonSetup.push({

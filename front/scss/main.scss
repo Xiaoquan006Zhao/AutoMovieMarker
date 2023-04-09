@@ -41,17 +41,18 @@
     padding: 15px;
     position: relative;
 
-    .select-filter {
+    .flex-wrapper {
       width: 100%;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: space-between;
       select {
-        width: 50%;
+        width: 100% !important;
       }
-    }
-    input {
-      width: 100%;
+      input {
+        width: 100% !important;
+      }
     }
   }
 }
