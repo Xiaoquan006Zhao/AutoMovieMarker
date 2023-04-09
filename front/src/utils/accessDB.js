@@ -152,8 +152,10 @@ export async function getClipField(clip_id, field) {
   );
 }
 
-export async function insertEmotion(emotionName) {
-  return await templateFetch(`/_insertEmotion`, "POST", { value: emotionName });
+export async function insertEmotion(value) {
+  return await templateFetch(`/_insertEmotion`, "POST", {
+    emotion_name: value,
+  });
 }
 
 export async function deleteEmotion(emotion_id) {
@@ -167,14 +169,18 @@ export async function updateEmotionName(emotion_id, value) {
   return await templateFetch(
     `/_updateEmotionName?emotion_id=${emotion_id}`,
     "PUT",
-    { value: value }
+    { emotion_name: value }
   );
 }
 
 export async function updateEmotionCategory(emotion_id, value) {
-  return await templateFetch(`/_updateEmotionCategory?${emotion_id}`, "PUT", {
-    value: value,
-  });
+  return await templateFetch(
+    `/_updateEmotionCategory?emotion_id=${emotion_id}`,
+    "PUT",
+    {
+      category: value,
+    }
+  );
 }
 
 // Given a emotion_id, retrive emotion_name
@@ -192,6 +198,6 @@ export async function getAllMovieIds() {
 
 export async function updateMovieName(movie_id, value) {
   return await templateFetch(`/_updateMovieName?movie_id=${movie_id}`, "PUT", {
-    value: value,
+    movie_name: value,
   });
 }

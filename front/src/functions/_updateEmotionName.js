@@ -4,12 +4,12 @@ const template = require("./utils/templateFunction");
 // Endpoint: PUT /emotions/:emotion_id
 exports.handler = async (event, context) => {
   const { emotion_id } = event.queryStringParameters;
-  const { value } = JSON.parse(event.body);
+  const { emotion_name } = JSON.parse(event.body);
 
   const queryString =
     "UPDATE emotions SET emotion_name = ? WHERE emotion_id = ?";
   const response = await template.templatedQuery(event, queryString, [
-    value,
+    emotion_name,
     emotion_id,
   ]);
 

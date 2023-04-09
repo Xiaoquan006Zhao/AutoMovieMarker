@@ -1,5 +1,5 @@
 import { validateInputText } from "../utils/utils";
-import { updateEmotionCategory } from "../utils/accessDB";
+import * as DB from "../utils/accessDB";
 
 const addCategoryButton = document.querySelector("#add-category-button");
 const categoryInput = document.getElementById("category-input");
@@ -67,7 +67,7 @@ function addDragAndDrop(category) {
 
       const newCategory = e.currentTarget.querySelector("h2").textContent;
 
-      await updateEmotionCategory(draggedItem.id, newCategory);
+      await DB.updateEmotionCategory(draggedItem.id, newCategory);
     }
   });
 }
