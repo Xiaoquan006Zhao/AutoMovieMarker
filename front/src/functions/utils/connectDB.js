@@ -19,35 +19,9 @@ let adminPool;
 
 async function createPool(user_id) {
   if (user_id === "user_2OA2AyJCnYAfGM18bPIzDOxNhqU") {
-    console.log("admin");
-    if (adminPool) return adminPool;
-
-    adminPool = await mysql.createPool({
-      host: admin_dbHost,
-      port: admin_dbPort,
-      database: admin_dbName,
-      user: admin_dbUser,
-      password: admin_dbPassword,
-      ssl: { rejectUnauthorized: true },
-    });
-
-    return adminPool;
-    // return await createAdminPool();
+    return await createAdminPool();
   } else {
-    console.log("someone");
-    if (readPool) return readPool;
-
-    readPool = await mysql.createPool({
-      host: dbHost,
-      port: dbPort,
-      database: dbName,
-      user: dbUser,
-      password: dbPassword,
-      ssl: { rejectUnauthorized: true },
-    });
-
-    return readPool;
-    // return await createReadPool();
+    return await createReadPool();
   }
 }
 
