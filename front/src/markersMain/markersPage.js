@@ -51,11 +51,29 @@ async function init() {
 
   await createEmotionHeader();
 
-  const movieIdsRaw = await DB.getAllMovieIds();
-  const movieIds = movieIdsRaw.map((raw) => raw.movie_id);
+  const allData = await DB.getAllClipsInAllMoviesWithEmotions();
 
-  movieIds.forEach(async (movieId) => {
-    tableBody.appendChild(await createMovieRow(movieId));
+  const moviesData = {};
+  allData.forEach((obj) => {
+    if (!moviesData[obj.movie_id]) {
+      moviesData[obj.movie_id] = {
+        movie_id: obj.movie_id,
+        movie_name: obj.movie_name,
+        clips: [],
+      };
+    }
+    moviesData[obj.movie_id].clips.push({
+      clip_id: obj.clip_id,
+      timecode: obj.timecode,
+      description: obj.description,
+      emotion_name: obj.emotion_name,
+      emotion_id: obj.emotion_id,
+    });
+  });
+
+  Object.values(moviesData).forEach(async (movieData) => {
+    const movieRow = await createMovieRow(movieData);
+    tableBody.appendChild(movieRow);
   });
 
   tableBody.addEventListener("click", handleOverlayBody);
@@ -99,7 +117,7 @@ function createRow(category, tr, emotionId) {
   }
 }
 
-export async function createMovieRow(movieId) {
+export async function createMovieRow(movieData) {
   const clipsCategory = [];
 
   emotions.forEach((emotion) => {
@@ -107,8 +125,8 @@ export async function createMovieRow(movieId) {
   });
 
   const tr = document.createElement("tr");
-  tr.setAttribute("id", movieId);
-  const clips = await DB.getClipsEmotionInMovie(movieId);
+  tr.setAttribute("id", movieData.movie_id);
+  const clips = movieData.clips;
 
   clips.forEach((clip) => {
     const emotion = clip.emotion_name;
@@ -122,8 +140,7 @@ export async function createMovieRow(movieId) {
 
   const movieTd = tr.firstChild;
   movieTd.classList.add("movie-title");
-  const movieName = await DB.getMovieName(movieId);
-  movieTd.appendChild(document.createTextNode(movieName.movie_name));
+  movieTd.appendChild(document.createTextNode(movieData.movie_name));
 
   return tr;
 }

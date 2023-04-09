@@ -46,6 +46,10 @@ export async function getClipsEmotionInMovie(movie_id) {
   );
 }
 
+export async function getAllClipsInAllMoviesWithEmotions() {
+  return await templateFetch(`/_getAllClipsInAllMoviesWithEmotions`, "GET");
+}
+
 // Given a movie_id, retrive movie_name
 export async function getMovieName(movie_id) {
   return await templateFetch(`/_getMovieName?movie_id=${movie_id}`, "GET");
