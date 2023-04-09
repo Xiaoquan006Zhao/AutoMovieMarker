@@ -1,10 +1,11 @@
 import * as DB from "../utils/accessDB.js";
 
 const publishableKey =
-  "pk_test_Y3VubmluZy1yaGluby01NS5jbGVyay5hY2NvdW50cy5kZXYk"; // <- Add Publishable Key here
+  "pk_test_Y3VubmluZy1yaGluby01NS5jbGVyay5hY2NvdW50cy5kZXYk";
 
-export let accessToken;
-let availableUtil;
+// Load accessToken and availableUtil from session storage
+export let accessToken = sessionStorage.getItem("accessToken");
+export let availableUtil = sessionStorage.getItem("availableUtil");
 
 const startClerk = async () => {
   const Clerk = window.Clerk;
@@ -26,11 +27,21 @@ const startClerk = async () => {
           const response = await DB.getNewAccessToken(user.id, now);
           accessToken = response.token;
           availableUtil = response.availableUtil;
+
+          // Store accessToken and availableUtil in session storage
+          sessionStorage.setItem("accessToken", accessToken);
+          sessionStorage.setItem("availableUtil", availableUtil);
+
           console.log(accessToken);
         }
       } else {
         accessToken = null;
         availableUtil = null;
+
+        // Clear accessToken and availableUtil from session storage
+        sessionStorage.removeItem("accessToken");
+        sessionStorage.removeItem("availableUtil");
+
         console.log("Not Admin");
       }
     });
