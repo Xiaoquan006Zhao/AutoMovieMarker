@@ -6,9 +6,6 @@ exports.handler = async (event, context) => {
   const { emotion_id } = event.queryStringParameters;
   const { category } = JSON.parse(event.body);
 
-  console.log(emotion_id);
-  console.log(category);
-
   const queryString = "UPDATE emotions SET category = ? WHERE emotion_id = ?";
   const response = await template.templatedQuery(event, queryString, [
     category,

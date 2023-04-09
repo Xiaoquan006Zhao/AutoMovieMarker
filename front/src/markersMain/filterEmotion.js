@@ -116,7 +116,6 @@ export function applyFilters() {
         if (
           rowMovieName.toLowerCase().includes(movieNameFilters[j].toLowerCase())
         ) {
-          console.log("include: " + rowMovieName);
           hideRow = false;
           break;
         }
@@ -142,9 +141,6 @@ export function applyFilters() {
       }
     }
   }
-
-  console.log(rowsToHide);
-  console.log(columnsNotToHide);
 
   if (rowsToHide.length !== 0 && columnsNotToHide.size === 0) {
     const rows = document.querySelector("tbody").querySelectorAll("tr");
