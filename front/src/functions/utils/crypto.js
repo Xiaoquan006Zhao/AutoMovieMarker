@@ -59,7 +59,7 @@ function decrypt(encryptedDataAndChecksum) {
   if (checksum === decryptedChecksum) {
     return decryptedData;
   } else {
-    throw new Error("Corrupted Data!");
+    throw new RangeError("Corrupted Data!");
   }
 }
 

@@ -32,11 +32,17 @@ async function templatedQuery(event, queryString, encryptedVariable) {
       data: results,
     };
   } catch (error) {
-    console.error(error);
-    return {
-      statusCode: 500,
-      data: error,
-    };
+    if (error instanceof RangeError) {
+      return {
+        statusCode: 421,
+        data: "Corrupted Data",
+      };
+    } else {
+      return {
+        statusCode: 500,
+        data: "Internal server error",
+      };
+    }
   } finally {
     // Release the connection back to the pool
     connection.release();
@@ -80,7 +86,7 @@ function templateSend(
     };
   } else {
     return {
-      statusCode: 500,
+      statusCode: statusCode,
       headers: {
         "Content-Type": "application/json",
       },
