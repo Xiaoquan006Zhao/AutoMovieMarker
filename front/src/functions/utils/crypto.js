@@ -4,6 +4,9 @@ const CryptoJS = require("crypto-js");
 const secretKey = CryptoJS.lib.WordArray.random(16);
 const iv = CryptoJS.lib.WordArray.random(16);
 
+console.log(secretKey);
+console.log(iv);
+
 const cryptParameter = {
   mode: CryptoJS.mode.CBC,
   padding: CryptoJS.pad.Pkcs7,

@@ -35,7 +35,7 @@ async function templatedQuery(event, queryString, encryptedVariable) {
     console.error(error);
     return {
       statusCode: 500,
-      data: "Internal Server Error",
+      data: error,
     };
   } finally {
     // Release the connection back to the pool
