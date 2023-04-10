@@ -71,7 +71,12 @@ async function init() {
     });
   });
 
-  Object.values(moviesData).forEach(async (movieData) => {
+  // sort the movies on asc order by movie name
+  const sortedMoviesData = Object.values(moviesData).sort((a, b) => {
+    return a.movie_name < b.movie_name ? -1 : 1;
+  });
+
+  sortedMoviesData.forEach(async (movieData) => {
     const movieRow = await createMovieRow(movieData);
     tableBody.appendChild(movieRow);
   });

@@ -78,7 +78,7 @@
   word-break: break-word; }
 
 .container {
-  max-width: 1280px;
+  max-width: 99.5vw;
   padding: 0 1.5rem;
   margin: auto;
   overflow: hidden; }

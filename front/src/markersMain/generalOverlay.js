@@ -4,8 +4,8 @@ import * as utils from "../utils/utils.js";
 export function createOverlaySection(
   callback_update,
   updateReference,
-  x = 100,
-  y = 100,
+  x,
+  y,
   height,
   width
 ) {
@@ -23,10 +23,18 @@ export function createOverlaySection(
   );
 
   const divPos = document.createElement("div");
-  divPos.setAttribute(
-    "style",
-    `position: fixed;left: ${x}px;top: ${y}px;pointer-events: none;`
-  );
+
+  if (x && y) {
+    divPos.setAttribute(
+      "style",
+      `position: fixed;left: ${x}px;top: ${y}px;pointer-events: none;`
+    );
+  } else {
+    divPos.setAttribute(
+      "style",
+      `position: fixed;left: 50%;top: 50%; transform: translate(-50%, -50%); pointer-events: none;`
+    );
+  }
 
   if (height) {
     divPos.style.height = height + "px";
