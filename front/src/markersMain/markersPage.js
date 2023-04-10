@@ -96,7 +96,7 @@ async function init() {
 }
 
 // helper method to populate the row for each emotion based on movie clips
-function createRow(category, tr, emotionId) {
+function putInCorrectEmotion(category, tr, emotionId) {
   if (category.length !== 0) {
     const td = document.createElement("td");
     td.setAttribute("id", emotionId);
@@ -117,8 +117,26 @@ function createRow(category, tr, emotionId) {
   }
 }
 
-export async function createMovieRow(movieData) {
+export async function createMovieRow(movieData, movie_id) {
   const clipsCategory = [];
+
+  if (movie_id) {
+    const allData = await DB.getClipsEmotionInMovie(movie_id);
+    movieData = {
+      movie_id: allData[0].movie_id,
+      movie_name: allData[0].movie_name,
+      clips: [],
+    };
+    allData.forEach((obj) => {
+      movieData.clips.push({
+        clip_id: obj.clip_id,
+        timecode: obj.timecode,
+        description: obj.description,
+        emotion_name: obj.emotion_name,
+        emotion_id: obj.emotion_id,
+      });
+    });
+  }
 
   emotions.forEach((emotion) => {
     clipsCategory.push([]);
@@ -130,12 +148,14 @@ export async function createMovieRow(movieData) {
 
   clips.forEach((clip) => {
     const emotion = clip.emotion_name;
-    const index = emotions.indexOf(emotion);
-    clipsCategory[index].push(clip);
+    if (emotion) {
+      const index = emotions.indexOf(emotion);
+      clipsCategory[index].push(clip);
+    }
   });
 
   clipsCategory.forEach((category, index) => {
-    createRow(category, tr, emotionsId[index]);
+    putInCorrectEmotion(category, tr, emotionsId[index]);
   });
 
   const movieTd = tr.firstChild;

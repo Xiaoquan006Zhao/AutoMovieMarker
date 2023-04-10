@@ -16,7 +16,7 @@ import { handleClipOverlay } from "./clipDetailsOverlay.js";
 export async function updateMovie(updateReference) {
   if (utils.isTopLevelUpdated()) {
     const tableElement = updateReference.parentElement;
-    const newElement = await createMovieRow(updateReference.id);
+    const newElement = await createMovieRow(null, updateReference.id);
 
     const siblingElement = updateReference.nextSibling;
     tableElement.insertBefore(newElement, siblingElement);
