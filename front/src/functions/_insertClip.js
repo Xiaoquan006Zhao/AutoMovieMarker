@@ -11,5 +11,5 @@ exports.handler = async (event, context) => {
     "no image",
   ]);
 
-  return template.templateSend(response);
+  return template.templateSend(response, ["insertId"]);
 };

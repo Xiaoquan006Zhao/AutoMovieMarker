@@ -8,5 +8,5 @@ exports.handler = async (event, context) => {
     emotion_name,
   ]);
 
-  return template.templateSend(response);
+  return template.templateSend(response, ["insertId"]);
 };

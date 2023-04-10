@@ -23,10 +23,10 @@ async function templatedQuery(event, queryString, encryptedVariable) {
         }
       });
     }
-    // const variable = encryptedVariable;
 
     // Use the connection to execute queries
     const results = await connection.query(queryString, variable);
+
     return {
       statusCode: 200,
       data: results,
@@ -54,11 +54,21 @@ function templateSend(
     data = getReturnFromRespose(data);
 
     if (variableTagThatNeedEncrypt) {
-      data.forEach((record) => {
+      if (!Array.isArray(data)) {
         variableTagThatNeedEncrypt.forEach((tag) => {
-          record[tag] = encrypt(record[tag]);
+          if (data[tag]) {
+            data[tag] = encrypt(data[tag]);
+          }
         });
-      });
+      } else {
+        data.forEach((record) => {
+          variableTagThatNeedEncrypt.forEach((tag) => {
+            if (record[tag]) {
+              record[tag] = encrypt(record[tag]);
+            }
+          });
+        });
+      }
     }
 
     return {

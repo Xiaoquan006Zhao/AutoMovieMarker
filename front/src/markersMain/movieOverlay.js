@@ -179,9 +179,17 @@ async function clickAdd(e) {
 }
 
 async function clickDelete(e) {
-  utils.topLevelUpdate();
-  const tr = e.currentTarget.closest("tr");
-  const clip_id = tr.id;
-  await DB.deleteClip(clip_id);
-  tr.remove();
+  if (
+    confirm(
+      `Do you want to delete [${
+        e.currentTarget.closest("tr").firstChild.childNodes[0].textContent
+      }]?`
+    )
+  ) {
+    utils.topLevelUpdate();
+    const tr = e.currentTarget.closest("tr");
+    const clip_id = tr.id;
+    await DB.deleteClip(clip_id);
+    tr.remove();
+  }
 }
