@@ -31,7 +31,8 @@ async function updateClip(updateReference) {
     if (updateReference.tagName === "TR") {
       const tds = updateReference.querySelectorAll("td");
 
-      tds[0].textContent = description;
+      // because just setting textcontent will delete open button
+      tds[0].childNodes[0].textContent = description;
       tds[1].textContent = timecode;
 
       // update emotions
@@ -47,12 +48,6 @@ async function updateClip(updateReference) {
         emotionWrapper.appendChild(divEmotion);
       });
     } else {
-      // update the descriptions overlay in the main table
-      // const emotionTextElement = updateReference.querySelector(".emotion-text");
-      // const tooltipTextElement = updateReference.querySelector(".tooltiptext");
-      // emotionTextElement.textContent = description;
-      // tooltipTextElement.textContent = description;
-
       // or just triggers the next callback in the overlay (essenially close it)
       utils.doubleCloseOverlay();
     }

@@ -63,8 +63,6 @@ async function init() {
       };
     }
     moviesData[obj.movie_id].clips.push({
-      clip_id: obj.clip_id,
-      timecode: obj.timecode,
       description: obj.description,
       emotion_name: obj.emotion_name,
       emotion_id: obj.emotion_id,
@@ -134,8 +132,6 @@ export async function createMovieRow(movieData, movie_id) {
     };
     allData.forEach((obj) => {
       movieData.clips.push({
-        clip_id: obj.clip_id,
-        timecode: obj.timecode,
         description: obj.description,
         emotion_name: obj.emotion_name,
         emotion_id: obj.emotion_id,

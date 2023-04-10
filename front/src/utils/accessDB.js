@@ -195,11 +195,6 @@ export async function getEmotionName(emotion_id) {
   );
 }
 
-// Given a emotion_id, retrive emotion_name
-export async function getAllMovieIds() {
-  return await templateFetch(`/_getAllMovieIds`, "GET");
-}
-
 export async function updateMovieName(movie_id, value) {
   return await templateFetch(`/_updateMovieName?movie_id=${movie_id}`, "PUT", {
     movie_name: value,

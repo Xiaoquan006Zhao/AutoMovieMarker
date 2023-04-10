@@ -10,5 +10,5 @@ exports.handler = async (event, context) => {
     WHERE clip_emotions.clip_id = ?`;
 
   const response = await template.templatedQuery(event, queryString, [clip_id]);
-  return template.templateSend(response);
+  return template.templateSend(response, ["emotion_id"]);
 };

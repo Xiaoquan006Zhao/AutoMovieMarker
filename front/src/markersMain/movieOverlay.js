@@ -113,7 +113,7 @@ function createClipRow(
 
     // Check if the relatedTarget is a child of BodyTr
     if (!tr.contains(relatedTarget)) {
-      const firstTd = e.currentTarget.firstChild;
+      const firstTd = tr.firstChild;
       firstTd.removeChild(firstTd.lastChild);
       tr.removeChild(tr.lastChild);
     }

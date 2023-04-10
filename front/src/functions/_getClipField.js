@@ -8,5 +8,5 @@ exports.handler = async (event, context) => {
   const query = `SELECT ${field} FROM clips WHERE clip_id = ?`;
   const response = await template.templatedQuery(event, query, [clip_id]);
 
-  return template.templateSend(response, template.stripMetaDataAndToJson);
+  return template.templateSend(response, null, template.stripMetaDataAndToJson);
 };

@@ -1,7 +1,8 @@
 const { createPool } = require("./connectDB.js");
 const { verifyToken } = require("./verifyJWT.js");
+const { decrypt, encrypt } = require("./crypto.js");
 
-async function templatedQuery(event, queryString, variable) {
+async function templatedQuery(event, queryString, encryptedVariable) {
   const authHeader = event.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -12,6 +13,18 @@ async function templatedQuery(event, queryString, variable) {
   const connection = await pool.getConnection();
 
   try {
+    let variable = [];
+    if (encryptedVariable) {
+      encryptedVariable.forEach((v) => {
+        if (v.includes("_")) {
+          variable.push(decrypt(v));
+        } else {
+          variable.push(v);
+        }
+      });
+    }
+    // const variable = encryptedVariable;
+
     // Use the connection to execute queries
     const results = await connection.query(queryString, variable);
     return {
@@ -30,20 +43,30 @@ async function templatedQuery(event, queryString, variable) {
   }
 }
 
-function templateSend(response, getReturnFromRespose) {
-  const { statusCode, data } = response;
-
-  if (!getReturnFromRespose) {
-    getReturnFromRespose = stripMetaData;
-  }
+function templateSend(
+  response,
+  variableTagThatNeedEncrypt,
+  getReturnFromRespose = stripMetaData
+) {
+  let { statusCode, data } = response;
 
   if (statusCode === 200) {
+    data = getReturnFromRespose(data);
+
+    if (variableTagThatNeedEncrypt) {
+      data.forEach((record) => {
+        variableTagThatNeedEncrypt.forEach((tag) => {
+          record[tag] = encrypt(record[tag]);
+        });
+      });
+    }
+
     return {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(getReturnFromRespose(data)),
+      body: JSON.stringify(data),
     };
   } else {
     return {

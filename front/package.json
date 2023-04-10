@@ -13,6 +13,7 @@
   "dependencies": {
     "@clerk/clerk-js": "^4.37.0",
     "@clerk/clerk-sdk-node": "^4.8.2",
+    "crypto-js": "^4.1.1",
     "emoji-picker-element": "^1.16.0",
     "insert-text-at-cursor": "^0.3.0",
     "jsonwebtoken": "^9.0.0",

@@ -8,5 +8,5 @@ exports.handler = async (event, context) => {
     emotion_id,
   ]);
 
-  return template.templateSend(response, template.stripMetaDataAndToJson);
+  return template.templateSend(response, null, template.stripMetaDataAndToJson);
 };
