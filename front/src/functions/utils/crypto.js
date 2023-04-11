@@ -1,8 +1,27 @@
 const CryptoJS = require("crypto-js");
 
-const seedString = process.env.CRYPTO_SEEDSTRING;
+// const seedString = process.env.CRYPTO_SEEDSTRING;
 
-seedRandomWordArray(seedString);
+// seedRandomWordArray(seedString);
+
+// Define the custom seed value as an array of 16 random bytes
+const customSeed = [
+  0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09,
+  0xcf, 0x4f, 0x3c,
+];
+
+// Create a WordArray object from the custom seed value
+const seed = CryptoJS.lib.WordArray.create(customSeed);
+
+// Seed the random number generator with the custom seed value
+CryptoJS.lib.WordArray.random = function (nBytes) {
+  const words = [];
+  for (let i = 0; i < nBytes; i += 4) {
+    words.push(seed.words[i >>> 2]);
+  }
+  return new CryptoJS.lib.WordArray.init(words, nBytes);
+};
+
 const secretKey = CryptoJS.lib.WordArray.random(32);
 const iv = CryptoJS.lib.WordArray.random(32);
 
