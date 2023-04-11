@@ -1,13 +1,9 @@
 const CryptoJS = require("crypto-js");
 
 const seedString = process.env.CRYPTO_SEEDSTRING;
-const seedString1 = shuffleString(seedString);
-const seedString2 = shuffleString(seedString);
 
-seedRandomWordArray(seedString1);
+seedRandomWordArray(seedString);
 const secretKey = CryptoJS.lib.WordArray.random(32);
-
-// seedRandomWordArray(seedString2);
 const iv = CryptoJS.lib.WordArray.random(32);
 
 const cryptParameter = {
