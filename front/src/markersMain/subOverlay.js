@@ -136,7 +136,7 @@ function createOverlayEmotion(x, y, data) {
 
   const filterInput = document.createElement("input");
   filterInput.setAttribute("type", "text");
-  filterInput.setAttribute("placeholder", "Link or create a page");
+  filterInput.setAttribute("placeholder", "Link an emotion");
 
   divFilter.appendChild(filterInput);
   divWrapper.appendChild(divFilter);

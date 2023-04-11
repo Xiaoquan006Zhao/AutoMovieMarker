@@ -392,19 +392,25 @@ input {
 
 #navbar {
   display: flex;
-  align-items: center;
   justify-content: space-between; }
-  #navbar .nav-link {
+  #navbar .nav-link,
+  #navbar #user-button {
     display: inline-block;
-    padding: 0.8rem 1.2rem;
+    padding: 0.5rem 1.2rem;
     transition: all 0.5s;
     border-bottom: 2px solid transparent;
     cursor: pointer;
     border-radius: 1.5rem;
     font-weight: 900;
+    display: flex;
+    align-items: center;
     color: #ddd; }
-    #navbar .nav-link:hover {
+    #navbar .nav-link:hover,
+    #navbar #user-button:hover {
       border-bottom: 2px solid #ee8753; }
+  #navbar #user-button {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem; }
   #navbar .selected {
     background-color: #ee8753;
     color: #000; }
