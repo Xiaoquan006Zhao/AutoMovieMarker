@@ -6,7 +6,7 @@ Build with vanilla JS, Database support by PlanetScale, Deployed on Netlify, API
 
 # Please use chrome, if you would like to try it.
 
-Demo Link: https://ubiquitous-seahorse-54f5aa.netlify.app/index.html
+Demo Link: https://ubiquitous-seahorse-54f5aa.netlify.app
 
 <img width="1279" alt="image" src="https://user-images.githubusercontent.com/45891316/231060162-1bc9a0ac-3c44-40ff-92e7-67fd6bce551a.png">
 <img width="1279" alt="image" src="https://user-images.githubusercontent.com/45891316/231060190-094c416d-a86c-4a7a-8636-fbb04a32849c.png">
