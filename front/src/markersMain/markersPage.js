@@ -23,9 +23,10 @@ let emotionsId = [];
 
 // helper method to create "th" element
 function createHeaderColumns(headers) {
-  headers.forEach((element) => {
+  headers.forEach((element, index) => {
     const column = document.createElement("th");
     column.appendChild(document.createTextNode(element));
+    column.id = emotionsId[index];
     tableHeaderRow.appendChild(column);
   });
 }
@@ -102,7 +103,6 @@ async function init() {
 function putInCorrectEmotion(category, tr, emotionId) {
   if (category.length !== 0) {
     const td = document.createElement("td");
-    td.setAttribute("id", emotionId);
     td.classList.add("dropDown-enable");
 
     const count = document.createElement("span");
@@ -169,12 +169,16 @@ export async function createMovieRow(movieData, movie_id) {
 // --------------------------------------------------------------- Main page ends
 
 function getMovieIdAndEmotionId(clicked) {
+  // emotion_id is stored at the header columns
+  // cellIndex gives you the column index
+  const headers = tableHeaderRow.querySelectorAll("th");
+  const emotion_id = headers[clicked.cellIndex].id;
+
   // becasue the clicked item is a td
   // the tr.id is movieId
-
   return {
     movie_id: clicked.parentElement.id,
-    emotion_id: clicked.id,
+    emotion_id: emotion_id,
     clicked,
   };
 }
