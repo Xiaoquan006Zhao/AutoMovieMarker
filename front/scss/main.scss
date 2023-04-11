@@ -11,7 +11,7 @@
   .nav-link,
   #user-button {
     display: inline-block;
-    padding: 0.5rem 1.2rem;
+    padding: 0.5rem 0.7rem;
     transition: all 0.5s;
     border-bottom: 2px solid transparent;
     cursor: pointer;
@@ -28,6 +28,7 @@
   }
 
   #user-button {
+    display: none;
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
   }

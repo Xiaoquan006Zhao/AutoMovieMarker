@@ -20,6 +20,8 @@ const startClerk = async () => {
     Clerk.addListener(async ({ user }) => {
       // Display links conditionally based on user state
       authLinks.style.display = user ? "none" : "block";
+      userButton.style.display = user ? "block" : "none";
+
       if (user) {
         const now = new Date().toISOString();
 
