@@ -1,6 +1,7 @@
 # AutoMovieMarker
 
 This website is mainly for my personal interest to collect movie clips and find interesting ones.
+
 Build with vanilla JS, Database support by PlanetScale, Deployed on Netlify
 
 # Please use chrome, if you would like to try it.
