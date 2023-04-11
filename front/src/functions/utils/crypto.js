@@ -1,14 +1,8 @@
 const CryptoJS = require("crypto-js");
 
-// const seedString = process.env.CRYPTO_SEEDSTRING;
-
-// seedRandomWordArray(seedString);
-
-// Define the custom seed value as an array of 16 random bytes
-const customSeed = [
-  0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09,
-  0xcf, 0x4f, 0x3c,
-];
+const customSeed = new Uint8Array(
+  Buffer.from(process.env.CRYPTO_SEEDSTRING, "hex")
+);
 
 // Create a WordArray object from the custom seed value
 const seed = CryptoJS.lib.WordArray.create(customSeed);
@@ -79,27 +73,6 @@ function decrypt(encryptedDataAndChecksum) {
   } else {
     throw new RangeError("Corrupted Data!");
   }
-}
-
-function seedRandomWordArray(seedString) {
-  const seed = CryptoJS.enc.Utf8.parse(seedString);
-
-  CryptoJS.lib.WordArray.random = function (nBytes) {
-    const words = [];
-    for (let i = 0; i < nBytes; i += 4) {
-      words.push(seed.words[i >>> 2]);
-    }
-    return new CryptoJS.lib.WordArray.init(words, nBytes);
-  };
-}
-
-function shuffleString(str) {
-  const arr = str.split("");
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr.join("");
 }
 
 module.exports = { encrypt, decrypt };
