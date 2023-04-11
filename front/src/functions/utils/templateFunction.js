@@ -90,7 +90,7 @@ function templateSend(
       headers: {
         "Content-Type": "application/json",
       },
-      body: data,
+      body: JSON.stringify(data),
     };
   }
 }
