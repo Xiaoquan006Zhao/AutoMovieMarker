@@ -96,7 +96,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"baseurl\": () => (/* binding */ baseurl),\n/* harmony export */   \"overlayContainer\": () => (/* binding */ overlayContainer)\n/* harmony export */ });\nvar baseurl = \"http://localhost:8888/.netlify/functions\";\n// export const baseurl =\n//   \"https://ubiquitous-seahorse-54f5aa.netlify.app/.netlify/functions\";\nvar overlayContainer = document.querySelector(\".overlay-container\");\n\n//# sourceURL=webpack://auto-movie-marker/./src/utils/config.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"baseurl\": () => (/* binding */ baseurl),\n/* harmony export */   \"overlayContainer\": () => (/* binding */ overlayContainer)\n/* harmony export */ });\n// export const baseurl = \"http://localhost:8888/.netlify/functions\";\nvar baseurl = \"https://ubiquitous-seahorse-54f5aa.netlify.app/.netlify/functions\";\nvar overlayContainer = document.querySelector(\".overlay-container\");\n\n//# sourceURL=webpack://auto-movie-marker/./src/utils/config.js?");
 
 /***/ }),
 
