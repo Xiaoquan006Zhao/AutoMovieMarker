@@ -122,9 +122,7 @@ export function applyFilters() {
       }
 
       // if row(movie) filter is provided don't add row
-
       const columnsNotToHideArray = Array.from(columnsNotToHide);
-
       for (
         let j = 0;
         movieNameFilters.length === 0 && j < columnsNotToHideArray.length;
@@ -149,7 +147,7 @@ export function applyFilters() {
       if (!rowsToHide.includes(i + 1)) {
         const tds = rows[i].querySelectorAll("td");
         Array.from(tds).forEach((td, index) => {
-          if (td.id) {
+          if (td.querySelector("span")) {
             columnsNotToHide.add(index);
           }
         });
