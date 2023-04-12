@@ -140,6 +140,7 @@ export function applyFilters() {
     }
   }
 
+  // when only querying for movies, when also querying for emotion, this should not execute
   if (rowsToHide.length !== 0 && columnsNotToHide.size === 0) {
     const rows = document.querySelector("tbody").querySelectorAll("tr");
 
@@ -158,7 +159,7 @@ export function applyFilters() {
   if (
     filterValues.length !== 0 &&
     columnsNotToHide.size === 0 &&
-    rowsToHide.length !== 0
+    rowsToHide.length === 0
   ) {
     document.querySelector("#filter-warning").classList.remove("hidden");
   } else {
