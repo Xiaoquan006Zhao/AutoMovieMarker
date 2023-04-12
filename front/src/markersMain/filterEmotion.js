@@ -158,7 +158,7 @@ export function applyFilters() {
   if (
     filterValues.length !== 0 &&
     columnsNotToHide.size === 0 &&
-    rowsToHide.length === 0
+    rowsToHide.length !== 0
   ) {
     document.querySelector("#filter-warning").classList.remove("hidden");
   } else {
