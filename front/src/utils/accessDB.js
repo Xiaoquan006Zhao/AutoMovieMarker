@@ -12,7 +12,14 @@ async function templateFetch(query, method, body) {
     body: JSON.stringify(body),
   });
 
-  const data = await response.json();
+  let data;
+
+  try {
+    data = await response.json();
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    console.error("Response:", response);
+  }
 
   return data;
 }
