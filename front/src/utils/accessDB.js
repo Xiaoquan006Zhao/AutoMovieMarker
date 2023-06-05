@@ -12,15 +12,18 @@ async function templateFetch(query, method, body) {
     body: JSON.stringify(body),
   });
 
-  let data;
+  const data = await response.json();
 
-  try {
-    data = await response.json();
-    console.error("Response:", response);
-  } catch (error) {
-    console.error("Error parsing JSON:", error);
-    console.error("Response:", response);
-  }
+  // for try/catch
+  // let data;
+
+  // try {
+  //   data = await response.json();
+  //   console.error("Response:", response);
+  // } catch (error) {
+  //   console.error("Error parsing JSON:", error);
+  //   console.error("Response:", response);
+  // }
 
   return data;
 }
