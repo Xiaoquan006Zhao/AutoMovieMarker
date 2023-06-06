@@ -32,7 +32,7 @@ async function templatedQuery(event, queryString, encryptedVariable) {
       data: results,
     };
   } catch (error) {
-    console.error(error);
+    console.error("Error has happened: " + error);
     if (error instanceof RangeError) {
       return {
         statusCode: 421,
@@ -41,7 +41,7 @@ async function templatedQuery(event, queryString, encryptedVariable) {
     } else {
       return {
         statusCode: 500,
-        data: error.message,
+        data: "something went wrong: " + error.message,
       };
     }
   } finally {
