@@ -93,12 +93,30 @@ function createCategory(categoryText) {
 
   addDragAndDrop(divCategory);
 
-  document
-    .querySelector(".categories")
-    .insertBefore(
-      divCategory,
-      document.querySelector(".categories").lastElementChild
-    );
+  const categoriesContainer = document.querySelector(".categories");
+  const categories = Array.from(categoriesContainer.children);
+
+  // Find the correct position for the new category
+  let insertBeforeElement = null;
+  for (const category of categories) {
+    if (category.id.localeCompare(categoryName) > 0) {
+      insertBeforeElement = category;
+      break;
+    }
+  }
+
+  if (insertBeforeElement) {
+    categoriesContainer.insertBefore(divCategory, insertBeforeElement);
+  } else {
+    categoriesContainer.appendChild(divCategory);
+  }
+
+  // document
+  //   .querySelector(".categories")
+  //   .insertBefore(
+  //     divCategory,
+  //     document.querySelector(".categories").lastElementChild
+  //   );
 
   return divCategory;
 }
