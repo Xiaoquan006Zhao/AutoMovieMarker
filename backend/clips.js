@@ -18,9 +18,9 @@ function getClipDetail(connection, req, callback) {
 function insertClip(connection, req, callback) {
   const { movie_id } = req.params;
 
-  const queryInsertCip = `Insert into clips (movie_id, image_url) values (?, ?)`;
+  const queryInsertCip = `Insert into clips (movie_id) values (?)`;
 
-  templateQuery(connection, queryInsertCip, [movie_id, "no image"], callback);
+  templateQuery(connection, queryInsertCip, [movie_id], callback);
 }
 
 function getClipField(connection, req, callback) {
