@@ -271,9 +271,6 @@ async function createOverlayField(x, y, data) {
             return;
           }
         }
-
-        print(inputBox.value);
-
         await DB.updateClipField(clip_id, fieldName, inputBox.value);
         utils.update(clicked);
 
