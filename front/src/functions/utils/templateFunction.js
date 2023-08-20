@@ -16,7 +16,8 @@ async function templatedQuery(event, queryString, encryptedVariable) {
     let variable = [];
     if (encryptedVariable) {
       encryptedVariable.forEach((v) => {
-        if (v.includes("_")) {
+        // "_" is used as tags for id of variables in database
+        if (!v.includes("http") && v.includes("_")) {
           variable.push(decrypt(v));
         } else {
           variable.push(v);
