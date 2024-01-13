@@ -100,7 +100,7 @@ function createOverlayClipDetails(x, y, data) {
   }
 
   const imageElement = document.createElement("img");
-  imageElement.setAttribute("src", image_url);
+  imageElement.setAttribute("src", "https://lh3.google.com/u/0/d/"+image_url);
   imageElement.setAttribute("alt", description);
   divWindow.appendChild(imageElement);
 
