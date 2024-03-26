@@ -14,8 +14,6 @@ const admin_dbName = admin_database_url.pathname.slice(1);
 const admin_dbUser = admin_database_url.username;
 const admin_dbPassword = admin_database_url.password;
 
-console.log(dbUser)
-
 let readPool;
 let adminPool;
 
