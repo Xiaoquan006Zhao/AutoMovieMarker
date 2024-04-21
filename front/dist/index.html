@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
     script-src * 'unsafe-eval'; 
-    connect-src 'self'; 
+    connect-src *; 
     img-src *; 
     style-src 'self';
-    font-src 'self';">
+    font-src 'self';
+    worker-src blob;">
     <script src="./markersMain.js" defer></script>
     <link rel="stylesheet" href="main.css" />
     <title>Movie Marker</title>
