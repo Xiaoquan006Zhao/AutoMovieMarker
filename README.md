@@ -2,7 +2,7 @@
 
 This website is mainly for my personal interest to collect movie clips and find interesting ones.
 
-Build with vanilla JS, Database support by PlanetScale, Deployed on Netlify, API support by Netlify serverless functions
+Build with vanilla JS, Database support by singlestore, Deployed on Netlify, API support by Netlify serverless functions
 
 # Please use chrome, if you would like to try it.
 
