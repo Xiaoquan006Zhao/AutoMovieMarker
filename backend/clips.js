@@ -1,5 +1,6 @@
 const { formatResults, templateQuery } = require("./utils");
 
+
 const clipProperties = ["clip_id", "timecode", "description", "image_url"];
 
 function getClipDetail(connection, req, callback) {
